@@ -6,7 +6,7 @@ This repository contains ducc's working files and source code for the 2025 RoboC
 
 ## About
 
-ducc is a five-man team comprising Neo Hao Jun, Isaac Tan, Zhu Yunsong, Aidan Yeong and Faith Yang from the Hwa Chong Robotics Club in Singapore.
+ducc is a five-man team comprising **Neo Hao Jun, Isaac Tan, Zhu Yunsong, Aidan Yeong and Faith Yang** from the **Hwa Chong Robotics Club** in Singapore.
 
 ## Technologies
 
