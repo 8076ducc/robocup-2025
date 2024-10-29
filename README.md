@@ -12,8 +12,8 @@ ducc is a five-man team comprising **Neo Hao Jun, Isaac Tan, Zhu Yunsong, Aidan 
 
 This project was built with the following tools:
 
-- Mechanical: Autodesk Fusion 360
-- Electrical: KiCad
+- Mechanical: Autodesk Fusion
+- Electrical: KiCad 7.0
 - Programming: PlatformIO
 
 ## Intellectual Property
