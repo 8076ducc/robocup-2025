@@ -541,7 +541,7 @@
     (property "Value" "DSI" (at 46.355 35.56 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "" (at 45.72 55.88 0)
+    (property "Footprint" "Connector_FFC-FPC:TE_1-84952-5_1x15-1MP_P1.0mm_Horizontal" (at 45.72 55.88 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 45.72 55.88 0)
@@ -574,7 +574,7 @@
   (symbol (lib_id "power:+3V3") (at 57.15 76.2 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 665f2316-7753-43e5-9cdf-dd07c0fe1df1)
-    (property "Reference" "#PWR02" (at 57.15 72.39 0)
+    (property "Reference" "#PWR01" (at 57.15 72.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3V3" (at 57.15 81.28 0)
@@ -590,7 +590,7 @@
     (instances
       (project "cam3switcher"
         (path "/48668e53-5170-44d6-b6a2-f39b59615f11"
-          (reference "#PWR02") (unit 1)
+          (reference "#PWR01") (unit 1)
         )
       )
     )
@@ -602,10 +602,10 @@
     (property "Reference" "J2" (at 80.01 33.02 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Value" "DSI" (at 80.01 35.56 0)
+    (property "Value" "CSI" (at 80.01 35.56 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Footprint" "" (at 81.28 55.88 0)
+    (property "Footprint" "Connector_FFC-FPC:TE_1-84952-5_1x15-1MP_P1.0mm_Horizontal" (at 81.28 55.88 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 81.28 55.88 0)
@@ -663,7 +663,7 @@
   (symbol (lib_id "power:GND") (at 63.5 76.2 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f17ea1f5-7340-4f02-b4c2-4eb34b509096)
-    (property "Reference" "#PWR01" (at 63.5 82.55 0)
+    (property "Reference" "#PWR02" (at 63.5 82.55 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 63.5 81.28 0)
@@ -679,7 +679,7 @@
     (instances
       (project "cam3switcher"
         (path "/48668e53-5170-44d6-b6a2-f39b59615f11"
-          (reference "#PWR01") (unit 1)
+          (reference "#PWR02") (unit 1)
         )
       )
     )
