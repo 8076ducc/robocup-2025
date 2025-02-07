@@ -8,7 +8,7 @@ bool imageStatus;
 bool new_orange_frame, new_yellow_frame, new_blue_frame;
 
 int video_scaled = 300;
-bool show_debug_windows = true;
+bool show_debug_windows = false;
 
 double regress(double distance)
 {
