@@ -32,7 +32,7 @@ void getNewImage()
         auto tEndSteady = std::chrono::steady_clock::now();
         std::chrono::nanoseconds diff = tEndSteady - tStartSteady;
         fps = 0.9 * fps + 0.1 * (1000000000 / diff.count());
-        std::cout << fps << std::endl;
+        // std::cout << fps << std::endl;
     }
 }
 
@@ -79,7 +79,7 @@ int main()
     cam.options->framerate = 120;
     cam.options->verbose = true;
     // cam.options->af_index = AutoFocus_Modes::AF_MANUAL;
-    cam.options->lens_position = 100.0f;
+    // cam.options->lens_position = 10.0f;
 
     cam.startVideo();
     imageStatus = cam.getVideoFrame(unsizedImage, 1000);
