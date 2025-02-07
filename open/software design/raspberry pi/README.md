@@ -29,7 +29,9 @@ sudo g++ -Wall -o "%e" "%f" -lopencv_core -lopencv_videoio -lopencv_highgui -lop
 
 10. Transfer the two files in the `systemctl` folder in this repository to the `/lib/systemd/system` folder on the Raspberry Pi.
 
-11. Individually check that the services are working using the following commands:
+11. Ensure "enable_debug_windows" in threads.h is set to false.
+
+12. Individually check that the services are working using the following commands:
 ```bash
 sudo systemctl start configure-gpio.service
 sudo systemctl status configure-gpio.service
