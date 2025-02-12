@@ -3,4 +3,4 @@
 .vscode/launch.json
 .vscode/ipch
 
-.pio/build/*
+.pio/build/
