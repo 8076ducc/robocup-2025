@@ -95,7 +95,6 @@ struct Teensy1RxData
     Goal yellow_goal;
     Goal blue_goal;
 
-    bool lidar_detected;
     bool ball_detected;
 
     bool dip_1_on;

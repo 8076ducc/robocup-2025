@@ -97,7 +97,6 @@ void setup()
   robot.base.setUp();
   robot.setUpSerial();
   pinModeFast(DRIBBLER_PWM, OUTPUT);
-  pinModeFast(LIDAR_PWM, OUTPUT);
 
   robot.previous_pose.x = 0;
   robot.previous_pose.y = 0;
