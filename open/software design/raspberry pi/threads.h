@@ -8,11 +8,11 @@ bool imageStatus;
 bool new_orange_frame, new_yellow_frame, new_blue_frame;
 
 int video_scaled = 300;
-bool show_debug_windows = false;
+bool show_debug_windows = true;
 
 double regress(double distance)
 {
-    return ((0.0000000762 * pow(distance, 5)) - (0.0000209783 * pow(distance, 4)) + (0.0023103900 * pow(distance, 3)) - (0.1197546148 * pow(distance, 2)) + (3.4880923861 * distance) - 20.664686127);
+    return ((0.0000001460 * pow(distance, 5)) - (0.0000520727 * pow(distance, 4)) + (0.0072408104 * pow(distance, 3)) - (0.4778921232 * pow(distance, 2)) + (15.3978717979 * distance) - 172.5160610083);
 }
 
 class Colour
@@ -27,9 +27,9 @@ public:
 void trackColour(int icase)
 {
     Colour colour({0}, 0);
-    Colour orange({8, 16, 164, 255, 144, 255}, 10);  //cm5 7 feb
-    Colour yellow({31, 45, 190, 255, 17, 100}, 40);
-    Colour blue({89, 113, 238, 255, 24, 76}, 30);
+    Colour orange({8, 16, 150, 255, 200, 255}, 10);  //cm5 7 feb
+    Colour yellow({27, 46, 166, 255, 135, 254}, 40);
+    Colour blue({87, 106, 96, 255, 86, 216}, 30);
     // set up kalman stuff
     int state_size = 6;
     int meas_size = 4;
@@ -215,6 +215,7 @@ void trackColour(int icase)
                         tx_data.data.ball_y = cos(atan2(center.x, center.y)) * distance;
                         // std::cout << "ball " << sqrt(pow(tx_data.data.ball_x, 2) + pow(tx_data.data.ball_y, 2)) << " " << regress(sqrt(pow(tx_data.data.ball_x, 2) + pow(tx_data.data.ball_y, 2))) << std::endl;
                         std::cout << "ball " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
+                        // std::cout << center.x << " " << center.y << std::endl; 
                         break;
                     case 1:
                         tx_data.data.yellow_goal_detected = true;

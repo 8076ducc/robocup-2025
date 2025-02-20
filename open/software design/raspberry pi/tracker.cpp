@@ -32,7 +32,7 @@ void getNewImage()
         auto tEndSteady = std::chrono::steady_clock::now();
         std::chrono::nanoseconds diff = tEndSteady - tStartSteady;
         fps = 0.9 * fps + 0.1 * (1000000000 / diff.count());
-        std::cout << fps << std::endl;
+        // std::cout << fps << std::endl;
     }
 }
 
@@ -43,21 +43,6 @@ void transmitData()
         serialWrite(tx_data.bytes, sizeof(tx_data.bytes));
     }
 }
-
-
-// void serialWrite(const uint8_t *buffer, size_t size)
-// {
-//     uint8_t _encodeBuffer[COBS::getEncodedBufferSize(size)];
-
-//     size_t numEncoded = COBS::encode(buffer,
-//                                      size,
-//                                      _encodeBuffer);
-
-//     write(serialDeviceId, &_encodeBuffer, numEncoded);
-//     write(serialDeviceId, &PacketMarker, 1);
-
-//     //std::cout << "sending serial" << std::endl;
-// }
 
 void receiveData()
 {	
@@ -87,8 +72,6 @@ void receiveData()
 
 int main()
 {
-
-    // set up camera and shit
     setUpSerial();
     cam.options->video_width = video_x;
     cam.options->video_height = video_y;
@@ -105,7 +88,6 @@ int main()
 
     while (true)
     {
-        // run 6 threads
         std::thread trackOrange(trackColour, 0);
         std::thread trackYellow(trackColour, 1);
         std::thread trackBlue(trackColour, 2);
@@ -113,7 +95,6 @@ int main()
         std::thread transmit(transmitData);
         std::thread receive(receiveData);
 
-        // ???
         trackOrange.join();
         trackYellow.join();
         trackBlue.join();

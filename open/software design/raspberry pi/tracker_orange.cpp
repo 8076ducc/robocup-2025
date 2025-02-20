@@ -72,7 +72,7 @@ void receiveData()
 
 int main()
 {
-	show_debug_windows = true;
+    show_debug_windows = true;
     setUpSerial();
     cam.options->video_width = video_x;
     cam.options->video_height = video_y;
