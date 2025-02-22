@@ -257,10 +257,10 @@ void loop()
   robot.orbitToBall(0);
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
-  Serial.print("speed: ");
-  Serial.println(robot.move_data.speed);
-  Serial.print("angle: ");
-  Serial.println(robot.move_data.target_angle);
+  // Serial.print("speed: ");
+  // Serial.println(robot.move_data.speed);
+  // Serial.print("angle: ");
+  // Serial.println(robot.move_data.target_angle);
   // robot.base.move(151, 0, 0, kp, ki, kd);
   // delay(1000);
   // robot.base.move(50, 90, 0, kp, ki, kd);

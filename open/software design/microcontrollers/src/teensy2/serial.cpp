@@ -1,11 +1,5 @@
 #include "main.h"
 
-double getRegressedDistance(double distance)
-{
-    double regressed_distance = pow(0.0009606260 * distance, 3) - pow(0.1161190388 * distance, 2) + 8.8058432711 * distance;
-    return regressed_distance;
-}
-
 void onCam2Received(const byte *buf, size_t size)
 {
     CamTxDataUnion data_received;
@@ -19,33 +13,33 @@ void onCam2Received(const byte *buf, size_t size)
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
-    Serial.print("Yellow goal: ");
-    Serial.print(data_received.data.yellow_goal_detected);
-    Serial.print(" ");
-    Serial.print(data_received.data.yellow_goal_x);
-    Serial.print(" ");
-    Serial.print(data_received.data.yellow_goal_y);
-    Serial.print(" ");
-    Serial.print(" Blue goal: ");
-    Serial.print(data_received.data.blue_goal_detected);
-    Serial.print(" ");
-    Serial.print(data_received.data.blue_goal_x);
-    Serial.print(" ");
-    Serial.print(data_received.data.blue_goal_y);
-    Serial.print(" Ball: ");
-    Serial.print(data_received.data.ball_detected);
-    Serial.print(" ");
-    Serial.print(data_received.data.ball_x);
-    Serial.print(" ");
-    Serial.println(data_received.data.ball_y);
+    // Serial.print("Yellow goal: ");
+    // Serial.print(data_received.data.yellow_goal_detected);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.yellow_goal_x);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.yellow_goal_y);
+    // Serial.print(" ");
+    // Serial.print(" Blue goal: ");
+    // Serial.print(data_received.data.blue_goal_detected);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.blue_goal_x);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.blue_goal_y);
+    // Serial.print(" Ball: ");
+    // Serial.print(data_received.data.ball_detected);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.ball_x);
+    // Serial.print(" ");
+    // Serial.println(data_received.data.ball_y);
 
-    Serial.print("fps: ");
-    Serial.println(data_received.data.fps);
+    // Serial.print("fps: ");
+    // Serial.println(data_received.data.fps);
 
     if (data_received.data.yellow_goal_detected && data_received.data.blue_goal_detected)
     {
         Serial.println("Both goals detected");
-        robot.getCameraPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y, data_received.data.blue_goal_x, data_received.data.blue_goal_y);
+        robot.storeCameraPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y, data_received.data.blue_goal_x, data_received.data.blue_goal_y);
         yellow_goal.current_pose.bearing = robot.current_pose.bearing + degrees(atan2(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y));
         blue_goal.current_pose.bearing = robot.current_pose.bearing + degrees(atan2(data_received.data.blue_goal_x, data_received.data.blue_goal_y));
     }

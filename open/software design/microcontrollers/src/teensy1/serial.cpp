@@ -66,15 +66,6 @@ void onTeensyReceived(const byte *buf, size_t size)
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
-    if (data_received.data.lidar_detected)
-    {
-        digitalWriteFast(LIDAR_PWM, HIGH);
-    }
-    else
-    {
-        digitalWriteFast(LIDAR_PWM, LOW);
-    }
-
     robot.current_pose = data_received.data.current_pose;
     // robot.target_pose = data_received.data.target_pose;
 
@@ -86,28 +77,28 @@ void onTeensyReceived(const byte *buf, size_t size)
 
     robot.alliance_robot_detected = data_received.data.robot_detected;
 
-    Serial.print("robot detected: ");
-    Serial.println(robot.alliance_robot_detected);
+    // Serial.print("robot detected: ");
+    // Serial.println(robot.alliance_robot_detected);
 
-    Serial.print("Robot: ");
-    Serial.print(robot.current_pose.x);
-    Serial.print(" ");
-    Serial.print(robot.current_pose.y);
-    Serial.print(" ");
-    Serial.println(robot.current_pose.bearing);
+    // Serial.print("Robot: ");
+    // Serial.print(robot.current_pose.x);
+    // Serial.print(" ");
+    // Serial.print(robot.current_pose.y);
+    // Serial.print(" ");
+    // Serial.println(robot.current_pose.bearing);
 
-    Serial.print("Ball: ");
-    Serial.print(ball.current_pose.x);
-    Serial.print(" ");
-    Serial.print(ball.current_pose.y);
-    Serial.print(" ");
-    Serial.print(ball.current_pose.bearing);
+    // Serial.print("Ball: ");
+    // Serial.print(ball.current_pose.x);
+    // Serial.print(" ");
+    // Serial.print(ball.current_pose.y);
+    // Serial.print(" ");
+    // Serial.print(ball.current_pose.bearing);
 
     ball.distance_from_robot = sqrt(pow(data_received.data.target_pose.x - data_received.data.current_pose.x, 2) + pow(data_received.data.target_pose.y - data_received.data.current_pose.y, 2));
 
-    Serial.print(" ");
-    Serial.print(ball.current_pose.bearing);
-    Serial.print(" ");
+    // Serial.print(" ");
+    // Serial.print(ball.current_pose.bearing);
+    // Serial.print(" ");
     Serial.println(ball.distance_from_robot);
 
     yellow_goal.current_pose.bearing = data_received.data.yellow_goal.current_pose.bearing;

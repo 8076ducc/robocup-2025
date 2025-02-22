@@ -11,19 +11,50 @@ Line front_wall, left_wall, back_wall, right_wall;
 // const double x_bounds[2] = {-910, 910};
 
 double regressedDistance(double distance)
-{
-  double regressed_distance = (pow(0.0000001460 * distance, 5) - pow(0.0000520727 * distance, 4) + pow(0.0072408104 * distance, 3) - pow(0.4778921232 * distance, 2) + pow(15.3978717979 * distance, 1) - 172.5160610083);
-  return regressed_distance;
+{ 
+  double regressed_distance = ((0.0000001460 * pow(distance, 5)) - (0.0000520727 * pow(distance, 4)) + (0.0072408104 * pow(distance, 3)) - (0.4778921232 * pow(distance, 2)) + (15.3978717979 * distance) - 172.5160610083);
+  return regressed_distance;  //todo: re-regress in mm
 }
+
+// find the pixeldistance from robot to goal
+// convert this to actual
+// calculate the angle from robot to goal
+// find the vector from robot to goal (using distance and bearing)
+// do vector sum
 
 void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
 {
+  double yellow_pixel_distance = sqrt(pow(yellow_goal_x, 2) + pow(yellow_goal_y, 2));
+  double yellow_actual_distance = regressedDistance(yellow_pixel_distance);
+  double yellow_angle_from_robot = degrees(atan2(regressedDistance(yellow_goal_x), regressedDistance(yellow_goal_y)));
+
+  Pose yellow_goal;
+
+  yellow_goal.bearing = correctBearing(yellow_angle_from_robot + current_pose.bearing);
+  yellow_goal.x = sin(radians(yellow_goal.bearing)) * yellow_actual_distance;
+  yellow_goal.y = cos(radians(yellow_goal.bearing)) * yellow_actual_distance;
+
+  double blue_pixel_distance = sqrt(pow(blue_goal_x, 2) + pow(blue_goal_y, 2));
+  double blue_actual_distance = regressedDistance(blue_pixel_distance);
+  double blue_angle_from_robot = degrees(atan2(regressedDistance(blue_goal_x), regressedDistance(blue_goal_y)));
+
+  Pose blue_goal;
+
+  blue_goal.bearing = correctBearing(blue_angle_from_robot + current_pose.bearing);
+  blue_goal.x = sin(radians(blue_goal.bearing)) * blue_actual_distance;
+  blue_goal.y = cos(radians(blue_goal.bearing)) * blue_actual_distance;
+
   Pose centre_of_field;
 
   //vector to centre of field
-  centre_of_field.x = (yellow_goal_x + blue_goal_x) / 2;
-  centre_of_field.y = ((abs(yellow_goal_y) + abs(blue_goal_y)) / 2298) * (yellow_goal_y + blue_goal_y) / 2;
-  centre_of_field.bearing = degrees(atan2(regressedDistance(centre_of_field.x), regressedDistance(centre_of_field.y)));
+  // centre_of_field.x = (blue_goal_x + yellow_goal_x) / 2;
+  centre_of_field.x = (blue_goal.x + yellow_goal.x) / 2;
+
+  // centre_of_field.y = ((abs(yellow_goal_y) + abs(blue_goal_y)) / 2298) * (yellow_goal_y + blue_goal_y) / 2;
+  centre_of_field.y = ((abs(yellow_goal.y) + abs(blue_goal.y)) / 2298) * (yellow_goal.y + blue_goal.y) / 2;
+
+  // centre_of_field.bearing = degrees(atan2(regressedDistance(centre_of_field.x), regressedDistance(centre_of_field.y)));
+  centre_of_field.bearing = degrees(atan2(centre_of_field.x, centre_of_field.y));
 
   double distance_from_centre = sqrt(pow(centre_of_field.x, 2) + pow(centre_of_field.y, 2));
 
@@ -60,9 +91,10 @@ void Robot::getRobotPose()
   current_pose.y = camera_pose.y;
 
   //print current position
-  // Serial.print(current_pose.x);
-  // Serial.print(", ");
-  // Serial.println(current_pose.y);
+  Serial.print("Robot: ");
+  Serial.print(current_pose.x);
+  Serial.print(", ");
+  Serial.println(current_pose.y);
 
   //tune this to get smooth
   double ema_const = 0.2; // use 1 for testing purposes

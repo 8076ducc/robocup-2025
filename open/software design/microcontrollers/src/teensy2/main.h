@@ -31,7 +31,7 @@ public:
     void processLidar();
     void getLidarPose();
 
-    void getCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y);
+    void storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y);
     void getSingleCameraPose(int x, int y);
 
     void getRobotPose();
