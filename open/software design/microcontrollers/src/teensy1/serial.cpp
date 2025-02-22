@@ -51,6 +51,7 @@ void onImuReceived(const byte *buf, size_t size)
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
     teensy_1_tx_data.data.bearing = data_received.data.bearing;
+    Serial.println(teensy_1_tx_data.data.bearing);
 
     robot.sendSerial();
 }
@@ -64,6 +65,15 @@ void onTeensyReceived(const byte *buf, size_t size)
         return;
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
+
+    if (data_received.data.lidar_detected)
+    {
+        digitalWriteFast(LIDAR_PWM, HIGH);
+    }
+    else
+    {
+        digitalWriteFast(LIDAR_PWM, LOW);
+    }
 
     robot.current_pose = data_received.data.current_pose;
     // robot.target_pose = data_received.data.target_pose;

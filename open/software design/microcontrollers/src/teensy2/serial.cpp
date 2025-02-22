@@ -11,6 +11,7 @@ void onCam2Received(const byte *buf, size_t size)
     CamTxDataUnion data_received;
 
     Serial.println("Received data");
+    Serial.println(size);
 
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
@@ -127,28 +128,28 @@ void Robot::setUpSerial()
     Cam2Serial.setStream(&Serial2);
     Cam2Serial.setPacketHandler(&onCam2Received);
 #ifdef DEBUG
-    Serial.println("Camera serial connection established.");
+    Serial.println("IMU serial connection established.");
 #endif
 
-//     Serial4.begin(bt_serial_baud);
-//     while (!Serial4)
-//     {
-//     }
-//     BtSerial.setStream(&Serial4);
-//     BtSerial.setPacketHandler(&onBtReceived);
-// #ifdef DEBUG
-//     Serial.println("Bluetooth serial connection established.");
-// #endif
+    Serial4.begin(bt_serial_baud);
+    while (!Serial4)
+    {
+    }
+    BtSerial.setStream(&Serial4);
+    BtSerial.setPacketHandler(&onBtReceived);
+#ifdef DEBUG
+    Serial.println("Bluetooth serial connection established.");
+#endif
 
-//     Serial5.begin(teensy1_serial_baud);
-//     while (!Serial5)
-//     {
-//     }
-//     TeensySerial.setStream(&Serial5);
-//     TeensySerial.setPacketHandler(&onTeensyReceived);
-// #ifdef DEBUG
-//     Serial.println("Teensy serial connection established.");
-// #endif
+    Serial5.begin(teensy1_serial_baud);
+    while (!Serial5)
+    {
+    }
+    TeensySerial.setStream(&Serial5);
+    TeensySerial.setPacketHandler(&onTeensyReceived);
+#ifdef DEBUG
+    Serial.println("Teensy serial connection established.");
+#endif
 }
 
 void Robot::updateSerial()

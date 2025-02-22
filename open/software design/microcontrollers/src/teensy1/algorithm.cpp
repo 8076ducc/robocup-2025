@@ -60,26 +60,30 @@ void Robot::orbitToBall(double bearing)
 #ifdef BOT_1
         double factor = 1.1 - (ball.distance_from_robot) / 2340;
 
-        multiplier = fmin(1.1, 0.011 * exp(factor * 3.7));
+        multiplier = fmin(1.1, 0.01 * exp(factor * 3.5));
+        Serial.print("multiplier: ");
+        Serial.println(multiplier);
 
 #else
         double factor = 1.1 - (ball.distance_from_robot) / 2340;
 
-        multiplier = fmin(1.1, 0.03 * exp(factor * 3.7));
+        multiplier = fmin(1.1, 0.01 * exp(factor * 3.5));
+        Serial.print("multiplier: ");
+        Serial.println(multiplier);
 
 #endif
 
         // double speed = min(max(0.25, 0.00001 * pow(ball.distance_from_robot, 2)), 0.3);
-        // double speed = min(0.00xx1 * ball.distance_from_robot, 0.45);
-        double speed;
-        if (ball.distance_from_robot > 500)
-        {
-            speed = 0.35;
-        }
-        else
-        {
-            speed = 0.25;
-        }
+        double speed = min(max(0.005 * ball.distance_from_robot, 0.15),  0.35);
+        // double speed;
+        // if (ball.distance_from_robot > 500)
+        // {
+        //     speed = 0.35;
+        // }
+        // else
+        // {
+        //     speed = 0.25;
+        // }
 
         double correction = correctBearing(bearing_from_robot + multiplier * offset);
 
@@ -109,9 +113,13 @@ void Robot::orbitToBall(double bearing)
     }
     else
     {
-        target_pose.x = 910;
-        target_pose.y = 1215;
-        moveToTargetPose();
+        // target_pose.x = 910;
+        // target_pose.y = 1215;
+        // moveToTargetPose();
+        move_data.speed = 0;
+        move_data.target_angle = 0;
+        move_data.target_bearing = 0;
+        move_data.ema_constant = 0.0002;
     }
 }
 

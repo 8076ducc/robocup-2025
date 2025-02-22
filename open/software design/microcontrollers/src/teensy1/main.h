@@ -17,6 +17,7 @@
 #define FR_PWM 2
 #define BL_PWM 4
 #define BR_PWM 5
+#define LIDAR_PWM 6
 #define DRIBBLER_PWM 23
 
 #define FL_INA 10
@@ -30,6 +31,7 @@
 #define FR_PWM 3
 #define BL_PWM 4
 #define BR_PWM 5
+#define LIDAR_PWM 6
 #define DRIBBLER_PWM 23
 
 #define FL_INA 9
@@ -674,5 +676,8 @@ extern Robot robot;
 extern Ball ball;
 extern Goal yellow_goal;
 extern Goal blue_goal;
+
+void lidarSetup();
+void processLidar();
 
 #endif
