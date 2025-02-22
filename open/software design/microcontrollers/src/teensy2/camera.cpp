@@ -1,4 +1,10 @@
 #include "main.h"
+#include <line.h>
+#include <RPLidar.h>
+
+RPLidar lidar;
+
+Line front_wall, left_wall, back_wall, right_wall;
 
 // commented out cos its for lidar
 // const double y_bounds[2] = {-1215, 1215};
@@ -58,9 +64,9 @@ void Robot::getRobotPose()
   // Serial.print(", ");
   // Serial.println(current_pose.y);
 
-
   //tune this to get smooth
-  double ema_const = 1; // use 1 for testing purposes
+  double ema_const = 0.2; // use 1 for testing purposes
+
 
   current_pose.x = (current_pose.x * ema_const) + (previous_pose.x * (1 - ema_const));
   current_pose.y = (current_pose.y * ema_const) + (previous_pose.y * (1 - ema_const));
