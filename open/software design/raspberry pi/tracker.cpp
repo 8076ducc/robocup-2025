@@ -10,7 +10,7 @@
 
 int video_x = 1000;
 int video_y = 1000;
-lccv::PiCamera cam;
+lccv::PiCamera cam;	
 
 bool tune_orange = true;
 bool tune_yellow = false;

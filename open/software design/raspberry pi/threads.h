@@ -8,7 +8,7 @@ bool imageStatus;
 bool new_orange_frame, new_yellow_frame, new_blue_frame;
 
 int video_scaled = 300;
-bool show_debug_windows = true;
+bool show_debug_windows = false;
 
 double regress(double distance)
 {
@@ -27,9 +27,9 @@ public:
 void trackColour(int icase)
 {
     Colour colour({0}, 0);
-    Colour orange({8, 16, 150, 255, 200, 255}, 10);  //cm5 7 feb
-    Colour yellow({27, 46, 166, 255, 135, 254}, 40);
-    Colour blue({87, 106, 96, 255, 86, 216}, 30);
+    Colour orange({3, 19, 150, 211, 241, 255}, 10);  //cm5 22 feb
+    Colour yellow({27, 38, 126, 255, 202, 254}, 40);
+    Colour blue({91, 103, 135, 255, 113, 232}, 30);
     // set up kalman stuff
     int state_size = 6;
     int meas_size = 4;
@@ -173,7 +173,7 @@ void trackColour(int icase)
 
                 cv::Mat image;
                 cv::resize(unsizedImage, image, cv::Size(video_scaled, video_scaled), cv::INTER_LINEAR);
-                cv::flip(image, image, 0);
+                cv::flip(image, image, 1);
                 cv::GaussianBlur(image, image, cv::Size(5, 5), 0);
 
                 // draw contours on the original image
@@ -211,24 +211,24 @@ void trackColour(int icase)
                     {
                     case 0:
                         tx_data.data.ball_detected = true;
-                        tx_data.data.ball_x = sin(atan2(center.x, center.y)) * distance;
-                        tx_data.data.ball_y = cos(atan2(center.x, center.y)) * distance;
+                        tx_data.data.ball_x = center.x;
+                        tx_data.data.ball_y = center.y;
                         // std::cout << "ball " << sqrt(pow(tx_data.data.ball_x, 2) + pow(tx_data.data.ball_y, 2)) << " " << regress(sqrt(pow(tx_data.data.ball_x, 2) + pow(tx_data.data.ball_y, 2))) << std::endl;
-                        std::cout << "ball " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
+                        // std::cout << "ball " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
                         // std::cout << center.x << " " << center.y << std::endl; 
                         break;
                     case 1:
                         tx_data.data.yellow_goal_detected = true;
-                        tx_data.data.yellow_goal_x = sin(atan2(center.x, center.y)) * distance;
-                        tx_data.data.yellow_goal_y = cos(atan2(center.x, center.y)) * distance;
-                        // std::cout << "yellow " << distance << " " << tx_data.data.yellow_goal_y  << " " << tx_data.data.yellow_goal_yr << " ";
+                        tx_data.data.yellow_goal_x = center.x;
+                        tx_data.data.yellow_goal_y = center.y;
+                        std::cout << "yellow " << distance << " " << tx_data.data.yellow_goal_x  << " " << tx_data.data.yellow_goal_y << std::endl;
                         
                         break;
                     case 2:
                         tx_data.data.blue_goal_detected = true;
-                        tx_data.data.blue_goal_x = sin(atan2(center.x, center.y)) * distance;
-                        tx_data.data.blue_goal_y = cos(atan2(center.x, center.y)) * distance;
-                        // std::cout << "blue " << distance << " " << tx_data.data.blue_goal_y  << " " << tx_data.data.blue_goal_yr << std::endl;
+                        tx_data.data.blue_goal_x = center.x;
+                        tx_data.data.blue_goal_y = center.y;
+                        std::cout << "blue " << distance << " " << tx_data.data.blue_goal_x  << " " << tx_data.data.blue_goal_y << std::endl;
                         break;
                     }
 
