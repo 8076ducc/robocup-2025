@@ -10,11 +10,19 @@ Line front_wall, left_wall, back_wall, right_wall;
 // const double y_bounds[2] = {-1215, 1215};
 // const double x_bounds[2] = {-910, 910};
 
-double regressedDistance(double distance)
+double regressBall(double distance)
 { 
   double regressed_distance = ((0.0000002708 * pow(distance, 5)) - (00.0000696185 * pow(distance, 4)) + (0.0072414285 * pow(distance, 3)) - (0.3554100023 * pow(distance, 2)) + (14.2236266012 * distance) - 104.1068847374);
-  return regressed_distance;  //todo: re-regress in mm
+  return regressed_distance; 
 }
+
+double regressGoal(double distance)
+{ 
+  double regressed_distance = ((0.0000002708 * pow(distance, 5)) - (00.0000696185 * pow(distance, 4)) + (0.0072414285 * pow(distance, 3)) - (0.3554100023 * pow(distance, 2)) + (14.2236266012 * distance) - 104.1068847374);
+  return regressed_distance; // not done yet
+}
+
+
 
 // find the pixeldistance from robot to goal (done)
 // convert this to actual (done)
@@ -27,9 +35,9 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
   // ##this shit works##
   double yellow_pixel_distance = sqrt(pow(yellow_goal_x, 2) + pow(yellow_goal_y, 2));
   // Serial.println(yellow_pixel_distance);
-  double yellow_actual_distance = regressedDistance(yellow_pixel_distance);
+  double yellow_actual_distance = regressBall(yellow_pixel_distance);
   // Serial.println(yellow_actual_distance);
-  double yellow_angle_from_robot = degrees(atan2(regressedDistance(yellow_goal_x), regressedDistance(yellow_goal_y)));
+  double yellow_angle_from_robot = degrees(atan2(regressBall(yellow_goal_x), regressBall(yellow_goal_y)));
   // Serial.println(yellow_angle_from_robot);
 
   yellow_goal.current_pose.bearing = correctBearing(yellow_angle_from_robot + robot.current_pose.bearing);
@@ -38,8 +46,8 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
   yellow_goal.current_pose.y = cos(radians(yellow_goal.current_pose.bearing)) * yellow_actual_distance;
 
   double blue_pixel_distance = sqrt(pow(blue_goal_x, 2) + pow(blue_goal_y, 2));
-  double blue_actual_distance = regressedDistance(blue_pixel_distance);
-  double blue_angle_from_robot = degrees(atan2(regressedDistance(blue_goal_x), regressedDistance(blue_goal_y)));
+  double blue_actual_distance = regressBall(blue_pixel_distance);
+  double blue_angle_from_robot = degrees(atan2(regressBall(blue_goal_x), regressBall(blue_goal_y)));
   
   blue_goal.current_pose.bearing = correctBearing(blue_angle_from_robot + robot.current_pose.bearing);
   blue_goal.current_pose.x = sin(radians(blue_goal.current_pose.bearing)) * blue_actual_distance;
