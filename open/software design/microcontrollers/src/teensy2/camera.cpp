@@ -45,29 +45,30 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
   blue_goal.current_pose.x = sin(radians(blue_goal.current_pose.bearing)) * blue_actual_distance;
   blue_goal.current_pose.y = cos(radians(blue_goal.current_pose.bearing)) * blue_actual_distance;
 
+  Serial.print("yellow distance: ");
+  Serial.print(yellow_actual_distance);
+  Serial.print(" blue distance: ");
+  Serial.println(blue_actual_distance);
+
   Pose centre_of_field;
 
   //vector to centre of field
-  // centre_of_field.x = (blue_goal_x + yellow_goal_x) / 2;
   centre_of_field.x = (blue_goal.current_pose.x + yellow_goal.current_pose.x) / 2;
-  // centre_of_field.y = ((abs(yellow_goal_y) + abs(blue_goal_y)) / 2298) * (yellow_goal_y + blue_goal_y) / 2;
-  centre_of_field.y = ((abs(yellow_goal.current_pose.y) + abs(blue_goal.current_pose.y)) / 2298) * (yellow_goal.current_pose.y + blue_goal.current_pose.y) / 2;
-
-  // centre_of_field.bearing = degrees(atan2(regressedDistance(centre_of_field.x), regressedDistance(centre_of_field.y)));
+  centre_of_field.y = ((abs(yellow_goal.current_pose.y) + abs(blue_goal.current_pose.y)) / 2190) * (yellow_goal.current_pose.y + blue_goal.current_pose.y) / 2;
   centre_of_field.bearing = correctBearing(degrees(atan2(centre_of_field.x, centre_of_field.y)) + robot.current_pose.bearing);
 
-  double distance_from_centre = sqrt(pow(centre_of_field.x, 2) + pow(centre_of_field.y, 2));
+  // Serial.print("Centre of field: x: ");
+  // Serial.print(centre_of_field.x);
+  // Serial.print(", y: ");
+  // Serial.println(centre_of_field.y);
 
-  centre_of_field.x = sin(radians(centre_of_field.bearing)) * distance_from_centre;
-  centre_of_field.y = cos(radians(centre_of_field.bearing)) * distance_from_centre;
+  camera_pose.x = 1580 / 2 - centre_of_field.x;
+  camera_pose.y = 2190 / 2 - centre_of_field.y;
 
-  camera_pose.x = 1820 / 2 - centre_of_field.x;
-  camera_pose.y = 2430 / 2 - centre_of_field.y;
-
-  Serial.print("Camera: x: ");
-  Serial.print(camera_pose.x);
-  Serial.print(",y: ");
-  Serial.println(camera_pose.y);
+  // Serial.print("Camera: x: ");
+  // Serial.print(camera_pose.x);
+  // Serial.print(", y: ");
+  // Serial.println(camera_pose.y);
 }
 
 void Robot::getSingleCameraPose(int x, int y)
@@ -90,10 +91,10 @@ void Robot::getRobotPose()
   current_pose.y = camera_pose.y;
 
   // print current position
-  Serial.print("Robot: ");
-  Serial.print(current_pose.x);
-  Serial.print(", ");
-  Serial.println(current_pose.y);
+  // Serial.print("Robot: ");
+  // Serial.print(current_pose.x);
+  // Serial.print(", ");
+  // Serial.println(current_pose.y);
 
   //tune this to get smooth
   double ema_const = 0.2; // use 1 for testing purposes

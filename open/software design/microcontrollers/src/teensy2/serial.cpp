@@ -63,7 +63,7 @@ void onCam2Received(const byte *buf, size_t size)
 
         ball.current_pose.bearing = correctBearing(ball_relative_bearing + robot.current_pose.bearing);
         ball.current_pose.x = bound(robot.current_pose.x + data_received.data.ball_x, 0, 1820);
-        ball.current_pose.y = bound(robot.current_pose.y + data_received.data.ball_y, 0, 2430);
+        ball.current_pose.y = bound(robot.current_pose.y + data_received.data.ball_y, 0, 2190);
         ball.detected = true;
     }
     else
