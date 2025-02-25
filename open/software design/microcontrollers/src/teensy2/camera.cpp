@@ -16,13 +16,17 @@ double regressBall(double distance)
   return regressed_distance; 
 }
 
-double regressGoal(double distance)
+double regressBlueGoal(double distance)
 { 
   double regressed_distance = ((0.0000002708 * pow(distance, 5)) - (00.0000696185 * pow(distance, 4)) + (0.0072414285 * pow(distance, 3)) - (0.3554100023 * pow(distance, 2)) + (14.2236266012 * distance) - 104.1068847374);
   return regressed_distance; // not done yet
 }
 
-
+double regressYellowGoal(double distance)
+{ 
+  double regressed_distance = ((0.0000002708 * pow(distance, 5)) - (00.0000696185 * pow(distance, 4)) + (0.0072414285 * pow(distance, 3)) - (0.3554100023 * pow(distance, 2)) + (14.2236266012 * distance) - 104.1068847374);
+  return regressed_distance; // not done yet
+}
 
 // find the pixeldistance from robot to goal (done)
 // convert this to actual (done)
