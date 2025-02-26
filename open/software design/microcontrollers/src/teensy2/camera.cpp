@@ -80,6 +80,10 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
     double center_x = (yellow_goal_x + blue_goal_x) / 2.0;
     double center_y = (yellow_goal_y + blue_goal_y) / 2.0;
 
+    Serial.print(blue_goal_y);
+    Serial.print(" ");
+    Serial.println(yellow_goal_y);
+
     // Compute the pixel distance from the robot to the field center
     double center_pixel_distance = sqrt(pow(center_x, 2) + pow(center_y, 2));
 
@@ -91,11 +95,10 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
     double center_actual_x = center_x * mm_per_pixel;
     double center_actual_y = center_y * mm_per_pixel;
 
-    // Debugging output
-    Serial.print("x (cm): ");
-    Serial.print(center_actual_x / 10);
-    Serial.print(" | y (cm): ");
-    Serial.println(center_actual_y / 10);
+    // Serial.print("x (cm): ");
+    // Serial.print(center_actual_x / 10);
+    // Serial.print(" | y (cm): ");
+    // Serial.println(center_actual_y / 10);
 
     // // Convert robot's pixel distance to real-world distance
     // double robot_actual_distance = center_pixel_distance * mm_per_pixel;
