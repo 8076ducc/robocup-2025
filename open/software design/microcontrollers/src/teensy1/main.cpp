@@ -97,6 +97,7 @@ void setup()
   robot.base.setUp();
   robot.setUpSerial();
   pinModeFast(DRIBBLER_PWM, OUTPUT);
+  pinModeFast(LIDAR_PWM, OUTPUT);
 
   robot.previous_pose.x = 0;
   robot.previous_pose.y = 0;
@@ -253,6 +254,27 @@ void loop()
   robot.dribbler.dribbling = true;
   robot.dribbler.update();
 
+  robot.orbitToBall(0);
+
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
+  // Serial.print("speed: ");
+  // Serial.println(robot.move_data.speed);
+  // Serial.print("angle: ");
+  // Serial.println(robot.move_data.target_angle);
+  // robot.base.move(151, 0, 0, kp, ki, kd);
+  // delay(1000);
+  // robot.base.move(50, 90, 0, kp, ki, kd);
+  // delay(1000);
+  // robot.base.move(50, 180, 0, kp, ki, kd);
+  // delay(1000);
+  // robot.base.move(50, 270, 0, kp, ki, kd);
+  // delay(1000);
   // robot.base.move(0.6, 0, 0, kp, ki, kd);
+  // robot.base.motorOut(1, 500);
+  // delay(2000);
+  // robot.base.motorOut(2, 500);
+  // delay(2000);
+  // robot.base.motorOut(3, 500);
+  // delay(2000);
+  // robot.base.motorOut(4, 500);
 }
