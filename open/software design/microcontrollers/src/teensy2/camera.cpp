@@ -1,9 +1,5 @@
 #include "main.h"
 
-// commented out cos its for lidar
-// const double y_bounds[2] = {-1215, 1215};
-// const double x_bounds[2] = {-910, 910};
-
 double regressBall(double distance)
 { 
   double regressed_distance = ((0.0000002708 * pow(distance, 5)) - (00.0000696185 * pow(distance, 4)) + (0.0072414285 * pow(distance, 3)) - (0.3554100023 * pow(distance, 2)) + (14.2236266012 * distance) - 104.1068847374);
@@ -21,7 +17,7 @@ double regressGoal(double distance, double goal_y)
   else
   {
     // backwards (negative)
-    double regressed_distance = (-(0.0000014120 * pow(distance, 5)) + (0.0007693469 * pow(distance, 4)) - (0.1555893111 * pow(distance, 3)) + (15.0162772797 * pow(distance, 2)) - (691.0531306509 * distance) + 12345.129926796);
+    double regressed_distance = ( - (0.0000014120 * pow(distance, 5)) + (0.0007693469 * pow(distance, 4)) - (0.1555893111 * pow(distance, 3)) + (15.0162772797 * pow(distance, 2)) - (691.0531306509 * distance) + 12345.129926796);
     return regressed_distance;
   }
 }
@@ -37,6 +33,7 @@ double regressGoal(double distance, double goal_y)
 // regression localisation
 void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
 {
+
 
   double yellow_pixel_distance = sqrt(pow(yellow_goal_x, 2) + pow(yellow_goal_y, 2));
   double yellow_actual_distance = regressGoal(yellow_pixel_distance, yellow_goal_y);
@@ -54,9 +51,22 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
   blue_goal.current_pose.x = sin(radians(blue_goal.current_pose.bearing)) * blue_actual_distance;
   blue_goal.current_pose.y = cos(radians(blue_goal.current_pose.bearing)) * blue_actual_distance;
 
-  Serial.print("y_dist: ");
+  // Serial.print("y_dist: ");
+  // Serial.print(yellow_actual_distance);
+  // Serial.print(" b_dist: ");
+  // Serial.println(blue_actual_distance);
+
+  Serial.print("yellow: x: ");
+  Serial.print(yellow_goal_x);
+  Serial.print(" | y: ");
+  Serial.print(yellow_goal_y);
+  Serial.print(" | a: ");
   Serial.print(yellow_actual_distance);
-  Serial.print(" b_dist: ");
+  Serial.print(" ##### blue: x: ");
+  Serial.print(blue_goal_x);
+  Serial.print(" | y: ");
+  Serial.print(blue_goal_y);
+  Serial.print(" | a: ");
   Serial.println(blue_actual_distance);
 
   Pose centre_of_field;
