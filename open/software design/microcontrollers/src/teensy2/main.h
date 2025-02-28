@@ -7,6 +7,7 @@
 #define STRATEGY 1
 // #define WHITE_BOT
 // #define BLACK_BOT
+#define REGRESS_LOC
 
 #include <common.h>
 #include <TeensyThreads.h>

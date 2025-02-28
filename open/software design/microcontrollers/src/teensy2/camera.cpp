@@ -1,6 +1,4 @@
 #include "main.h"
-#include <line.h>
-#include <RPLidar.h>
 
 RPLidar lidar;
 
@@ -16,12 +14,21 @@ double regressBall(double distance)
   return regressed_distance; 
 }
 
-double regressGoal(double distance)
-{ 
-  double regressed_distance = ((0.0000038850 * pow(distance, 5)) - (0.0018075922 * pow(distance, 4)) + (0.3300455275 * pow(distance, 3)) - (29.4064192107 * pow(distance, 2)) + (1280.0320598455 * distance) - 21657.4407165921);
-  return regressed_distance; 
+double regressGoal(double distance, double goal_y)
+{
+  if (goal_y > 0)
+  {
+    // forwards (positive)
+    double regressed_distance = ((0.0000044237 * pow(distance, 5)) - (0.0020908007 * pow(distance, 4)) + (0.3911084326 * pow(distance, 3)) - (36.0033960558 * pow(distance, 2)) + (1633.3529021812 * distance) - 29028.62896043);
+    return regressed_distance; 
+  }
+  else
+  {
+    // backwards (negative)
+    double regressed_distance = ((0.0000000001 * pow(distance, 5)) - (0.0000000001 * pow(distance, 4)) + (0.0000000001 * pow(distance, 3)) - (0.0000000001 * pow(distance, 2)) + (0.0000000001 * distance) - 0.0000000001);
+    return regressed_distance;
+  }
 }
-
 
 // find the pixeldistance from robot to goal (done)
 // convert this to actual (done)
@@ -29,51 +36,57 @@ double regressGoal(double distance)
 // find the vector from robot to goal (using distance and bearing)
 // do vector sum
 
-// void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
-// {
+#ifdef REGRESS_LOC
 
-//   double yellow_pixel_distance = sqrt(pow(yellow_goal_x, 2) + pow( yellow_goal_y, 2));
-//   double yellow_actual_distance = regressGoal(yellow_pixel_distance);
-//   double yellow_angle_from_robot = degrees(atan2(regressGoal(yellow_goal_x), regressGoal(yellow_goal_y)));
+// regression localisation
+void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
+{
 
-//   yellow_goal.current_pose.bearing = correctBearing(yellow_angle_from_robot + robot.current_pose.bearing);
-//   yellow_goal.current_pose.x = sin(radians(yellow_goal.current_pose.bearing)) * yellow_actual_distance;
-//   yellow_goal.current_pose.y = cos(radians(yellow_goal.current_pose.bearing)) * yellow_actual_distance;
+  double yellow_pixel_distance = sqrt(pow(yellow_goal_x, 2) + pow(yellow_goal_y, 2));
+  double yellow_actual_distance = regressGoal(yellow_pixel_distance, yellow_goal_y);
+  double yellow_angle_from_robot = degrees(atan2(regressGoal(yellow_goal_x, yellow_goal_y), regressGoal(yellow_goal_y, yellow_goal_y)));
 
-//   double blue_pixel_distance = sqrt(pow(blue_goal_x, 2) + pow(blue_goal_y, 2));
-//   double blue_actual_distance = regressGoal(blue_pixel_distance);
-//   double blue_angle_from_robot = degrees(atan2(regressGoal(blue_goal_x), regressGoal(blue_goal_y)));
+  yellow_goal.current_pose.bearing = correctBearing(yellow_angle_from_robot + robot.current_pose.bearing);
+  yellow_goal.current_pose.x = sin(radians(yellow_goal.current_pose.bearing)) * yellow_actual_distance;
+  yellow_goal.current_pose.y = cos(radians(yellow_goal.current_pose.bearing)) * yellow_actual_distance;
+
+  double blue_pixel_distance = sqrt(pow(blue_goal_x, 2) + pow(blue_goal_y, 2));
+  double blue_actual_distance = regressGoal(blue_pixel_distance, blue_goal_y);
+  double blue_angle_from_robot = degrees(atan2(regressGoal(blue_goal_x, blue_goal_y), regressGoal(blue_goal_y, blue_goal_y)));
   
-//   blue_goal.current_pose.bearing = correctBearing(blue_angle_from_robot + robot.current_pose.bearing);
-//   blue_goal.current_pose.x = sin(radians(blue_goal.current_pose.bearing)) * blue_actual_distance;
-//   blue_goal.current_pose.y = cos(radians(blue_goal.current_pose.bearing)) * blue_actual_distance;
+  blue_goal.current_pose.bearing = correctBearing(blue_angle_from_robot + robot.current_pose.bearing);
+  blue_goal.current_pose.x = sin(radians(blue_goal.current_pose.bearing)) * blue_actual_distance;
+  blue_goal.current_pose.y = cos(radians(blue_goal.current_pose.bearing)) * blue_actual_distance;
 
-//   Serial.print("y_dist: ");
-//   Serial.print(yellow_actual_distance);
-//   Serial.print(" b_dist: ");
-//   Serial.println(blue_actual_distance);
+  Serial.print("y_dist: ");
+  Serial.print(yellow_actual_distance);
+  Serial.print(" b_dist: ");
+  Serial.println(blue_actual_distance);
 
-//   Pose centre_of_field;
+  Pose centre_of_field;
 
-//   //vector to centre of field
-//   centre_of_field.x = (blue_goal.current_pose.x + yellow_goal.current_pose.x) / 2;
-//   centre_of_field.y = ((abs(yellow_goal.current_pose.y) + abs(blue_goal.current_pose.y)) / 2190) * (yellow_goal.current_pose.y + blue_goal.current_pose.y) / 2;
-//   centre_of_field.bearing = correctBearing(degrees(atan2(centre_of_field.x, centre_of_field.y)) + robot.current_pose.bearing);
+  //vector to centre of field
+  centre_of_field.x = (blue_goal.current_pose.x + yellow_goal.current_pose.x) / 2;
+  centre_of_field.y = ((abs(yellow_goal.current_pose.y) + abs(blue_goal.current_pose.y)) / 2190) * (yellow_goal.current_pose.y + blue_goal.current_pose.y) / 2;
+  centre_of_field.bearing = correctBearing(degrees(atan2(centre_of_field.x, centre_of_field.y)) + robot.current_pose.bearing);
 
-//   // Serial.print("Centre of field: x: ");
-//   // Serial.print(centre_of_field.x);
-//   // Serial.print(", y: ");
-//   // Serial.println(centre_of_field.y);
+  // Serial.print("Centre of field: x: ");
+  // Serial.print(centre_of_field.x);
+  // Serial.print(", y: ");
+  // Serial.println(centre_of_field.y);
 
-//   camera_pose.x = 1580 / 2 - centre_of_field.x;
-//   camera_pose.y = 2190 / 2 - centre_of_field.y;
+  camera_pose.x = 1580 / 2 - centre_of_field.x;
+  camera_pose.y = 2190 / 2 - centre_of_field.y;
 
-//   // Serial.print("Camera: x: ");
-//   // Serial.print(camera_pose.x);
-//   // Serial.print(", y: ");
-//   // Serial.println(camera_pose.y);
-// }
+  // Serial.print("Camera: x: ");
+  // Serial.print(camera_pose.x);
+  // Serial.print(", y: ");
+  // Serial.println(camera_pose.y);
+}
 
+#else
+
+// pixel localisation
 void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
 {
     // Compute the center of the field in pixel coordinates
@@ -95,32 +108,34 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
     double center_actual_x = center_x * mm_per_pixel;
     double center_actual_y = center_y * mm_per_pixel;
 
-    // Serial.print("x (cm): ");
-    // Serial.print(center_actual_x / 10);
-    // Serial.print(" | y (cm): ");
-    // Serial.println(center_actual_y / 10);
+    Serial.print("x (cm): ");
+    Serial.print(center_actual_x / 10);
+    Serial.print(" | y (cm): ");
+    Serial.println(center_actual_y / 10);
 
-    // // Convert robot's pixel distance to real-world distance
-    // double robot_actual_distance = center_pixel_distance * mm_per_pixel;
+    // Convert robot's pixel distance to real-world distance
+    double robot_actual_distance = center_pixel_distance * mm_per_pixel;
 
-    // // Compute angle from robot to center
-    // double center_angle_from_robot = degrees(atan2(center_x, center_y));
+    // Compute angle from robot to center
+    double center_angle_from_robot = degrees(atan2(center_x, center_y));
 
-    // // Adjust for robot's current bearing
-    // robot.current_pose.bearing = correctBearing(center_angle_from_robot + robot.current_pose.bearing);
+    // Adjust for robot's current bearing
+    robot.current_pose.bearing = correctBearing(center_angle_from_robot + robot.current_pose.bearing);
 
-    // // Compute robot's actual position using the adjusted angle
-    // robot.current_pose.x = sin(radians(robot.current_pose.bearing)) * robot_actual_distance;
-    // robot.current_pose.y = cos(radians(robot.current_pose.bearing)) * robot_actual_distance;
+    // Compute robot's actual position using the adjusted angle
+    robot.current_pose.x = sin(radians(robot.current_pose.bearing)) * robot_actual_distance;
+    robot.current_pose.y = cos(radians(robot.current_pose.bearing)) * robot_actual_distance;
 
-    // Debugging output
-    // Serial.print("Pixel distance between goals: ");
-    // Serial.println(goal_pixel_distance);
-    // Serial.print("mm per pixel: ");
-    // Serial.println(mm_per_pixel);
-    // Serial.print("Robot dist from center: ");
-    // Serial.println(robot_actual_distance);
+    Debugging output
+    Serial.print("Pixel distance between goals: ");
+    Serial.println(goal_pixel_distance);
+    Serial.print("mm per pixel: ");
+    Serial.println(mm_per_pixel);
+    Serial.print("Robot dist from center: ");
+    Serial.println(robot_actual_distance);
 }
+
+#endif
 
 void Robot::getSingleCameraPose(int x, int y)
 {
