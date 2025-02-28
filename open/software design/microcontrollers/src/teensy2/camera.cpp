@@ -1,9 +1,5 @@
 #include "main.h"
 
-RPLidar lidar;
-
-Line front_wall, left_wall, back_wall, right_wall;
-
 // commented out cos its for lidar
 // const double y_bounds[2] = {-1215, 1215};
 // const double x_bounds[2] = {-910, 910};
@@ -25,7 +21,7 @@ double regressGoal(double distance, double goal_y)
   else
   {
     // backwards (negative)
-    double regressed_distance = ((0.0000000001 * pow(distance, 5)) - (0.0000000001 * pow(distance, 4)) + (0.0000000001 * pow(distance, 3)) - (0.0000000001 * pow(distance, 2)) + (0.0000000001 * distance) - 0.0000000001);
+    double regressed_distance = (-(0.0000014120 * pow(distance, 5)) + (0.0007693469 * pow(distance, 4)) - (0.1555893111 * pow(distance, 3)) + (15.0162772797 * pow(distance, 2)) - (691.0531306509 * distance) + 12345.129926796);
     return regressed_distance;
   }
 }
