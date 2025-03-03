@@ -18,14 +18,6 @@ Goal yellow_goal;
 Goal blue_goal;
 Threads::Mutex lidar_data_lock;
 
-void lidarThread()
-{
-  while (true)
-  {
-    robot.processLidar();
-  }
-}
-
 void setup()
 {
   robot.setUpSerial();
