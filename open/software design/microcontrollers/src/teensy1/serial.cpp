@@ -2,7 +2,7 @@
 
 void onLayer1Received(const byte *buf, size_t size)
 {
-    Serial.println("Received data from L1");
+    // Serial.println("Received data from L1");
     Layer1TxDataUnion data_received;
 
     // Don't continue if the payload is invalid
@@ -42,12 +42,12 @@ void onLayer1Received(const byte *buf, size_t size)
 
 void onImuReceived(const byte *buf, size_t size)
 {
-
+    Serial.println("Received data from IMU");
     ImuTxDataUnion data_received;
 
     // Don't continue if the payload is invalid
-    if (size != sizeof(data_received))
-        return;
+    // if (size != sizeof(data_received))
+    //     return;
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
