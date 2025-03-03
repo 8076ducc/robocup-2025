@@ -35,13 +35,14 @@ void onLayer1Received(const byte *buf, size_t size)
     robot.line_data.line_start_ldr = data_received.data.line_start_ldr;
     robot.line_data.line_end_ldr = data_received.data.line_end_ldr;
 
-    Serial.println("Line data:");
-    Serial.print("On line: ");
-    Serial.println(robot.line_data.on_line);
+    // Serial.println("Line data:");
+    // Serial.print("On line: ");
+    // Serial.println(robot.line_data.on_line);
 }
 
 void onImuReceived(const byte *buf, size_t size)
 {
+
     ImuTxDataUnion data_received;
 
     // Don't continue if the payload is invalid
@@ -99,7 +100,7 @@ void onTeensyReceived(const byte *buf, size_t size)
     // Serial.print(" ");
     // Serial.print(ball.current_pose.bearing);
     // Serial.print(" ");
-    Serial.println(ball.distance_from_robot);
+    // Serial.println(ball.distance_from_robot);
 
     yellow_goal.current_pose.bearing = data_received.data.yellow_goal.current_pose.bearing;
     blue_goal.current_pose.bearing = data_received.data.blue_goal.current_pose.bearing;

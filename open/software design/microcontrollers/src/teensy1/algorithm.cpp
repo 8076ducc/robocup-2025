@@ -68,8 +68,8 @@ void Robot::orbitToBall(double bearing)
         double factor = 1.1 - (ball.distance_from_robot) / 2340;
 
         multiplier = fmin(1.1, 0.01 * exp(factor * 3.5));
-        Serial.print("multiplier: ");
-        Serial.println(multiplier);
+        // Serial.print("multiplier: ");
+        // Serial.println(multiplier);
 
 #endif
 
@@ -96,10 +96,10 @@ void Robot::orbitToBall(double bearing)
             }
             else
             {
-                Serial.print("correction: ");
-                Serial.println(correction);
-                Serial.print("line angle: ");
-                Serial.println(line_data.initial_line_angle);
+                // Serial.print("correction: ");
+                // Serial.println(correction);
+                // Serial.print("line angle: ");
+                // Serial.println(line_data.initial_line_angle);
                 rejectLine(bearing);
             }
         }
