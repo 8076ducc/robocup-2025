@@ -41,19 +41,15 @@ void onCam2Received(const byte *buf, size_t size)
     {
         // Serial.println("Both goals detected");
         robot.storeCameraPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y, data_received.data.blue_goal_x, data_received.data.blue_goal_y);
-        // yellow_goal.current_pose.bearing = robot.current_pose.bearing + degrees(atan2(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y));
-        // blue_goal.current_pose.bearing = robot.current_pose.bearing + degrees(atan2(data_received.data.blue_goal_x, data_received.data.blue_goal_y));
     }
     else if (data_received.data.yellow_goal_detected)
     {
         // Serial.println("Yellow goal detected");
-        // yellow_goal.current_pose.bearing = robot.current_pose.bearing + degrees(atan2(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y));
         robot.getSingleCameraPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y);
     }
     else if (data_received.data.blue_goal_detected)
     {
         // Serial.println("Blue goal detected");
-        // blue_goal.current_pose.bearing = robot.current_pose.bearing + degrees(atan2(data_received.data.blue_goal_x, data_received.data.blue_goal_y));
         robot.getSingleCameraPose(data_received.data.blue_goal_x, data_received.data.blue_goal_y);
     }
 
