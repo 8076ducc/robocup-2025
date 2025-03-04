@@ -33,8 +33,6 @@ double regressGoal(double distance, double goal_y)
 // regression localisation
 void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
 {
-
-
   double yellow_pixel_distance = sqrt(pow(yellow_goal_x, 2) + pow(yellow_goal_y, 2));
   double yellow_actual_distance = regressGoal(yellow_pixel_distance, yellow_goal_y);
   double yellow_angle_from_robot = degrees(atan2(regressGoal(yellow_goal_x, yellow_goal_y), regressGoal(yellow_goal_y, yellow_goal_y)));
@@ -71,7 +69,7 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
 
   Pose centre_of_field;
 
-  //vector to centre of field
+  // vector to centre of field
   centre_of_field.x = (blue_goal.current_pose.x + yellow_goal.current_pose.x) / 2;
   centre_of_field.y = ((abs(yellow_goal.current_pose.y) + abs(blue_goal.current_pose.y)) / 2190) * (yellow_goal.current_pose.y + blue_goal.current_pose.y) / 2;
   centre_of_field.bearing = correctBearing(degrees(atan2(centre_of_field.x, centre_of_field.y)) + robot.current_pose.bearing);
@@ -168,7 +166,7 @@ void Robot::getRobotPose()
   // Serial.print(", ");
   // Serial.println(current_pose.y);
 
-  //tune this to get smooth
+  // tune this to get smooth
   double ema_const = 0.2; // use 1 for testing purposes
 
 
