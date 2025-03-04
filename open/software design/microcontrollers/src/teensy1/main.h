@@ -677,7 +677,5 @@ extern Ball ball;
 extern Goal yellow_goal;
 extern Goal blue_goal;
 
-void lidarSetup();
-void processLidar();
 
 #endif

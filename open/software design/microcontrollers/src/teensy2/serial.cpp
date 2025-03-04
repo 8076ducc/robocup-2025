@@ -4,12 +4,14 @@ void onCam2Received(const byte *buf, size_t size)
 {
     CamTxDataUnion data_received;
 
-    //Serial.println("Received data");
+    // Serial.println("Received data");
     //Serial.println(size);
 
     // Don't continue if the payload is invalid
-    if (size != sizeof(data_received))
+    if (size != sizeof(data_received)) {
+        Serial.println("Invalid payload size from RPI");
         return;
+    }
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
@@ -33,6 +35,7 @@ void onCam2Received(const byte *buf, size_t size)
     // Serial.print(data_received.data.ball_x);
     // Serial.print(" ");
     // Serial.println(data_received.data.ball_y);
+    
 
     // Serial.print("fps: ");
     // Serial.println(data_received.data.fps);
@@ -61,6 +64,7 @@ void onCam2Received(const byte *buf, size_t size)
         ball.current_pose.x = bound(robot.current_pose.x + data_received.data.ball_x, 0, 1820);
         ball.current_pose.y = bound(robot.current_pose.y + data_received.data.ball_y, 0, 2190);
         ball.detected = true;
+
     }
     else
     {
@@ -162,10 +166,12 @@ void Robot::sendSerial()
         BtSerial.send(bt_rx_data.bytes, sizeof(bt_rx_data.bytes));
     }
 
-    if (Serial5.availableForWrite() > sizeof(teensy_1_rx_data.bytes))
+    // if (Serial5.availableForWrite() > sizeof(teensy_1_rx_data.bytes))
+    if (true)
     {
         teensy_1_rx_data.data.current_pose = current_pose;
         teensy_1_rx_data.data.target_pose = ball.current_pose;
+        // Serial.println(teensy_1_rx_data.data.target_pose.x);
 
 #ifdef BOT1
         if (millis() - last_bt_received_time > 1000)
