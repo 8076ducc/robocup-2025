@@ -7,6 +7,7 @@ void onLayer1Received(const byte *buf, size_t size)
 
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
+        Serial.println("Invalid payload size from L1");
         return;
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
@@ -42,27 +43,30 @@ void onLayer1Received(const byte *buf, size_t size)
 
 void onImuReceived(const byte *buf, size_t size)
 {
-    Serial.println("Received data from IMU");
+    // Serial.println("Received data from IMU");
     ImuTxDataUnion data_received;
 
     // Don't continue if the payload is invalid
-    // if (size != sizeof(data_received))
-    //     return;
+    if (size != sizeof(data_received))
+        Serial.println("Invalid payload size from IMU");
+        return;
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
     teensy_1_tx_data.data.bearing = data_received.data.bearing;
-    Serial.println(teensy_1_tx_data.data.bearing);
+    // Serial.println(teensy_1_tx_data.data.bearing);
 
     robot.sendSerial();
 }
 
 void onTeensyReceived(const byte *buf, size_t size)
 {
+    Serial.println("Received data from Teensy2");
     Teensy1RxDataUnion data_received;
 
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
+        Serial.println("Invalid payload size from Teensy2");
         return;
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
