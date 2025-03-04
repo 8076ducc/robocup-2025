@@ -7,8 +7,10 @@ void onLayer1Received(const byte *buf, size_t size)
 
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
+    {
         Serial.println("Invalid payload size from L1");
         return;
+    }
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
@@ -48,8 +50,10 @@ void onImuReceived(const byte *buf, size_t size)
 
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
+    {
         Serial.println("Invalid payload size from IMU");
         return;
+    }
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
@@ -66,8 +70,10 @@ void onTeensyReceived(const byte *buf, size_t size)
 
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
+    {
         Serial.println("Invalid payload size from Teensy2");
         return;
+    }
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
