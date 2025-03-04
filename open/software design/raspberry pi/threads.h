@@ -8,12 +8,21 @@ bool imageStatus;
 bool new_orange_frame, new_yellow_frame, new_blue_frame;
 
 int video_scaled = 300;
-bool show_debug_windows = false;
+bool show_debug_windows = true;
 
 double regress(double distance)
 {
-    return ((0.0000001460 * pow(distance, 5)) - (0.0000520727 * pow(distance, 4)) + (0.0072408104 * pow(distance, 3)) - (0.4778921232 * pow(distance, 2)) + (15.3978717979 * distance) - 172.5160610083);
-}
+    // ball
+    // return ((0.0000002708 * pow(distance, 5)) - (0.0000696185 * pow(distance, 4)) + (0.0072414285 * pow(distance, 3)) - (0.3554100023 * pow(distance, 2)) + (14.2236266012 * distance) - 104.1068847374);
+    
+    // goal
+    
+    // robot back 
+    // return ((0.0000044237 * pow(distance, 5)) - (0.0020908007 * pow(distance, 4)) + (0.3911084326 * pow(distance, 3)) - (36.0033960558 * pow(distance, 2)) + (1633.3529021812 * distance) - 29028.62896043);
+    
+    //robot front
+    return ((-0.0000014120 * pow(distance, 5)) + (0.0007693469 * pow(distance, 4)) - (0.1555893111 * pow(distance, 3)) + (15.0162772797 * pow(distance, 2)) - (691.0531306509 * distance) + 12345.129926796);
+};
 
 class Colour
 {
@@ -27,9 +36,9 @@ public:
 void trackColour(int icase)
 {
     Colour colour({0}, 0);
-    Colour orange({3, 19, 150, 211, 241, 255}, 10);  //cm5 22 feb
-    Colour yellow({27, 38, 126, 255, 202, 254}, 40);
-    Colour blue({91, 103, 135, 255, 113, 232}, 30);
+    Colour orange({3, 24, 153, 255, 225, 255}, 10);
+    Colour yellow({20, 35, 183, 255, 170, 242}, 40);
+    Colour blue({84, 102, 129, 214, 64, 155}, 30);
     // set up kalman stuff
     int state_size = 6;
     int meas_size = 4;
@@ -222,13 +231,15 @@ void trackColour(int icase)
                         tx_data.data.yellow_goal_x = center.x;
                         tx_data.data.yellow_goal_y = center.y;
                         std::cout << "yellow " << distance << " " << tx_data.data.yellow_goal_x  << " " << tx_data.data.yellow_goal_y << std::endl;
+                        // std::cout << "yellow " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
                         
                         break;
                     case 2:
                         tx_data.data.blue_goal_detected = true;
                         tx_data.data.blue_goal_x = center.x;
                         tx_data.data.blue_goal_y = center.y;
-                        std::cout << "blue " << distance << " " << tx_data.data.blue_goal_x  << " " << tx_data.data.blue_goal_y << std::endl;
+                        // std::cout << "blue " << distance << " " << tx_data.data.blue_goal_x  << " " << tx_data.data.blue_goal_y << std::endl;
+                        // std::cout << "blue " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
                         break;
                     }
 
