@@ -85,7 +85,8 @@ void setup()
     Serial.println("Starting IMU");
 #endif
 
-    Serial0.begin(imu_serial_baud, SERIAL_8N1, 6, 5);
+    // Serial0.begin(imu_serial_baud, SERIAL_8N1, 7, 6);
+    Serial0.begin(imu_serial_baud);
     // Serial0.setTxBufferSize(120);
     // Serial0.setRxBufferSize(120);
     while (!Serial0)
