@@ -10,7 +10,7 @@ LightRing light_ring;
 
 void detectBall()
 {
-  // Serial.println(analogRead(LIGHTGATE));
+  Serial.println(analogRead(LIGHTGATE));
   if (analogRead(LIGHTGATE) < ball_threshold && !rx_data.kick)
   {
     tx_data.data.ball_in_catchment = true;
