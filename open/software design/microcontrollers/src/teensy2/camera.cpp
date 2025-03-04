@@ -54,18 +54,18 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
   // Serial.print(" b_dist: ");
   // Serial.println(blue_actual_distance);
 
-  Serial.print("yellow: x: ");
-  Serial.print(yellow_goal_x);
-  Serial.print(" | y: ");
-  Serial.print(yellow_goal_y);
-  Serial.print(" | a: ");
-  Serial.print(yellow_actual_distance);
-  Serial.print(" ##### blue: x: ");
-  Serial.print(blue_goal_x);
-  Serial.print(" | y: ");
-  Serial.print(blue_goal_y);
-  Serial.print(" | a: ");
-  Serial.println(blue_actual_distance);
+  // Serial.print("yellow: x: ");
+  // Serial.print(yellow_goal_x);
+  // Serial.print(" | y: ");
+  // Serial.print(yellow_goal_y);
+  // Serial.print(" | a: ");
+  // Serial.print(yellow_actual_distance);
+  // Serial.print(" ##### blue: x: ");
+  // Serial.print(blue_goal_x);
+  // Serial.print(" | y: ");
+  // Serial.print(blue_goal_y);
+  // Serial.print(" | a: ");
+  // Serial.println(blue_actual_distance);
 
   Pose centre_of_field;
 

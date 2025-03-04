@@ -28,7 +28,7 @@ struct BtRxData
     Pose robot_pose;
 };
 
-struct CamTxData
+struct   CamTxData
 {
     bool ball_detected;
     int ball_x;

@@ -15,26 +15,26 @@ void onCam2Received(const byte *buf, size_t size)
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
-    // Serial.print("Yellow goal: ");
-    // Serial.print(data_received.data.yellow_goal_detected);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.yellow_goal_x);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.yellow_goal_y);
-    // Serial.print("\n");
-    // Serial.print(" ");
-    // Serial.print(" Blue goal: ");
-    // Serial.print(data_received.data.blue_goal_detected);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.blue_goal_x);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.blue_goal_y);
-    // Serial.print(" Ball: ");
-    // Serial.print(data_received.data.ball_detected);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.ball_x);
-    // Serial.print(" ");
-    // Serial.println(data_received.data.ball_y);
+    Serial.print("Yellow goal: ");
+    Serial.print(data_received.data.yellow_goal_detected);
+    Serial.print(" ");
+    Serial.print(data_received.data.yellow_goal_x);
+    Serial.print(" ");
+    Serial.print(data_received.data.yellow_goal_y);
+    Serial.print("\n");
+    Serial.print(" ");
+    Serial.print(" Blue goal: ");
+    Serial.print(data_received.data.blue_goal_detected);
+    Serial.print(" ");
+    Serial.print(data_received.data.blue_goal_x);
+    Serial.print(" ");
+    Serial.print(data_received.data.blue_goal_y);
+    Serial.print(" Ball: ");
+    Serial.print(data_received.data.ball_detected);
+    Serial.print(" ");
+    Serial.print(data_received.data.ball_x);
+    Serial.print(" ");
+    Serial.println(data_received.data.ball_y);
     
 
     // Serial.print("fps: ");
