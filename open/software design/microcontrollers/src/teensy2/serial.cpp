@@ -66,8 +66,10 @@ void onCam2Received(const byte *buf, size_t size)
         double ball_relative_bearing = degrees(atan2(data_received.data.ball_x, data_received.data.ball_y));
 
         ball.current_pose.bearing = correctBearing(ball_relative_bearing + robot.current_pose.bearing);
-        ball.current_pose.x = bound(robot.current_pose.x + data_received.data.ball_x, 0, 1820);
-        ball.current_pose.y = bound(robot.current_pose.y + data_received.data.ball_y, 0, 2190);
+        // ball.current_pose.x = bound(robot.current_pose.x + data_received.data.ball_x, 0, 1580);
+        // ball.current_pose.y = bound(robot.current_pose.y + data_received.data.ball_y, 0, 2190);
+        ball.current_pose.x = data_received.data.ball_x;
+        ball.current_pose.y = data_received.data.ball_y;
         ball.detected = true;
 
     }

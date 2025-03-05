@@ -51,27 +51,33 @@ void onImuReceived(const byte *buf, size_t size)
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
     {
-        Serial.println("Invalid payload size from IMU");
+        Serial.print("Invalid payload size from IMU. Expected: ");
+        Serial.print(sizeof(data_received));
+        Serial.print(" Received: ");
+        Serial.println(size);
         return;
     }
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
     teensy_1_tx_data.data.bearing = data_received.data.bearing;
-    // Serial.println(teensy_1_tx_data.data.bearing);
+    // Serial.println("Bearing (IMU data): " + String(teensy_1_tx_data.data.bearing));
 
     robot.sendSerial();
 }
 
 void onTeensyReceived(const byte *buf, size_t size)
 {
-    Serial.println("Received data from Teensy2");
+    // Serial.println("Received data from Teensy2");
     Teensy1RxDataUnion data_received;
 
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
     {
-        Serial.println("Invalid payload size from Teensy2");
+        Serial.print("Invalid payload size from Teensy2. Expected: ");
+        Serial.print(sizeof(data_received));
+        Serial.print(" Received: ");
+        Serial.println(size);
         return;
     }
 
@@ -96,14 +102,13 @@ void onTeensyReceived(const byte *buf, size_t size)
     // Serial.print(" ");
     // Serial.print(robot.current_pose.y);
     // Serial.print(" ");
-    // Serial.println(robot.current_pose.bearing);
-
-    // Serial.print("Ball: ");
+    // Serial.print(robot.current_pose.bearing);
+    // Serial.print(" Ball: ");
     // Serial.print(ball.current_pose.x);
     // Serial.print(" ");
     // Serial.print(ball.current_pose.y);
     // Serial.print(" ");
-    // Serial.print(ball.current_pose.bearing);
+    // Serial.println(ball.current_pose.bearing);
 
     ball.distance_from_robot = sqrt(pow(data_received.data.target_pose.x - data_received.data.current_pose.x, 2) + pow(data_received.data.target_pose.y - data_received.data.current_pose.y, 2));
 
