@@ -28,10 +28,6 @@ public:
     void updateSerial();
     void sendSerial();
 
-    void setUpLidar();
-    void processLidar();
-    void getLidarPose();
-
     void storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y);
     void getSingleCameraPose(int x, int y);
 
@@ -41,15 +37,9 @@ public:
     Pose current_pose;
     Pose target_pose;
     Pose projected_pose;
-
-    Pose lidar_pose;
+    
     Pose camera_pose;
 
-    bool update_lidar_pose;
-    bool has_updated_lidar_pose;
-
-    double lidar_confidence_x;
-    double lidar_confidence_y;
     double camera_confidence_x;
     double camera_confidence_y;
 };
