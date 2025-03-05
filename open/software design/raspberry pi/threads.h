@@ -8,7 +8,7 @@ bool imageStatus;
 bool new_orange_frame, new_yellow_frame, new_blue_frame;
 
 int video_scaled = 300;
-bool show_debug_windows = true;
+bool show_debug_windows = false;
 
 double regress(double distance)
 {
@@ -36,9 +36,9 @@ public:
 void trackColour(int icase)
 {
     Colour colour({0}, 0);
-    Colour orange({3, 24, 153, 255, 225, 255}, 10);
-    Colour yellow({20, 35, 183, 255, 170, 242}, 40);
-    Colour blue({84, 102, 129, 214, 64, 155}, 30);
+    Colour orange({3, 18, 94, 255, 191, 255}, 10);
+    Colour yellow({18, 40, 121, 255, 79, 242}, 40);
+    Colour blue({72, 104, 181, 214, 90, 204}, 30);
     // set up kalman stuff
     int state_size = 6;
     int meas_size = 4;

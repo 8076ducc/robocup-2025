@@ -60,7 +60,7 @@ void setUpSerial()
     wiringPiSetup();
     wiringPiSetupGpio();
 
-    serialDeviceId = serialOpen("/dev/ttyAMA0", 2000000);
+    serialDeviceId = serialOpen("/dev/ttyAMA0", 500000);
 
     if (serialDeviceId < 0)
     {
@@ -93,6 +93,7 @@ void serialWrite(const uint8_t *buffer, size_t size)
     write(serialDeviceId, &PacketMarker, 1);
 
     // std::cout << "sending serial" << std::endl;
+    // std::cout << size << std::endl;
 }
 
 void serialRead()

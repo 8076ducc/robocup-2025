@@ -30,7 +30,7 @@ int main()
     }
         
     while (true) {
-    serialPutchar(serialDeviceId, 'a');
+    serialPutchar(serialDeviceId, 'a'); // a is 97 in decimal
     
 	//std::cout << serialDataAvail(serialDeviceId) << std::endl;
 		std::cout << serialGetchar(serialDeviceId) << std::endl;}
