@@ -9,7 +9,10 @@ void onCam2Received(const byte *buf, size_t size)
 
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received)) {
-        Serial.println("Invalid payload size from RPI");
+        Serial.print("Invalid payload size from RPI. Expected: ");
+        Serial.print(sizeof(data_received));
+        Serial.print(" Received: ");
+        Serial.println(size);
         return;
     }
 
@@ -21,14 +24,16 @@ void onCam2Received(const byte *buf, size_t size)
     Serial.print(data_received.data.yellow_goal_x);
     Serial.print(" ");
     Serial.print(data_received.data.yellow_goal_y);
-    Serial.print("\n");
     Serial.print(" ");
+
     Serial.print(" Blue goal: ");
     Serial.print(data_received.data.blue_goal_detected);
     Serial.print(" ");
     Serial.print(data_received.data.blue_goal_x);
     Serial.print(" ");
     Serial.print(data_received.data.blue_goal_y);
+    Serial.print(" ");
+    
     Serial.print(" Ball: ");
     Serial.print(data_received.data.ball_detected);
     Serial.print(" ");
