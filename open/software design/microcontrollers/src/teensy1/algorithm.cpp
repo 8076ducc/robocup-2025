@@ -45,6 +45,7 @@ void Robot::orbitToBall(double bearing)
 {
     if (ball.detected)
     {
+        // Serial.println("ball: " + String(ball.current_pose.bearing) + " robot(imu): " + String(robot.current_pose.bearing ));
         double bearing_from_robot = correctBearing(ball.current_pose.bearing - robot.current_pose.bearing);
         double offset, multiplier;
 

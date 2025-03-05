@@ -18,30 +18,29 @@ void onCam2Received(const byte *buf, size_t size)
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
-    Serial.print("Yellow goal: ");
-    Serial.print(data_received.data.yellow_goal_detected);
-    Serial.print(" ");
-    Serial.print(data_received.data.yellow_goal_x);
-    Serial.print(" ");
-    Serial.print(data_received.data.yellow_goal_y);
-    Serial.print(" ");
+    // Serial.print("Yellow goal: ");
+    // Serial.print(data_received.data.yellow_goal_detected);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.yellow_goal_x);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.yellow_goal_y);
+    // Serial.print(" ");
 
-    Serial.print(" Blue goal: ");
-    Serial.print(data_received.data.blue_goal_detected);
-    Serial.print(" ");
-    Serial.print(data_received.data.blue_goal_x);
-    Serial.print(" ");
-    Serial.print(data_received.data.blue_goal_y);
-    Serial.print(" ");
+    // Serial.print(" Blue goal: ");
+    // Serial.print(data_received.data.blue_goal_detected);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.blue_goal_x);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.blue_goal_y);
+    // Serial.print(" ");
     
-    Serial.print(" Ball: ");
-    Serial.print(data_received.data.ball_detected);
-    Serial.print(" ");
-    Serial.print(data_received.data.ball_x);
-    Serial.print(" ");
-    Serial.println(data_received.data.ball_y);
+    // Serial.print(" Ball: ");
+    // Serial.print(data_received.data.ball_detected);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.ball_x);
+    // Serial.print(" ");
+    // Serial.println(data_received.data.ball_y);
     
-
     // Serial.print("fps: ");
     // Serial.println(data_received.data.fps);
 
@@ -174,11 +173,10 @@ void Robot::sendSerial()
     }
 
     // if (Serial5.availableForWrite() > sizeof(teensy_1_rx_data.bytes))
-    if (true)
+    if (true);
     {
         teensy_1_rx_data.data.current_pose = current_pose;
         teensy_1_rx_data.data.target_pose = ball.current_pose;
-        // Serial.println(teensy_1_rx_data.data.target_pose.x);
 
 #ifdef BOT1
         if (millis() - last_bt_received_time > 1000)

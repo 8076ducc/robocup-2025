@@ -81,7 +81,7 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
 
   camera_pose.x = 1580 / 2 - centre_of_field.x;
   camera_pose.y = 2190 / 2 - centre_of_field.y;
-
+  
   // Serial.print("Camera: x: ");
   // Serial.print(camera_pose.x);
   // Serial.print(", y: ");
@@ -157,18 +157,13 @@ void Robot::getSingleCameraPose(int x, int y)
 
 void Robot::getRobotPose()
 {
-  current_pose.x = camera_pose.x;
-  current_pose.y = camera_pose.y;
 
-  // print current position
-  // Serial.print("Robot: ");
-  // Serial.print(current_pose.x);
-  // Serial.print(", ");
-  // Serial.println(current_pose.y);
+  robot.current_pose.x = camera_pose.x;
+  robot.current_pose.y = camera_pose.y;
 
   // tune this to get smooth
-  double ema_const = 0.2; // use 1 for testing purposes
 
+  double ema_const = 0.2; // use 1 for testing purposes
 
   current_pose.x = (current_pose.x * ema_const) + (previous_pose.x * (1 - ema_const));
   current_pose.y = (current_pose.y * ema_const) + (previous_pose.y * (1 - ema_const));
