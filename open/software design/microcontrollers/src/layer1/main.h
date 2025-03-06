@@ -25,7 +25,7 @@
 #ifdef BOT1
 const int ball_threshold = 1500;
 #else
-const int ball_threshold = 1000;
+const int ball_threshold = 2350;
 #endif
 extern int line_track_ldr;
 extern Layer1TxDataUnion tx_data;
