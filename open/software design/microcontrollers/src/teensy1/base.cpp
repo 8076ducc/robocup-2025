@@ -154,14 +154,14 @@ void Base::move(double vel, double angle, double bearing, double kp = 0.0013, do
     prev_br_out = br_out;
 
 #ifdef SERIAL_DEBUG
-    Serial.print("1: ");
-    Serial.print(fl_out);
-    Serial.print("  2: ");
-    Serial.print(fr_out);
-    Serial.print("  3: ");
-    Serial.print(bl_out);
-    Serial.print("  4: ");
-    Serial.println(br_out);
+    // Serial.print("1: ");
+    // Serial.print(fl_out);
+    // Serial.print("  2: ");
+    // Serial.print(fr_out);
+    // Serial.print("  3: ");
+    // Serial.print(bl_out);
+    // Serial.print("  4: ");
+    // Serial.println(br_out);
 #endif
 
     motorOut(1, round(fl_out));

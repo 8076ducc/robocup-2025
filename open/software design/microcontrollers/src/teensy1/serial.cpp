@@ -2,13 +2,13 @@
 
 void onLayer1Received(const byte *buf, size_t size)
 {
-    // Serial.println("Received data from L1");
+    Serial.println("Received data from L1");
     Layer1TxDataUnion data_received;
 
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
     {
-        Serial.println("Invalid payload size from L1");
+        Serial.println("Invalid payload size from L1. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
         return;
     }
 
@@ -38,6 +38,7 @@ void onLayer1Received(const byte *buf, size_t size)
     robot.line_data.line_start_ldr = data_received.data.line_start_ldr;
     robot.line_data.line_end_ldr = data_received.data.line_end_ldr;
 
+    Serial.println("ball in catchment: " + String(ball.in_catchment));
     // Serial.println("Line data:");
     // Serial.print("On line: ");
     // Serial.println(robot.line_data.on_line);
@@ -51,17 +52,17 @@ void onImuReceived(const byte *buf, size_t size)
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
     {
-        Serial.print("Invalid payload size from IMU. Expected: ");
-        Serial.print(sizeof(data_received));
-        Serial.print(" Received: ");
-        Serial.println(size);
+        // Serial.print("Invalid payload size from IMU. Expected: ");
+        // Serial.print(sizeof(data_received));
+        // Serial.print(" Received: ");
+        // Serial.println(size);
         return;
     }
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
     teensy_1_tx_data.data.bearing = data_received.data.bearing;
-    Serial.println("Bearing (IMU data): " + String(teensy_1_tx_data.data.bearing));
+    // Serial.println("Bearing (IMU data): " + String(teensy_1_tx_data.data.bearing));
 
     robot.sendSerial();
 }
@@ -74,11 +75,11 @@ void onTeensyReceived(const byte *buf, size_t size)
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
     {
-        Serial.print("Invalid payload size from Teensy2. Expected: ");
-        Serial.print(sizeof(data_received));
-        Serial.print(" Received: ");
-        Serial.println(size);
-        return;
+        // Serial.print("Invalid payload size from Teensy2. Expected: ");
+        // Serial.print(sizeof(data_received));
+        // Serial.print(" Received: ");
+        // Serial.println(size);
+        // return;
     }
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
