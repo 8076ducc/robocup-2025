@@ -173,7 +173,7 @@ void Robot::sendSerial()
     }
 
     // if (Serial5.availableForWrite() > sizeof(teensy_1_rx_data.bytes))
-    if (true);
+    if (true); // todo: fix this
     {
         teensy_1_rx_data.data.current_pose = current_pose;
         teensy_1_rx_data.data.target_pose = ball.current_pose;

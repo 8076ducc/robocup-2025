@@ -61,7 +61,7 @@ void onImuReceived(const byte *buf, size_t size)
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
     teensy_1_tx_data.data.bearing = data_received.data.bearing;
-    // Serial.println("Bearing (IMU data): " + String(teensy_1_tx_data.data.bearing));
+    Serial.println("Bearing (IMU data): " + String(teensy_1_tx_data.data.bearing));
 
     robot.sendSerial();
 }
