@@ -59,23 +59,23 @@ void Robot::orbitToBall(double bearing)
         }
 
 #ifdef BOT_1
-        double factor = 1.1 - (ball.distance_from_robot) / 2340;
+        double factor = 1.1 - (ball.distance_from_robot) / 2190;
 
         multiplier = fmin(1.1, 0.01 * exp(factor * 3.5));
         Serial.print("multiplier: ");
         Serial.println(multiplier);
 
 #else
-        double factor = 1.1 - (ball.distance_from_robot) / 2340;
+        double factor = 1.1 - (ball.distance_from_robot) / 2190;
 
-        multiplier = fmin(1.1, 0.01 * exp(factor * 3.5));
+        multiplier = fmin(1.1, 0.01 * exp(factor * 2));
         // Serial.print("multiplier: ");
         // Serial.println(multiplier);
 
 #endif
 
         // double speed = min(max(0.25, 0.00001 * pow(ball.distance_from_robot, 2)), 0.3);
-        double speed = min(max(0.005 * ball.distance_from_robot, 0.15),  0.35);
+        double speed = min(max(0.005 * ball.distance_from_robot, 0.15),  0.17);
         // double speed;
         // if (ball.distance_from_robot > 500)
         // {
