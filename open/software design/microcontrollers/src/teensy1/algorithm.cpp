@@ -43,6 +43,7 @@ void Robot::rotateToBall()
 
 void Robot::orbitToBall(double bearing)
 {
+    // Serial.println("running orbitToBall");
     if (ball.detected)
     {
         // Serial.println("ball: " + String(ball.current_pose.bearing) + " robot(imu): " + String(robot.current_pose.bearing ));
@@ -66,16 +67,25 @@ void Robot::orbitToBall(double bearing)
         Serial.println(multiplier);
 
 #else
-        double factor = 1.1 - (ball.distance_from_robot) / 2190;
+        double a = 0.085; // shift in and out
+        double b = 1.7; // pivots the curve
+        double c = 150; // typically represent maximum distance from the ball
+        double d = 1; // maximum multiplier
 
-        multiplier = fmin(1.1, 0.01 * exp(factor * 2));
+        double factor = d - (ball.distance_from_robot) / c;
+
+        // f = 1 - D/c
+        // M = min(1, ae^bf)
+       
+        multiplier = fmin(d, a * exp(b * factor));
+        // Serial.println(String(multiplier));
         // Serial.print("multiplier: ");
         // Serial.println(multiplier);
 
 #endif
 
         // double speed = min(max(0.25, 0.00001 * pow(ball.distance_from_robot, 2)), 0.3);
-        double speed = min(max(0.005 * ball.distance_from_robot, 0.15),  0.17);
+        double speed = min(max(0.01 * ball.distance_from_robot, 0.15),  0.5);
         // double speed;
         // if (ball.distance_from_robot > 500)
         // {
@@ -87,6 +97,12 @@ void Robot::orbitToBall(double bearing)
         // }
 
         double correction = correctBearing(bearing_from_robot + multiplier * offset);
+        // Serial.print("correction: ");
+        // Serial.println(correction);
+
+        if (correction < 10 ||correction > 350){
+            correction = 0;
+        }
 
         if (line_data.on_line)
         {
@@ -126,6 +142,7 @@ void Robot::orbitToBall(double bearing)
 
 void Robot::orbitScore()
 {
+    // Serial.println("running orbitScore");
     double target_bearing = robot.dip_4_on ? yellow_goal.current_pose.bearing : blue_goal.current_pose.bearing;
     target_bearing = blue_goal.current_pose.bearing;
     if (line_data.on_line)
@@ -144,6 +161,7 @@ void Robot::orbitScore()
 
 void Robot::rotateScore()
 {
+    Serial.println("running rotateScore");
     if (abs(target_pose.x - current_pose.x) < 10 && abs(target_pose.y - current_pose.y) < 10 && abs(target_pose.bearing - current_pose.bearing) < 1)
     {
         base.move(0, 0, 0);

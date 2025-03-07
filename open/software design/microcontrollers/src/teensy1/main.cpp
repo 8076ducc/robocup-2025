@@ -31,21 +31,21 @@ void striker()
 {
   if (!ball.detected)
   {
-    robot.task = 0;
+    robot.task = 0; // run orbittoBall
   }
   else
   {
     if (ball.distance_from_robot > 100)
     {
-      robot.task = 0;
+      robot.task = 0; // run orbittoBall
     }
     else if (abs(ball.current_pose.bearing - blue_goal.current_pose.bearing) < 30)
     {
-      robot.task = 1;
+      robot.task = 1; // run orbitScore
     }
     else
     {
-      robot.task = 0;
+      robot.task = 0; // run orbittoBall
     }
 
     if (ball.distance_from_robot > 500)
@@ -122,20 +122,21 @@ void loop()
     robot.dribbler.dribbling = false;
   }
 
-  if (ball.in_catchment)
-  {
-    // Serial.println("Ball in catchment");
-    ++ball_catchment;
-  }
-  else
-  {
-    ball_catchment = 0;
-  }
+  // counter for dribbler flick
+  // if (ball.in_catchment)
+  // {
+  //   // Serial.println("Ball in catchment");
+  //   ++ball_catchment;
+  // }
+  // else
+  // {
+  //   ball_catchment = 0;
+  // }
 
-  double flick_angle = 0;
-  double kp = 0.0014;
-  double ki = 0.0;
-  double kd = 0.005;
+  // double flick_angle = 0;
+  double kp = 0.0014; // orginally 0.0014
+  double ki = 0.0; // orginally 0.0
+  double kd = 0.005; // orginally 0.005
 
   // if (ball_catchment > 100)
   // {
@@ -277,4 +278,5 @@ void loop()
   // robot.base.motorOut(3, 500);
   // delay(2000);
   // robot.base.motorOut(4, 500);
+  Serial.println(robot.current_pose.bearing);
 }

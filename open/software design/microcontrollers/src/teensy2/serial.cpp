@@ -15,21 +15,21 @@ void onCam2Received(const byte *buf, size_t size)
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
-    Serial.print("Yellow goal: ");
-    Serial.print(data_received.data.yellow_goal_detected);
-    Serial.print(" ");
-    Serial.print(data_received.data.yellow_goal_x);
-    Serial.print(" ");
-    Serial.print(data_received.data.yellow_goal_y);
-    Serial.print(" ");
+    // Serial.print("Yellow goal: ");
+    // Serial.print(data_received.data.yellow_goal_detected);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.yellow_goal_x);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.yellow_goal_y);
+    // Serial.print(" ");
 
-    Serial.print(" Blue goal: ");
-    Serial.print(data_received.data.blue_goal_detected);
-    Serial.print(" ");
-    Serial.print(data_received.data.blue_goal_x);
-    Serial.print(" ");
-    Serial.print(data_received.data.blue_goal_y);
-    Serial.print(" ");
+    // Serial.print(" Blue goal: ");
+    // Serial.print(data_received.data.blue_goal_detected);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.blue_goal_x);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.blue_goal_y);
+    // Serial.print(" ");
     
     Serial.print(" Ball: ");
     Serial.print(data_received.data.ball_detected);
@@ -153,21 +153,21 @@ void Robot::setUpSerial()
 void Robot::updateSerial()
 {
     Cam2Serial.update();
-    BtSerial.update();
-    TeensySerial.update();
+    // BtSerial.update();
+    // TeensySerial.update();
 }
 
 void Robot::sendSerial()
 {
-    if (Serial2.availableForWrite() > sizeof(cam_rx_data.bytes))
-    {
-        Cam2Serial.send(cam_rx_data.bytes, sizeof(cam_rx_data.bytes));
-    }
+    // if (Serial2.availableForWrite() > sizeof(cam_rx_data.bytes))
+    // {
+    //     Cam2Serial.send(cam_rx_data.bytes, sizeof(cam_rx_data.bytes));
+    // }
 
-    if (Serial4.availableForWrite() > sizeof(bt_tx_data.bytes))
-    {
-        BtSerial.send(bt_rx_data.bytes, sizeof(bt_rx_data.bytes));
-    }
+    // if (Serial4.availableForWrite() > sizeof(bt_tx_data.bytes))
+    // {
+    //     BtSerial.send(bt_rx_data.bytes, sizeof(bt_rx_data.bytes));
+    // }
 
     // if (Serial5.availableForWrite() > sizeof(teensy_1_rx_data.bytes))
     if (true); // todo: fix this

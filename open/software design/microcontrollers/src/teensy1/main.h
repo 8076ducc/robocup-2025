@@ -643,6 +643,13 @@ public:
     void trackLineGoalie(double speed, double angle, int offset);
     void rejectLine(double bearing);
 
+    void storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y);
+    void getSingleCameraPose(int x, int y);
+
+    void getRobotPose();
+
+    Pose camera_pose;
+
     Base base;
     Dribbler dribbler;
 

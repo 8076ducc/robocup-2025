@@ -100,7 +100,9 @@ void setup()
 void loop()
 {
     readIMUHeading();
-    Serial.println(bearing);
+    #ifdef SERIAL_DEBUG
+    Serial.println(bearing); 
+    #endif
     tx_data.data.bearing = bearing;
     TeensySerial.send(tx_data.bytes, sizeof(tx_data.bytes));
 }
