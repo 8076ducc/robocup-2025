@@ -4,45 +4,42 @@ void onCam2Received(const byte *buf, size_t size)
 {
     CamTxDataUnion data_received;
 
-    // Serial.println("Received data");
-    //Serial.println(size);
+    Serial.println("Received data");
+    Serial.println(size);
 
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received)) {
-        Serial.print("Invalid payload size from RPI. Expected: ");
-        Serial.print(sizeof(data_received));
-        Serial.print(" Received: ");
-        Serial.println(size);
+        Serial.print("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
         return;
     }
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
-    // Serial.print("Yellow goal: ");
-    // Serial.print(data_received.data.yellow_goal_detected);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.yellow_goal_x);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.yellow_goal_y);
-    // Serial.print(" ");
+    Serial.print("Yellow goal: ");
+    Serial.print(data_received.data.yellow_goal_detected);
+    Serial.print(" ");
+    Serial.print(data_received.data.yellow_goal_x);
+    Serial.print(" ");
+    Serial.print(data_received.data.yellow_goal_y);
+    Serial.print(" ");
 
-    // Serial.print(" Blue goal: ");
-    // Serial.print(data_received.data.blue_goal_detected);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.blue_goal_x);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.blue_goal_y);
-    // Serial.print(" ");
+    Serial.print(" Blue goal: ");
+    Serial.print(data_received.data.blue_goal_detected);
+    Serial.print(" ");
+    Serial.print(data_received.data.blue_goal_x);
+    Serial.print(" ");
+    Serial.print(data_received.data.blue_goal_y);
+    Serial.print(" ");
     
-    // Serial.print(" Ball: ");
-    // Serial.print(data_received.data.ball_detected);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.ball_x);
-    // Serial.print(" ");
-    // Serial.println(data_received.data.ball_y);
+    Serial.print(" Ball: ");
+    Serial.print(data_received.data.ball_detected);
+    Serial.print(" ");
+    Serial.print(data_received.data.ball_x);
+    Serial.print(" ");
+    Serial.print(data_received.data.ball_y);
     
-    // Serial.print("fps: ");
-    // Serial.println(data_received.data.fps);
+    Serial.print(" FPS: ");
+    Serial.println(data_received.data.fps);
 
     if (data_received.data.yellow_goal_detected && data_received.data.blue_goal_detected)
     {
