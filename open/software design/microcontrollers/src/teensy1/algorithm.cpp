@@ -59,7 +59,7 @@ void Robot::orbitToBall(double bearing)
             offset = fmax((bearing_from_robot - 360) * 1.05, -90);
         }
 
-#ifdef BOT_1
+#ifdef BOT_A
         // double a = 0.085; // affects orbit radius (shift in and out)
         // double b = 1.7; // pivots the curve
         // double c = 150; // typically represents maximum distance from the ball

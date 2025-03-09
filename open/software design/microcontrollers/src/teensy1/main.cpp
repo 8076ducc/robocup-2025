@@ -168,7 +168,7 @@ void loop()
   //   robot.task = 2;
   //
 
-#ifndef BOT_1
+#ifndef BOT_A
   // pure goalie code
   if (!robot.alliance_robot_detected)
   {
