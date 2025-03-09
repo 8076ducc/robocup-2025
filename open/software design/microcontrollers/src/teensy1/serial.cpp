@@ -2,7 +2,7 @@
 
 void onLayer1Received(const byte *buf, size_t size)
 {
-    Serial.println("Received data from L1");
+    // Serial.println("Received data from L1");
     Layer1TxDataUnion data_received;
 
     // // Don't continue if the payload is invalid
@@ -62,7 +62,7 @@ void onImuReceived(const byte *buf, size_t size)
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
     teensy_1_tx_data.data.bearing = data_received.data.bearing;
-    Serial.println("Bearing (IMU data): " + String(teensy_1_tx_data.data.bearing));
+    // Serial.println("Bearing (IMU data): " + String(teensy_1_tx_data.data.bearing));
     robot.current_pose.bearing = data_received.data.bearing;
 
     robot.sendSerial();
@@ -133,6 +133,7 @@ void onTeensyReceived(const byte *buf, size_t size)
         ball.current_pose.y = data_received.data.ball_y;
         ball.detected = true;
 
+        ball.distance_from_robot = sqrt(pow(data_received.data.ball_x, 2) + pow(data_received.data.ball_y, 2));
     }
     else
     {
@@ -217,7 +218,7 @@ void Robot::setUpSerial()
     Layer1Serial.setStream(&Serial1);
     Layer1Serial.setPacketHandler(&onLayer1Received);
 #ifdef SERIAL_DEBUG
-    Serial.println("Layer 1 serial connection established.");
+    // Serial.println("Layer 1 serial connection established.");
 #endif
 
     Serial3.begin(imu_serial_baud);
@@ -227,7 +228,7 @@ void Robot::setUpSerial()
     ImuSerial.setStream(&Serial3);
     ImuSerial.setPacketHandler(&onImuReceived);
 #ifdef SERIAL_DEBUG
-    Serial.println("IMU serial connection established.");
+    // Serial.println("IMU serial connection established.");
 #endif
 
     Serial5.begin(teensy1_serial_baud);
@@ -237,7 +238,7 @@ void Robot::setUpSerial()
     TeensySerial.setStream(&Serial5);
     TeensySerial.setPacketHandler(&onTeensyReceived);
 #ifdef SERIAL_DEBUG
-    Serial.println("Teensy serial connection established.");
+    // Serial.println("Teensy serial connection established.");
 #endif
 }
 

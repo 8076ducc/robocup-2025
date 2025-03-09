@@ -60,17 +60,15 @@ void Robot::orbitToBall(double bearing)
         }
 
 #ifdef BOT_1
-        double factor = 1.1 - (ball.distance_from_robot) / 2190;
+        // double a = 0.085; // affects orbit radius (shift in and out)
+        // double b = 1.7; // pivots the curve
+        // double c = 150; // typically represents maximum distance from the ball
+        // double d = 1; // maximum multiplier
 
-        multiplier = fmin(1.1, 0.01 * exp(factor * 3.5));
-        Serial.print("multiplier: ");
-        Serial.println(multiplier);
-
-#else
-        double a = 0.085; // shift in and out
-        double b = 1.7; // pivots the curve
-        double c = 150; // typically represent maximum distance from the ball
-        double d = 1; // maximum multiplier
+        double a = 0.15;
+        double b = 2;
+        double c = 150;
+        double d = 1;
 
         double factor = d - (ball.distance_from_robot) / c;
 
@@ -82,10 +80,26 @@ void Robot::orbitToBall(double bearing)
         // Serial.print("multiplier: ");
         // Serial.println(multiplier);
 
+#else
+        double factor = 1.1 - (ball.distance_from_robot) / 2190;
+
+        multiplier = fmin(1.1, 0.01 * exp(factor * 3.5));
+        Serial.print("multiplier: ");
+        Serial.println(multiplier);
+
 #endif
 
         // double speed = min(max(0.25, 0.00001 * pow(ball.distance_from_robot, 2)), 0.3);
-        double speed = min(max(0.01 * ball.distance_from_robot, 0.15),  0.5);
+        double min_speed = 0.1;
+        double max_speed = 0.35;
+        double scale_f = 70; // typically represents the maximum distance from the ball in pixels
+        double decel_k = 0.07; // increase for faster deceleration
+
+        // deceleration curve
+        // double speed = min_speed;
+        // double speed = min(max(0.01 * ball.distance_from_robot, 0.15),  0.5);
+        double speed = min(max(decel_k * exp(ball.distance_from_robot / scale_f), min_speed), max_speed);
+
         // double speed;
         // if (ball.distance_from_robot > 500)
         // {

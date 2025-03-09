@@ -125,7 +125,7 @@ void loop()
   // counter for dribbler flick
   // if (ball.in_catchment)
   // {
-  //   // Serial.println("Ball in catchment");
+  // Serial.println("Ball in catchment");
   //   ++ball_catchment;
   // }
   // else
@@ -168,7 +168,7 @@ void loop()
   //   robot.task = 2;
   //
 
-#ifndef BOT1
+#ifndef BOT_1
   // pure goalie code
   if (!robot.alliance_robot_detected)
   {
@@ -278,5 +278,4 @@ void loop()
   // robot.base.motorOut(3, 500);
   // delay(2000);
   // robot.base.motorOut(4, 500);
-  Serial.println(robot.current_pose.bearing);
 }
