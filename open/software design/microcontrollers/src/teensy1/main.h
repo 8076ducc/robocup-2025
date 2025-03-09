@@ -5,14 +5,14 @@
 
 // #define DEBUG
 // #define SERIAL_DEBUG
-#define BOT1
+#define BOT_1
 
 #include <common.h>
 
 #define DRIBBLER_LOWER_LIMIT 32
 #define DRIBBLER_UPPER_LIMIT 48
 
-#ifdef BOT1
+#ifdef BOT_1
 #define FL_PWM 3
 #define FR_PWM 2
 #define BL_PWM 4
