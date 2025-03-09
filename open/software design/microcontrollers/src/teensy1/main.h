@@ -644,7 +644,7 @@ public:
     void rejectLine(double bearing);
 
     void storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y);
-    void getSingleCameraPose(int x, int y);
+    void storeSingleCameraPose(int x, int y);
 
     void getRobotPose();
 

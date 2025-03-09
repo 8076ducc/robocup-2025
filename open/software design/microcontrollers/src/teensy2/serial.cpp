@@ -49,12 +49,12 @@ void onCam2Received(const byte *buf, size_t size)
     else if (data_received.data.yellow_goal_detected)
     {
         // Serial.println("Yellow goal detected");
-        robot.getSingleCameraPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y);
+        robot.storeSingleCameraPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y);
     }
     else if (data_received.data.blue_goal_detected)
     {
         // Serial.println("Blue goal detected");
-        robot.getSingleCameraPose(data_received.data.blue_goal_x, data_received.data.blue_goal_y);
+        robot.storeSingleCameraPose(data_received.data.blue_goal_x, data_received.data.blue_goal_y);
     }
 
     if (data_received.data.ball_detected)

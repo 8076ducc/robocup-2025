@@ -141,7 +141,7 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
 
 #endif
 
-void Robot::getSingleCameraPose(int x, int y)
+void Robot::storeSingleCameraPose(int x, int y)
 {
   double angle_from_robot = degrees(atan2(x, y));
 
