@@ -61,9 +61,9 @@ unsigned long last_time = 0;
 void loop()
 {
   #ifdef DEBUG
-  //Serial.println("running Debug function::Calibrate");
+  Serial.println("running Debug function::Calibrate");
   delay(150);
-  //light_ring.calibrate();
+  light_ring.calibrate();
 
   Serial.println(analogRead(LIGHTGATE));
   #else

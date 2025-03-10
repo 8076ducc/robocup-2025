@@ -41,7 +41,7 @@ void onLayer1Received(const byte *buf, size_t size)
     // Serial.println("ball in catchment: " + String(ball.in_catchment));
     // Serial.println("Line data:");
     // Serial.print("On line: ");
-    // Serial.println(robot.line_data.on_line);
+    Serial.println(robot.line_data.on_line);
 }
 
 void onImuReceived(const byte *buf, size_t size)
@@ -218,7 +218,7 @@ void Robot::setUpSerial()
     Layer1Serial.setStream(&Serial1);
     Layer1Serial.setPacketHandler(&onLayer1Received);
 #ifdef SERIAL_DEBUG
-    // Serial.println("Layer 1 serial connection established.");
+    Serial.println("Layer 1 serial connection established.");
 #endif
 
     Serial3.begin(imu_serial_baud);

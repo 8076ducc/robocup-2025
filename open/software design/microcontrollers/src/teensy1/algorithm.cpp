@@ -43,9 +43,9 @@ void Robot::rotateToBall()
 
 void Robot::orbitToBall(double bearing)
 {
-    // Serial.println("running orbitToBall");
     if (ball.detected)
     {
+        // Serial.println("running orbitToBall");
         // Serial.println("ball: " + String(ball.current_pose.bearing) + " robot(imu): " + String(robot.current_pose.bearing ));
         double bearing_from_robot = correctBearing(ball.current_pose.bearing - robot.current_pose.bearing);
         double offset, multiplier;
@@ -118,8 +118,10 @@ void Robot::orbitToBall(double bearing)
             correction = 0;
         }
 
+        // Serial.print("line rejection attempting to run: ");
         if (line_data.on_line)
         {
+            Serial.println("im on line nigga");
             if (abs(correction - line_data.initial_line_angle) < 90 && (line_data.initial_line_angle > 20 && line_data.initial_line_angle < 330))
             {
                 // trackLine(speed, correction, 7);
