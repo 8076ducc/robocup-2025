@@ -65,7 +65,7 @@ void loop()
   delay(150);
   light_ring.calibrate();
 
-  Serial.println(analogRead(LIGHTGATE));
+  // Serial.println(analogRead(LIGHTGATE));
   #else
 
   // Serial.println("im sending stuff to teensy1!");
