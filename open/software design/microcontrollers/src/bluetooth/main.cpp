@@ -18,7 +18,7 @@ BtRxDataUnion rx_data;
 
 PacketSerial TeensySerial;
 
-#define BOT1
+#define BOT_A
 
 void onTeensyReceived(const byte *buf, size_t size)
 {
@@ -41,7 +41,7 @@ void onTeensyReceived(const byte *buf, size_t size)
     // Serial.println(rx_data.data.robot_pose.bearing);
 }
 
-#ifdef BOT1
+#ifdef BOT_A
 #include "BLEDevice.h"
 // #include "BLEScan.h"
 

@@ -5,7 +5,7 @@
 
 // #define DEBUG
 #define SERIAL_DEBUG
-// #define BOT1
+// #define BOT_A
 
 #include <common.h>
 
@@ -22,7 +22,7 @@
 
 // global variables
 
-#ifdef BOT1
+#ifdef BOT_A
 const int ball_threshold = 1500;
 #else
 const int ball_threshold = 2350;

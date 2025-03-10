@@ -175,7 +175,7 @@ void Robot::sendSerial()
         teensy_1_rx_data.data.current_pose = current_pose;
         teensy_1_rx_data.data.target_pose = ball.current_pose;
 
-#ifdef BOT1
+#ifdef BOT_A
         if (millis() - last_bt_received_time > 1000)
         {
             teensy_1_rx_data.data.robot_detected = false;
