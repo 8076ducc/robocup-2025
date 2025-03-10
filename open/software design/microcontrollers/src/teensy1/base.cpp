@@ -82,8 +82,6 @@ double turn_angle = 0;
 
 void Base::move(double vel, double angle, double bearing, double kp = 0.0013, double ki = 0.0, double kd = 0.005, double ema_constant)
 {
-    vel = min(vel, 0.5);
-
     ema_constant = 0.005;
     double x_vel = sin(radians(angle)) * sin(wheel_angle);
     double y_vel = cos(radians(angle)) * cos(wheel_angle);

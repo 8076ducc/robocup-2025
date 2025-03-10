@@ -123,7 +123,6 @@ void LightRing::read()
         }
     }
 
-    Serial.println("line_track_tx_data is defined");
     tx_data.data.line_track_error = ldr_readings[rx_data.line_track_ldr] - ldr_thresholds[rx_data.line_track_ldr];
 
     if (line_start == 31 && line_end == 0)

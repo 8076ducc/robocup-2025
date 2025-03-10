@@ -36,9 +36,9 @@ public:
 void trackColour(int icase)
 {
     Colour colour({0}, 0);
-    Colour orange({0, 17, 192, 255, 104, 255}, 10);
-    Colour yellow({18, 40, 199, 255, 79, 242}, 40);
-    Colour blue({86, 107, 160, 214, 103, 204}, 30);
+    Colour orange({3, 18, 94, 255, 191, 255}, 10);
+    Colour yellow({18, 40, 121, 255, 79, 242}, 40);
+    Colour blue({72, 104, 181, 214, 90, 204}, 30);
     // set up kalman stuff
     int state_size = 6;
     int meas_size = 4;
@@ -223,14 +223,14 @@ void trackColour(int icase)
                         tx_data.data.ball_x = center.x;
                         tx_data.data.ball_y = center.y;
                         // std::cout << "ball " << sqrt(pow(tx_data.data.ball_x, 2) + pow(tx_data.data.ball_y, 2)) << " " << regress(sqrt(pow(tx_data.data.ball_x, 2) + pow(tx_data.data.ball_y, 2))) << std::endl;
-                        std::cout << "ball " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
+                        // std::cout << "ball " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
                         // std::cout << center.x << " " << center.y << std::endl; 
                         break;
                     case 1:
                         tx_data.data.yellow_goal_detected = true;
                         tx_data.data.yellow_goal_x = center.x;
                         tx_data.data.yellow_goal_y = center.y;
-                        // std::cout << "yellow " << distance << " " << tx_data.data.yellow_goal_x  << " " << tx_data.data.yellow_goal_y << std::endl;
+                        std::cout << "yellow " << distance << " " << tx_data.data.yellow_goal_x  << " " << tx_data.data.yellow_goal_y << std::endl;
                         // std::cout << "yellow " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
                         
                         break;

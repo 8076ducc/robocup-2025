@@ -4,7 +4,7 @@
 #define MAIN_H
 
 // #define DEBUG
-// #define SERIAL_DEBUG
+#define SERIAL_DEBUG
 // #define BOT1
 
 #include <common.h>

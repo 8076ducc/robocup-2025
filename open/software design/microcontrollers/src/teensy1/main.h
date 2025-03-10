@@ -13,7 +13,6 @@
 #define DRIBBLER_UPPER_LIMIT 48
 
 #ifdef BOT_A
-
 #define FL_PWM 3
 #define FR_PWM 2
 #define BL_PWM 4
