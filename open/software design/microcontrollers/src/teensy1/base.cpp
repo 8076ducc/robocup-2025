@@ -82,7 +82,7 @@ double turn_angle = 0;
 
 void Base::move(double vel, double angle, double bearing, double kp = 0.0013, double ki = 0.0, double kd = 0.005, double ema_constant)
 {
-    vel = min(vel, 0.5);
+    vel = fmin(vel, 0.5);
     
     ema_constant = 0.005;
     double x_vel = sin(radians(angle)) * sin(wheel_angle);
@@ -109,7 +109,7 @@ void Base::move(double vel, double angle, double bearing, double kp = 0.0013, do
     integral += ki * turn_angle;
     derivative = kd * (abs(turn_angle) - abs(prev_error));
 
-    ang_vel = min(proportional + integral + derivative, 0.2);
+    ang_vel = fmin(proportional + integral + derivative, 0.2);
     prev_error = turn_angle;
 
     double a = x_vel + y_vel;
