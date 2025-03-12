@@ -93,6 +93,10 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
 // pixel localisation
 void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
 {
+    double yellow_pixel_distance = sqrt(pow(yellow_goal_x, 2) + pow(yellow_goal_y, 2));
+    double blue_pixel_distance = sqrt(pow(blue_goal_x, 2) + pow(blue_goal_y, 2));
+    // Serial.println("yellow px: " + String(yellow_pixel_distance) + " blue px: " + String(blue_pixel_distance));
+
     // Compute the center of the field in pixel coordinates
     double center_x = (yellow_goal_x + blue_goal_x) / 2.0;
     double center_y = (yellow_goal_y + blue_goal_y) / 2.0;

@@ -38,7 +38,7 @@ void onLayer1Received(const byte *buf, size_t size)
     robot.line_data.line_start_ldr = data_received.data.line_start_ldr;
     robot.line_data.line_end_ldr = data_received.data.line_end_ldr;
 
-    // Serial.println("ball in catchment: " + String(ball.in_catchment));
+    Serial.println("ball in catchment: " + String(ball.in_catchment));
     // Serial.println("Line data:");
     // Serial.print("On line: ");
     // Serial.println(robot.line_data.on_line);
@@ -68,7 +68,7 @@ void onImuReceived(const byte *buf, size_t size)
     robot.sendSerial();
 }
 
-void onTeensyReceived(const byte *buf, size_t size)
+void onTeensyReceived(const byte *buf, size_t size) // receives shit from the camera 
 {
     CamTxDataUnion data_received;
 
