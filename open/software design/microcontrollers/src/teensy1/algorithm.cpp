@@ -88,17 +88,28 @@ void Robot::orbitToBall(double bearing)
         Serial.println(multiplier);
 
 #endif
-
+        // speed calculation
         // double speed = min(max(0.25, 0.00001 * pow(ball.distance_from_robot, 2)), 0.3);
+
+
         double min_speed = 0.1;
         double max_speed = 0.35;
-        double scale_f = 70; // typically represents the maximum distance from the ball in pixels
+        double decel_scale_f = 70; // typically represents the maximum distance from the ball in pixels
         double decel_k = 0.07; // increase for faster deceleration
+
+        // move slower when close to the ball
+        double kA = 9;
+        double kB = 0.03;
+        double kC = -1.69;
+
+        double average_goal_x = (yellow_goal.current_pose.x + blue_goal.current_pose.x) / 2;
+
+        double max_speed_scaled = min(kA * exp((-kB * average_goal_x) + kC), max_speed);
 
         // deceleration curve
         // double speed = min_speed;
         // double speed = min(max(0.01 * ball.distance_from_robot, 0.15),  0.5);
-        double speed = min(max(decel_k * exp(ball.distance_from_robot / scale_f), min_speed), max_speed);
+        double speed = min(max(decel_k * exp(ball.distance_from_robot / decel_scale_f), min_speed), max_speed_scaled);
 
         // double speed;
         // if (ball.distance_from_robot > 500)
@@ -166,7 +177,7 @@ void Robot::orbitScore()
     }
     else
     {
-        move_data.speed = 0.5;
+        move_data.speed = 0.4;
         move_data.target_angle = 0;
         move_data.target_bearing = target_bearing;
         move_data.ema_constant = 0.00017;
