@@ -83,6 +83,9 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
+    yellow_goal.detected = data_received.data.yellow_goal_detected;
+    blue_goal.detected = data_received.data.blue_goal_detected;
+
     // Serial.print("Yellow goal: ");
     // Serial.print(data_received.data.yellow_goal_detected);
     // Serial.print(" ");
@@ -106,17 +109,17 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     // Serial.print(" ");
     // Serial.print(data_received.data.ball_y);
     
-    if (data_received.data.yellow_goal_detected && data_received.data.blue_goal_detected)
+    if (yellow_goal.detected && blue_goal.detected)
     {
         // Serial.println("Both goals detected");
         robot.storeCameraPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y, data_received.data.blue_goal_x, data_received.data.blue_goal_y);
     }
-    else if (data_received.data.yellow_goal_detected)
+    else if (yellow_goal.detected)
     {
         // Serial.println("Yellow goal detected");
         robot.storeSingleCameraPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y);
     }
-    else if (data_received.data.blue_goal_detected)
+    else if (blue_goal.detected)
     {
         // Serial.println("Blue goal detected");
         robot.storeSingleCameraPose(data_received.data.blue_goal_x, data_received.data.blue_goal_y);
