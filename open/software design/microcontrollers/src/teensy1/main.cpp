@@ -29,33 +29,37 @@ bool is_goalie;
 
 void striker()
 {
-  if (!ball.detected)
-  {
-    robot.task = 0; // run orbittoBall
-  }
-  else
-  {
-    if (ball.distance_from_robot > 100)
-    {
-      robot.task = 0; // run orbittoBall
-    }
-    else if (abs(ball.current_pose.bearing - blue_goal.current_pose.bearing) < 30)
-    {
-      robot.task = 1; // run orbitScore
-    }
-    else
-    {
-      robot.task = 0; // run orbittoBall
-    }
+  // if (!ball.detected)
+  // {
+  //   robot.task = 0; // run orbittoBall
+  // }
+  // else
+  // {
+  //   if (ball.distance_from_robot > 100)
+  //   {
+  //     robot.task = 0; // run orbittoBall
+  //   }
+  //   else if (abs(ball.current_pose.bearing - blue_goal.current_pose.bearing) < 30)
+  //   {
+  //     robot.task = 1; // run orbitScore
+  //   }
+  //   else
+  //   {
+  //     robot.task = 0; // run orbittoBall
+  //   }
 
-    if (ball.distance_from_robot > 500)
-    {
-      robot.dribbler.dribbling = false;
-    }
-    else
-    {
-      robot.dribbler.dribbling = true;
-    }
+  //   if (ball.distance_from_robot > 500)
+
+  if (ball.in_catchment == 0)
+  {
+    robot.task = 0; //running orbitToBall
+  }
+  else if (ball.in_catchment == 1)
+  {
+    robot.task = 1; //running orbitScore
+  } else
+  {
+    robot.task = 0; //running orbitToBall
   }
 }
 
