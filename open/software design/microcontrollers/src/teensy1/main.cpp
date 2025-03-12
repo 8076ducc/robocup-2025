@@ -50,17 +50,45 @@ void striker()
 
   //   if (ball.distance_from_robot > 500)
 
-  if (ball.in_catchment == 0)
+  // if (ball.in_catchment == 0)
+  // {
+  //   robot.task = 0; //running orbitToBall
+  // }
+  // else if (ball.in_catchment == 1)
+  // {
+    
+  //   robot.task = 1; //running orbitScore
+  // }
+  // else
+  // {
+  //   robot.task = 0; //running orbitToBall
+  // }
+
+  int no_catchment_counter = 0; // Counter for time ball is not in catchment
+  bool was_in_catchment = false;
+
+  if (ball.in_catchment == 1)
   {
-    robot.task = 0; //running orbitToBall
+    no_catchment_counter = 0;
+    was_in_catchment = true;
+    robot.task = 1; // Running orbitScore
   }
-  else if (ball.in_catchment == 1)
+  else if (was_in_catchment) // If ball was previously in catchment, start counting
   {
-    robot.task = 1; //running orbitScore
+    no_catchment_counter++;
+    if (no_catchment_counter > 1000)
+    {
+      robot.task = 0; // Running orbitToBall
+      was_in_catchment = false;
+    }
+    else
+    {
+      robot.task = 1; // Continue running orbitScore
+    }
   }
   else
   {
-    robot.task = 0; //running orbitToBall
+    robot.task = 0; // Running orbitToBall
   }
 }
 
@@ -260,8 +288,8 @@ void loop()
   robot.dribbler.dribbling = true;
   robot.dribbler.update();
 
-  // striker();
-  robot.orbitToBall(0);
+  striker();
+  // robot.orbitToBall(0);
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
   // Serial.print("speed: ");
