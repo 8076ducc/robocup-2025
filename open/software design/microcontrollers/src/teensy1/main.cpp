@@ -57,7 +57,8 @@ void striker()
   else if (ball.in_catchment == 1)
   {
     robot.task = 1; //running orbitScore
-  } else
+  }
+  else
   {
     robot.task = 0; //running orbitToBall
   }
@@ -259,8 +260,8 @@ void loop()
   robot.dribbler.dribbling = true;
   robot.dribbler.update();
 
-  striker();
-  //robot.orbitToBall(0);
+  // striker();
+  robot.orbitToBall(0);
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
   // Serial.print("speed: ");
