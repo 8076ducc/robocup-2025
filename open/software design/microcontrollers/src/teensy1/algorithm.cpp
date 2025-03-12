@@ -49,6 +49,7 @@ void Robot::orbitToBall(double bearing)
         // Serial.println("ball: " + String(ball.current_pose.bearing) + " robot(imu): " + String(robot.current_pose.bearing ));
         double bearing_from_robot = correctBearing(ball.current_pose.bearing - robot.current_pose.bearing);
         double offset, multiplier;
+        double goal_y = blue_goal.current_pose.y;
 
         if (bearing_from_robot < 180)
         {
@@ -123,7 +124,7 @@ void Robot::orbitToBall(double bearing)
 
         // scale the maximum speed based on the distance from the edge
         double orbit_max_speed_scaled = fmin(edge_a * exp((-edge_b * average_goal_x) + edge_c), orbit_max_speed);
-
+        
         // deceleration curve
         // double speed = min(max(0.01 * ball.distance_from_robot, 0.15),  0.5);
         double speed = fmin(fmax(orbit_decel_k * exp(ball.distance_from_robot / orbit_decel_f), orbit_min_speed), orbit_max_speed_scaled);
@@ -164,7 +165,14 @@ void Robot::orbitToBall(double bearing)
         }
         else
         {
-            move_data.speed = speed;
+            if (abs(goal_y - ball.current_pose.y) < 25)
+            {
+                move_data.speed = 0;
+            }
+            else
+            {
+                move_data.speed = speed;
+            }
             move_data.target_angle = correction;
             move_data.target_bearing = bearing;
             move_data.ema_constant = 0.0002;
@@ -191,9 +199,11 @@ void Robot::orbitScore()
     double goal_y = blue_goal.current_pose.y;
 
     double score_min_speed = 0.1;
-    double score_max_speed = 0.35;
-    double score_decel_f = 70;
-    double score_decel_k = 0.1;
+    double score_max_speed = 0.3;
+    double score_decel_f = 62;
+    double score_decel_k = 0.05;
+
+    double score_bearing_offset = 10;
 
     if (line_data.on_line)
     {
@@ -203,8 +213,16 @@ void Robot::orbitScore()
     else
     {
         move_data.speed = fmin(fmax(score_decel_k * exp(goal_y / score_decel_f), score_min_speed), score_max_speed);
-        move_data.target_angle = 0;
+        // if (target_bearing < 0)
+        // {
+        //     move_data.target_bearing = target_bearing - score_bearing_offset;
+        // }
+        // else
+        // {
+        //     move_data.target_bearing = target_bearing + score_bearing_offset;
+        // }
         move_data.target_bearing = target_bearing;
+        move_data.target_angle = 0;
         move_data.ema_constant = 0.00017;
     }
 }
