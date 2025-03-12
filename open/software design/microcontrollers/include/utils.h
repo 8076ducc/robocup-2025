@@ -26,6 +26,8 @@ struct Ball
 struct Goal
 {
     Pose current_pose;
+    
+    bool detected;
 };
 
 #endif
