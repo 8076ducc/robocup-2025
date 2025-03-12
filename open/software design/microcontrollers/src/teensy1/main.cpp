@@ -259,7 +259,8 @@ void loop()
   robot.dribbler.dribbling = true;
   robot.dribbler.update();
 
-  robot.orbitToBall(0);
+  striker();
+  //robot.orbitToBall(0);
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
   // Serial.print("speed: ");
