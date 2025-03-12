@@ -100,7 +100,7 @@ void Robot::orbitToBall(double bearing)
         // move slower when close to the ball
         double kA = 9;
         double kB = 0.03;
-        double kC = -1.69;
+        double kC = -2;
 
         double average_goal_x = (yellow_goal.current_pose.x + blue_goal.current_pose.x) / 2;
 
@@ -170,6 +170,8 @@ void Robot::orbitScore()
     // Serial.println("running orbitScore");
     double target_bearing = robot.dip_4_on ? yellow_goal.current_pose.bearing : blue_goal.current_pose.bearing;
     target_bearing = blue_goal.current_pose.bearing;
+
+    double goal_y = blue_goal.current_pose.y;
     if (line_data.on_line)
     {
         rejectLine(target_bearing);
@@ -177,7 +179,19 @@ void Robot::orbitScore()
     }
     else
     {
-        move_data.speed = 0.4;
+        if (goal_y > 120) // do not move so fast when too far from the goal
+        {
+            move_data.speed = 0.2;
+        }
+        else if (goal_y < 100) // do not move so fast when too close to the goal
+        {
+            move_data.speed = 0.15;
+        }
+        else // perfect range to full speed
+        {
+            move_data.speed = 0.35;
+        }
+
         move_data.target_angle = 0;
         move_data.target_bearing = target_bearing;
         move_data.ema_constant = 0.00017;
