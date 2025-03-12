@@ -4,7 +4,7 @@
 #define MAIN_H
 
 // #define DEBUG
-#define SERIAL_DEBUG
+// #define SERIAL_DEBUG
 // #define BOT_A
 
 #include <common.h>
@@ -25,7 +25,7 @@
 #ifdef BOT_A
 const int ball_threshold = 1500;
 #else
-const int ball_threshold = 2350;
+const int ball_threshold = 2000;
 #endif
 extern int line_track_ldr;
 extern Layer1TxDataUnion tx_data;

@@ -68,7 +68,7 @@ void onImuReceived(const byte *buf, size_t size)
     robot.sendSerial();
 }
 
-void onTeensyReceived(const byte *buf, size_t size)
+void onTeensyReceived(const byte *buf, size_t size) // receives shit from the camera 
 {
     CamTxDataUnion data_received;
 
