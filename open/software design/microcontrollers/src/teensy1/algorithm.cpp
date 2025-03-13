@@ -66,10 +66,12 @@ void Robot::orbitToBall(double bearing)
         // double c = 150; // typically represents maximum distance from the ball
         // double d = 1; // maximum multiplier
 
+        // TUNE THIS
         double orbit_a = 0.15;
         double orbit_b = 2.1;
         double orbit_c = 150;
         double orbit_d = 1;
+        // END TUNE
 
         double factor = orbit_d - (ball.distance_from_robot) / orbit_c;
 
@@ -92,11 +94,12 @@ void Robot::orbitToBall(double bearing)
         // speed calculation
         // double speed = fmin(max(0.25, 0.00001 * pow(ball.distance_from_robot, 2)), 0.3);
 
-
+        // TUNE THIS
         double orbit_min_speed = 0.1;
         double orbit_max_speed = 0.4;
         double orbit_decel_f = 65; // typically represents the maximum distance from the ball in pixels
         double orbit_decel_k = 0.065; // increase for faster deceleration
+        // END TUNE
 
         // move slower when close to the ball
         double average_goal_x;
@@ -118,9 +121,11 @@ void Robot::orbitToBall(double bearing)
             average_goal_x = 0;
         }
 
+        // TUNE THIS
         double edge_a = 9;
         double edge_b = 0.03;
         double edge_c = -1.81;
+        // END TUNE
 
         // scale the maximum speed based on the distance from the edge
         double orbit_max_speed_scaled = fmin(edge_a * exp((-edge_b * average_goal_x) + edge_c), orbit_max_speed);
@@ -165,7 +170,12 @@ void Robot::orbitToBall(double bearing)
         }
         else
         {
-            if (abs(goal_y - ball.current_pose.y) < 25)
+            // TUNE THIS
+            double goal_y_diff_thresh = 25;
+            double goal_x_diff_thresh = 40;
+            // END TUNE
+
+            if (abs(goal_y - ball.current_pose.y) < goal_y_diff_thresh && abs(ball.current_pose.x - average_goal_x) < goal_x_diff_thresh)
             {
                 move_data.speed = 0;
             }
@@ -198,12 +208,12 @@ void Robot::orbitScore()
 
     double goal_y = blue_goal.current_pose.y;
 
+    // TUNE THIS
     double score_min_speed = 0.1;
     double score_max_speed = 0.3;
     double score_decel_f = 62;
     double score_decel_k = 0.05;
-
-    double score_bearing_offset = 10;
+    // END TUNE
 
     if (line_data.on_line)
     {
