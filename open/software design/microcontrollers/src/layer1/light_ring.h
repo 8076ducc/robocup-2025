@@ -20,6 +20,7 @@ public:
     int ldr_max_readings[32];
 
 #ifdef BOT_A
+    // TUNE THIS
     const int ldr_thresholds[32] = {
         1628, // 0
         1412, // 1
@@ -56,7 +57,6 @@ public:
     };
 
 #else
-
     const int ldr_thresholds[32] = {
         2087, // 0
         2181, // 1
@@ -91,6 +91,7 @@ public:
         2075, // 30
         2090, // 31
     };
+    // END TUNE
 
 #endif
 

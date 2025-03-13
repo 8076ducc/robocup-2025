@@ -22,11 +22,10 @@
 
 // global variables
 
-#ifdef BOT_A
-const int ball_threshold = 1500;
-#else
+// TUNE THIS
 const int ball_threshold = 2000;
-#endif
+// END TUNE
+
 extern int line_track_ldr;
 extern Layer1TxDataUnion tx_data;
 extern Layer1RxData rx_data;
