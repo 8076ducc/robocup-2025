@@ -26,6 +26,7 @@ unsigned long time_ball_stopped;
 double ball_last_dist;
 bool was_goalie_now_striker;
 bool is_goalie;
+bool ball_approaching;
 
 void striker()
 {
@@ -94,18 +95,22 @@ void striker()
 
 void soloGoalie()
 {
-  if (ball_last_dist - ball.distance_from_robot > 200)
+  if (ball_last_dist - ball.distance_from_robot > 3)
   {
+    // Serial.println("the ball is coming at me nigga");
+    ball_approaching = true;
     time_ball_stopped = millis();
   }
 
   ball_last_dist = ball.distance_from_robot;
-
   // Serial.print("time ball stopped: ");
   // Serial.println(time_ball_stopped);
 
-  if (millis() - time_ball_stopped > 1000 && ball.distance_from_robot < 500 && !was_goalie_now_striker)
+  // simplify this to run without clock -> TEMPORARY
+  // if (millis() - time_ball_stopped > 500 && ball.distance_from_robot < 100 && !was_goalie_now_striker)
+  if (ball_approaching == true && ball.distance_from_robot < 100)
   {
+    Serial.println("intercept the ball/enemy striker");
     robot.task = 0;
     was_goalie_now_striker = true;
   }
@@ -114,10 +119,12 @@ void soloGoalie()
   //   robot.task = 0;
   //   was_goalie_now_striker = true;
   // }
-  else if (was_goalie_now_striker && robot.current_pose.y < 700)
-  {
-    robot.task = 0;
-  }
+
+  //uncommented because idk what it does and i havent asked isaac/haojun
+  // else if (was_goalie_now_striker && robot.current_pose.y < 700)
+  // {
+  //   robot.task = 0;
+  // }
   else
   {
     robot.task = 2;
@@ -288,7 +295,7 @@ void loop()
   robot.dribbler.dribbling = true;
   robot.dribbler.update();
 
-  striker();
+  soloGoalie();
   // robot.orbitToBall(0);
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
