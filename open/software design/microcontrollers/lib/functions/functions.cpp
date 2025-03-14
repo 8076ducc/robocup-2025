@@ -30,6 +30,12 @@ int sgn(double val)
     }
 }
 
-double bound(double value, double lower, double upper) {
-    return min(max(value, lower), upper);
+double bound(double value, double low, double high) {
+    return min(max(value, low), high);
+}
+
+double xyToBearing(int x, int y)
+{
+    double principal_angle = degrees(atan2(y, x));
+    return correctBearing(fmod(principal_angle + 450, 360));
 }
