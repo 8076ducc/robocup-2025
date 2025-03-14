@@ -269,6 +269,7 @@ void loop()
   switch (robot.task)
   {
   case 0:
+    Serial.println("running task 0");
     digitalWrite(13, LOW);
     robot.orbitToBall(0);
     // robot.rotateToBall();
