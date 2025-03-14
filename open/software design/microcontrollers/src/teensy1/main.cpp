@@ -93,7 +93,7 @@ void striker()
   }
 }
 
-void soloGoalie()
+void goalie()
 {
   if (ball_last_dist - ball.distance_from_robot > 1)
   {
@@ -112,7 +112,7 @@ void soloGoalie()
   if ((ball_approaching == true && ball.distance_from_robot < 100) || (millis() - 100 < time_ball_stopped))
   {
     // Serial.println("intercept the ball/enemy striker");
-    robot.task = 0;
+    // robot.task = 0;
     was_goalie_now_striker = true;
   }
   // else if (ball.detected && ball.current_pose.y < 0)
@@ -129,9 +129,9 @@ void soloGoalie()
   else
   {
     // Serial.println("defend goal");
-    robot.task = 2;
     was_goalie_now_striker = false;
   }
+  robot.task = 2;
 }
 
 void setup()
@@ -214,7 +214,7 @@ void loop()
     }
     else
     {
-      soloGoalie();
+      goalie();
     }
   }
   else
@@ -234,7 +234,7 @@ void loop()
   // striker();
   // if (!robot.alliance_robot_detected && ball.current_pose.y < 700)
   // {
-  //   soloGoalie();
+  //   goalie();
   // }
   // else
   // {
@@ -269,7 +269,7 @@ void loop()
   switch (robot.task)
   {
   case 0:
-    digitalWrite(13, HIGH);
+    digitalWrite(13, LOW);
     robot.orbitToBall(0);
     // robot.rotateToBall();
     break;
@@ -281,6 +281,7 @@ void loop()
     break;
   case 2:
     // Serial.println("running defendGoal");
+    digitalWrite(13, HIGH);
     robot.defendGoal();
     break;
   case 3:
@@ -289,28 +290,8 @@ void loop()
     break;
   }
 
-  soloGoalie();
+  goalie();
   // robot.orbitToBall(0);
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
-  // Serial.print("speed: ");
-  // Serial.println(robot.move_data.speed);
-  // Serial.print("angle: ");
-  // Serial.println(robot.move_data.target_angle);
-  // robot.base.move(151, 0, 0, kp, ki, kd);
-  // delay(1000);
-  // robot.base.move(50, 90, 0, kp, ki, kd);
-  // delay(1000);
-  // robot.base.move(50, 180, 0, kp, ki, kd);
-  // delay(1000);
-  // robot.base.move(50, 270, 0, kp, ki, kd);
-  // delay(1000);
-  // robot.base.move(0.6, 0, 0, kp, ki, kd);
-  // robot.base.motorOut(1, 500);
-  // delay(2000);
-  // robot.base.motorOut(2, 500);
-  // delay(2000);
-  // robot.base.motorOut(3, 500);
-  // delay(2000);
-  // robot.base.motorOut(4, 500);
 }

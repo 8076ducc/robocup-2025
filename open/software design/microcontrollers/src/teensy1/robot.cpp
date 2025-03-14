@@ -3,26 +3,34 @@
 double prev_distance = 0;
 
 void Robot::moveToTargetPose()
-{
-    double x_diff = target_pose.x - current_pose.x;
-    double y_diff = target_pose.y - current_pose.y;
-    double angle_diff = atan2(x_diff, y_diff);
-    double actual_angle_diff = correctBearing(degrees(angle_diff) - current_pose.bearing);
+{   
+    double target_angle;
+    double principal_angle = degrees(atan2(abs(target_pose.y), abs(target_pose.x)));
 
-    double distance = sqrt(pow(x_diff, 2) + pow(y_diff, 2));
+    if (target_pose.x >= 0 && target_pose.y >= 0) // quadrant 1
+    {
+        target_angle = principal_angle;
+    } 
+    else if (target_pose.x < 0 && target_pose.y >= 0) // quadrant 2
+    {
+        target_angle = 180 - principal_angle + 180;
+    }
+    else if (target_pose.x < 0 && target_pose.y < 0) // quadrant 3
+    {
+        target_angle = 180 + principal_angle;
+    }
+    else // quadrant 4
+    {
+        target_angle = 360 - principal_angle + 180;
+    }
 
-    // Serial.print(x_diff);
-    // Serial.print(" ");
-    // Serial.print(y_diff);
-    // Serial.print(" ");
-    // Serial.println(actual_angle_diff);
+    double distance = sqrt(pow(target_pose.x, 2) + pow(target_pose.y, 2));
 
-    double speed = fmin(0.0005 * distance + 0.0008 * (distance - prev_distance), 0.4);
-
-    // Serial.println(target_pose.bearing);
+    // double speed = fmin(0.0005 * distance + 0.0008 * (distance - prev_distance), 0.4);
+    double speed = 0.15;
 
     move_data.speed = speed;
-    move_data.target_angle = correctBearing(actual_angle_diff);
+    move_data.target_angle = correctBearing(target_angle);
     move_data.target_bearing = correctBearing(target_pose.bearing);
     move_data.ema_constant = 0.0002;
     prev_distance = distance;
