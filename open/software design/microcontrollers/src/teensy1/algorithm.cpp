@@ -69,7 +69,7 @@ void Robot::orbitToBall(double bearing)
 
 #endif
         // speed calculation
-        // double speed = fmin(max(0.25, 0.00001 * pow(ball.distance_from_robot, 2)), 0.3);
+        // double speed = fmin(fmax(0.25, 0.00001 * pow(ball.distance_from_robot, 2)), 0.3);
 
         // TUNE THIS
         double orbit_min_speed = 0.1;
@@ -109,7 +109,8 @@ void Robot::orbitToBall(double bearing)
         
         // deceleration curve
         // double speed = min(max(0.01 * ball.distance_from_robot, 0.15),  0.5);
-        double speed = fmin(fmax(orbit_decel_k * exp(ball.distance_from_robot / orbit_decel_f), orbit_min_speed), orbit_max_speed_scaled);
+        // double speed = fmin(fmax(orbit_decel_k * exp(ball.distance_from_robot / orbit_decel_f), orbit_min_speed), orbit_max_speed_scaled);
+        double speed = bound(speed, orbit_min_speed, orbit_max_speed_scaled);
 
         // double speed;
         // if (ball.distance_from_robot > 500)
@@ -199,7 +200,8 @@ void Robot::orbitScore()
     }
     else
     {
-        move_data.speed = fmin(fmax(score_decel_k * exp(goal_y / score_decel_f), score_min_speed), score_max_speed);
+        // move_data.speed = fmin(fmax(score_decel_k * exp(goal_y / score_decel_f), score_min_speed), score_max_speed);
+        move_data.speed = bound(score_decel_k * exp(goal_y / score_decel_f), score_min_speed, score_max_speed);
         // if (target_bearing < 0)
         // {
         //     move_data.target_bearing = target_bearing - score_bearing_offset;
