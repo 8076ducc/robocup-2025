@@ -1,37 +1,44 @@
 #include "main.h"
+Pose target_pose_wrt_goal;
+Pose target_pose_wrt_ball;
 
 void Robot::defendGoal()
-{
+{   
     // if (line_data.on_line && (line_data.initial_line_angle > 90 && line_data.initial_line_angle < 270))
-    if (line_data.on_line)
-    {
-        if (ball.detected)
-        {
-            target_pose = ball.current_pose;
-            target_pose.x = bound(target_pose.x, 795, 1025);
-        }
-        else
-        {
-            target_pose.x = current_pose.x;
-            target_pose.bearing = 0;
-        }
+    // // if (line_data.on_line)
+    // {
+    //     if (ball.detected)
+    //     {
+    //         target_pose = ball.current_pose;
+    //         target_pose.x = bound(target_pose.x, -40, 40);
+    //     }
+    //     else
+    //     {
+    //         target_pose.x = current_pose.x;
+    //         target_pose.bearing = 0;
+    //     }
 
-        trackLineGoalie(fmin(0.002 * abs(current_pose.x - target_pose.x), 0.3), target_pose.bearing, 0);
-    }
-    else
+    //     // tracklineGoalie(speed, angle, offset)
+    //     trackLineGoalie(fmin(0.002 * abs(current_pose.x - target_pose.x), 0.3), target_pose.bearing, 0);
+    // }
+    // else
+    // {
+    if (ball.detected)
     {
-        if (ball.detected)
-        {
-            target_pose.x = bound(ball.current_pose.x, 795, 1025);
-        }
-        else
-        {
-            target_pose.x = 910;
-        }
-        target_pose.y = 250;
-        target_pose.bearing = 0;
-        moveToTargetPose();
+        target_pose_wrt_ball.x = ball.current_pose.x;
+        // move 90 degrees 
+        // move until target_pose_wrt_ball.x = 0
+        // use target_pose_wrt_goal to keep it constant y 
     }
+    
+    target_pose.y = 250;
+    target_pose.bearing = 0;
+
+
+        // getRobotPose();
+        // Serial.println(robot.current_pose.y);
+        // moveToTargetPose();
+    
 }
 
 void Robot::rotateToBall()

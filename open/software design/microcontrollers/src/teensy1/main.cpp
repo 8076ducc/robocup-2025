@@ -95,11 +95,12 @@ void striker()
 
 void soloGoalie()
 {
-  if (ball_last_dist - ball.distance_from_robot > 3)
+  if (ball_last_dist - ball.distance_from_robot > 1)
   {
-    // Serial.println("the ball is coming at me nigga");
     ball_approaching = true;
     time_ball_stopped = millis();
+  } else {
+    ball_approaching = false;
   }
 
   ball_last_dist = ball.distance_from_robot;
@@ -108,9 +109,9 @@ void soloGoalie()
 
   // simplify this to run without clock -> TEMPORARY
   // if (millis() - time_ball_stopped > 500 && ball.distance_from_robot < 100 && !was_goalie_now_striker)
-  if (ball_approaching == true && ball.distance_from_robot < 100)
+  if ((ball_approaching == true && ball.distance_from_robot < 100) || (millis() - 100 < time_ball_stopped))
   {
-    Serial.println("intercept the ball/enemy striker");
+    // Serial.println("intercept the ball/enemy striker");
     robot.task = 0;
     was_goalie_now_striker = true;
   }
@@ -127,6 +128,7 @@ void soloGoalie()
   // }
   else
   {
+    // Serial.println("defend goal");
     robot.task = 2;
     was_goalie_now_striker = false;
   }
@@ -146,21 +148,15 @@ void setup()
   last_time = millis();
   robot.dribbler.update();
   robot.dribbler.dribbling = true;
+
+  
+  pinMode(13, OUTPUT);
 }
 
 void loop()
 {
   robot.updateSerial();
   robot.sendSerial();
-
-  if (ball.in_catchment || (ball.detected && ball.distance_from_robot < 1000))
-  {
-    robot.dribbler.dribbling = true;
-  }
-  else
-  {
-    robot.dribbler.dribbling = false;
-  }
 
   // counter for dribbler flick
   // if (ball.in_catchment)
@@ -235,7 +231,7 @@ void loop()
 
 #else
   // pure striker code
-  striker();
+  // striker();
   // if (!robot.alliance_robot_detected && ball.current_pose.y < 700)
   // {
   //   soloGoalie();
@@ -265,12 +261,15 @@ void loop()
   //   is_goalie = true;
   // }
 
+  
+
   // Serial.print("task: ");
   // Serial.println(robot.task);
 
   switch (robot.task)
   {
   case 0:
+    digitalWrite(13, HIGH);
     robot.orbitToBall(0);
     // robot.rotateToBall();
     break;
@@ -281,6 +280,7 @@ void loop()
     robot.orbitScore();
     break;
   case 2:
+    // Serial.println("running defendGoal");
     robot.defendGoal();
     break;
   case 3:
@@ -288,12 +288,6 @@ void loop()
     robot.moveToTargetPose();
     break;
   }
-
-  // Serial.print("task");
-  // Serial.println(robot.task);
-
-  robot.dribbler.dribbling = true;
-  robot.dribbler.update();
 
   soloGoalie();
   // robot.orbitToBall(0);
