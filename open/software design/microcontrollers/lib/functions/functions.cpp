@@ -30,6 +30,6 @@ int sgn(double val)
     }
 }
 
-double bound(double a, double b, double c) {
-    return min(max(a, b), c);
+double bound(double value, double lower, double upper) {
+    return min(max(value, lower), upper);
 }

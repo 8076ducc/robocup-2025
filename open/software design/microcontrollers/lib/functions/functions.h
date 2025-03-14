@@ -7,6 +7,6 @@
 
 double correctBearing(double bearing);
 int sgn(double val);
-double bound(double a, double b, double c);
+double bound(double value, double lower, double upper);
 
 #endif
