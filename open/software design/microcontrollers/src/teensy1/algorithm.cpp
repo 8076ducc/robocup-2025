@@ -4,9 +4,9 @@ Pose target_pose_wrt_ball;
 
 void Robot::defendGoal()
 {
-    double target_distance_from_goal = 0;
+    // double target_distance_from_goal = 75;
     target_pose.x = ball.current_pose.x;
-    target_pose.y = 0; // target_distance_from_goal;
+    target_pose.y = 0;
     target_pose.bearing = 0;
     moveToTargetPose();
 }
