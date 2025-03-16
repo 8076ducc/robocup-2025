@@ -57,6 +57,7 @@ void setup()
 }
 
 unsigned long last_time = 0;
+// int lowest = 3000;
 
 void loop()
 {
@@ -65,6 +66,13 @@ void loop()
   delay(150);
   //light_ring.calibrate();
 
+  if (analogRead(LIGHTGATE) < lowest)
+  {
+    lowest = analogRead(LIGHTGATE);
+  }
+  // Serial.println(analogRead(LIGHTGATE));
+  Serial.print(lowest);
+  Serial.print(" ");
   Serial.println(analogRead(LIGHTGATE));
   #else
 
