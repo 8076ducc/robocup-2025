@@ -18,45 +18,32 @@ unsigned long last_time = 0;
 int real = 0;
 int points = 0;
 
-int ball_catchment = 0;
+// striker variables
+unsigned long no_catchment_start_time = 0; // stores the time when ball leaves catchment
+bool was_in_catchment = false; // tracks if the ball was previously in catchment
+const unsigned long catchment_timeout = 500; // in milliseconds
 
-// #define DEBUG
-
+// goalie variables
 unsigned long time_ball_stopped;
 double ball_last_dist;
 bool was_goalie_now_striker;
-bool is_goalie;
 bool ball_approaching;
 
 void striker()
 {
-  static unsigned long no_catchment_start_time = 0; // stores the time when ball leaves catchment
-  static bool was_in_catchment = false; // tracks if the ball was previously in catchment
-  const unsigned long catchment_timeout = 500; // in milliseconds
-  if (ball.in_catchment == 1)
+  if (ball.in_catchment == 0)
   {
-    no_catchment_start_time = millis(); // reset the timer
-    was_in_catchment = true;
-    robot.task = 1; // running orbitScore
+    robot.task = 0; //running orbitToBall
   }
-  else if (was_in_catchment) // if ball was previously in catchment, start timing
+  else if (ball.in_catchment == 1)
   {
-    if (millis() - no_catchment_start_time > catchment_timeout) // check elapsed time
-    {
-      robot.task = 0; // running orbitToBall
-      was_in_catchment = false;
-    }
-    else
-    {
-      robot.task = 1; // continue running orbitScore
-    }
+    robot.task = 1; //running orbitScore
   }
   else
   {
-    robot.task = 0; // running orbitToBall
+    robot.task = 0; //running orbitToBall
   }
 }
-
 
 void goalie()
 {
@@ -179,6 +166,7 @@ void loop()
     break;
 
   case 1:
+    digitalWrite(13, LOW);
     robot.orbitScore();
     break;
 
@@ -186,7 +174,7 @@ void loop()
     digitalWrite(13, HIGH);
     robot.defendGoal();
     break;
-    
+
   case 3:
     kp = 0.0013;
     robot.moveToTargetPose();
@@ -194,6 +182,7 @@ void loop()
   }
 
   goalie();
+  // striker();
   // robot.orbitToBall(0);
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);

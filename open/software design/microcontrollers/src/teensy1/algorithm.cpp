@@ -7,10 +7,12 @@ double goal_y = blue_goal.current_pose.y;
 
 void Robot::defendGoal()
 {
-    // double target_distance_from_goal = 75;
-    target_pose.x = ball.current_pose.x;
-    target_pose.y = 0;
+    double target_y_from_goal = -75;
+    
+    target_pose.x = (abs(ball.current_pose.x) > 10) ? ball.current_pose.x : 0;
+    target_pose.y = 0; // goal_y - target_y_from_goal;
     target_pose.bearing = 0;
+
     moveToTargetPose();
 }
 
@@ -111,8 +113,7 @@ void Robot::orbitToBall(double bearing)
         
         // deceleration curve
         // double speed = min(max(0.01 * ball.distance_from_robot, 0.15),  0.5);
-        // double speed = fmin(fmax(orbit_decel_k * exp(ball.distance_from_robot / orbit_decel_f), orbit_min_speed), orbit_max_speed_scaled);
-        double speed = bound(speed, orbit_min_speed, orbit_max_speed_scaled);
+        double speed = fmin(fmax(orbit_decel_k * exp(ball.distance_from_robot / orbit_decel_f), orbit_min_speed), orbit_max_speed_scaled);
 
         double correction = correctBearing(bearing_from_robot + multiplier * offset);
         // Serial.print("correction: ");
@@ -173,8 +174,8 @@ void Robot::orbitToBall(double bearing)
 void Robot::orbitScore()
 {
     // Serial.println("running orbitScore");
-    double target_bearing = robot.dip_4_on ? yellow_goal.current_pose.bearing : blue_goal.current_pose.bearing;
-    target_bearing = blue_goal.current_pose.bearing;
+    // double target_bearing = robot.dip_4_on ? yellow_goal.current_pose.bearing : blue_goal.current_pose.bearing;
+    double target_bearing = blue_goal.current_pose.bearing;
 
     // TUNE THIS
     double score_min_speed = 0.1;
@@ -190,16 +191,7 @@ void Robot::orbitScore()
     }
     else
     {
-        // move_data.speed = fmin(fmax(score_decel_k * exp(goal_y / score_decel_f), score_min_speed), score_max_speed);
-        move_data.speed = bound(score_decel_k * exp(goal_y / score_decel_f), score_min_speed, score_max_speed);
-        // if (target_bearing < 0)
-        // {
-        //     move_data.target_bearing = target_bearing - score_bearing_offset;
-        // }
-        // else
-        // {
-        //     move_data.target_bearing = target_bearing + score_bearing_offset;
-        // }
+        move_data.speed = fmin(fmax(score_decel_k * exp(goal_y / score_decel_f), score_min_speed), score_max_speed);
         move_data.target_bearing = target_bearing;
         move_data.target_angle = 0;
         move_data.ema_constant = 0.00017;
