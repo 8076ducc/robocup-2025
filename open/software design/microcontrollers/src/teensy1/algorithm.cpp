@@ -2,11 +2,9 @@
 Pose target_pose_wrt_goal;
 Pose target_pose_wrt_ball;
 
-// SET ATTACKING GOAL
-double goal_y = blue_goal.current_pose.y;
-
 void Robot::defendGoal()
 {
+    double goal_y = blue_goal.current_pose.y;
     double target_y_from_goal = -75;
     
     target_pose.x = (abs(ball.current_pose.x) > 10) ? ball.current_pose.x : 0;
@@ -123,6 +121,9 @@ void Robot::orbitToBall(double bearing)
             correction = 0;
         }
 
+        // anti-hump the line
+        double goal_y = blue_goal.current_pose.y;
+        
         if (line_data.on_line)
         {
             if (abs(correction - line_data.initial_line_angle) < 90 && (line_data.initial_line_angle > 20 && line_data.initial_line_angle < 330))
@@ -175,6 +176,7 @@ void Robot::orbitScore()
 {
     // Serial.println("running orbitScore");
     // double target_bearing = robot.dip_4_on ? yellow_goal.current_pose.bearing : blue_goal.current_pose.bearing;
+    double goal_y = blue_goal.current_pose.y;
     double target_bearing = blue_goal.current_pose.bearing;
 
     // TUNE THIS
@@ -192,8 +194,8 @@ void Robot::orbitScore()
     else
     {
         move_data.speed = fmin(fmax(score_decel_k * exp(goal_y / score_decel_f), score_min_speed), score_max_speed);
-        move_data.target_bearing = target_bearing;
-        move_data.target_angle = 0;
+        move_data.target_bearing = 0;
+        move_data.target_angle = target_bearing;
         move_data.ema_constant = 0.00017;
     }
 }

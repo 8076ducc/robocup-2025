@@ -159,8 +159,8 @@ void loop()
   switch (robot.task)
   {
   case 0:
-    Serial.println("running task 0");
-    digitalWrite(13, LOW);
+    // Serial.println("running task 0");
+    digitalWrite(13, HIGH);
     robot.orbitToBall(0);
     // robot.rotateToBall();
     break;
@@ -171,7 +171,7 @@ void loop()
     break;
 
   case 2:
-    digitalWrite(13, HIGH);
+    // digitalWrite(13, HIGH);
     robot.defendGoal();
     break;
 
@@ -181,8 +181,8 @@ void loop()
     break;
   }
 
-  goalie();
-  // striker();
+  // goalie();
+  striker();
   // robot.orbitToBall(0);
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
