@@ -6,10 +6,9 @@ void Robot::moveToTargetPose()
 {   
     double distance = sqrt(pow(target_pose.x, 2) + pow(target_pose.y, 2));
 
-    // double speed = fmin(0.0005 * distance + 0.0008 * (distance - prev_distance), 0.4);
-    double speed = 0.15;
+    double speed = fmin(0.0005 * distance + 0.0008 * (distance - prev_distance), 0.4);
 
-    move_data.speed = speed;
+    move_data.speed = 0.15;
     move_data.target_angle = xyToBearing(target_pose.x, target_pose.y);
     move_data.target_bearing = correctBearing(target_pose.bearing);
     move_data.ema_constant = 0.0002;

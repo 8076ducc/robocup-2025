@@ -177,17 +177,16 @@ void loop()
     robot.orbitToBall(0);
     // robot.rotateToBall();
     break;
+
   case 1:
-    // robot.move_data.speed = 0;
-    // robot.move_data.target_bearing = flick_angle;
-    // robot.move_data.target_angle = 0;
     robot.orbitScore();
     break;
+
   case 2:
-    // Serial.println("running defendGoal");
     digitalWrite(13, HIGH);
     robot.defendGoal();
     break;
+    
   case 3:
     kp = 0.0013;
     robot.moveToTargetPose();

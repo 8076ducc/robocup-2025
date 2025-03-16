@@ -2,6 +2,9 @@
 Pose target_pose_wrt_goal;
 Pose target_pose_wrt_ball;
 
+// SET ATTACKING GOAL
+double goal_y = blue_goal.current_pose.y;
+
 void Robot::defendGoal()
 {
     // double target_distance_from_goal = 75;
@@ -26,7 +29,6 @@ void Robot::orbitToBall(double bearing)
         // Serial.println("ball: " + String(ball.current_pose.bearing) + " robot(imu): " + String(robot.current_pose.bearing ));
         double bearing_from_robot = correctBearing(ball.current_pose.bearing - robot.current_pose.bearing);
         double offset, multiplier;
-        double goal_y = blue_goal.current_pose.y;
 
         if (bearing_from_robot < 180)
         {
@@ -112,16 +114,6 @@ void Robot::orbitToBall(double bearing)
         // double speed = fmin(fmax(orbit_decel_k * exp(ball.distance_from_robot / orbit_decel_f), orbit_min_speed), orbit_max_speed_scaled);
         double speed = bound(speed, orbit_min_speed, orbit_max_speed_scaled);
 
-        // double speed;
-        // if (ball.distance_from_robot > 500)
-        // {
-        //     speed = 0.35;
-        // }
-        // else
-        // {
-        //     speed = 0.25;
-        // }
-
         double correction = correctBearing(bearing_from_robot + multiplier * offset);
         // Serial.print("correction: ");
         // Serial.println(correction);
@@ -183,8 +175,6 @@ void Robot::orbitScore()
     // Serial.println("running orbitScore");
     double target_bearing = robot.dip_4_on ? yellow_goal.current_pose.bearing : blue_goal.current_pose.bearing;
     target_bearing = blue_goal.current_pose.bearing;
-
-    double goal_y = blue_goal.current_pose.y;
 
     // TUNE THIS
     double score_min_speed = 0.1;
