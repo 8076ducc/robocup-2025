@@ -37,5 +37,5 @@ double bound(double value, double low, double high) {
 double xyToBearing(int x, int y)
 {
     double principal_angle = degrees(atan2(y, x));
-    return correctBearing(fmod(principal_angle + 450, 360));
+    return correctBearing(fmod(450 - principal_angle, 360));
 }
