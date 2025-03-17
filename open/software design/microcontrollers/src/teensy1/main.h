@@ -628,15 +628,14 @@ public:
 class Robot
 {
 public:
-    void moveToTargetPose();
+    void goalieTrack();
+    void goalieRush();
     void setUpSerial();
     void updateSerial();
     void sendSerial();
 
     void defendGoal();
-    void rotateToBall();
     void orbitToBall(double bearing);
-    void rotateScore();
     void orbitScore();
     void moveToNeutralPoint(int neutral_point, bool behind_line);
 

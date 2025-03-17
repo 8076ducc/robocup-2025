@@ -150,6 +150,8 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
   blue_goal.current_pose.y = blue_goal_y;
   blue_goal.current_pose.bearing = degrees(atan2(blue_goal_x, blue_goal_y));
 
+  // Serial.println(blue_goal.current_pose.y);
+  // Serial.println(blue_goal.current_pose.y);
   // Serial.println(blue_goal.current_pose.y - ball.current_pose.y);
   // Serial.println(blue_goal.current_pose.x - ball.current_pose.x);
 }

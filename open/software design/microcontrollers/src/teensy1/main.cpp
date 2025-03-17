@@ -21,12 +21,11 @@ int points = 0;
 // striker variables
 unsigned long no_catchment_start_time = 0;
 bool was_in_catchment = false;
-const unsigned long catchment_timeout = 50; // ms
+const unsigned long catchment_timeout = 250; // ms
 
 // goalie variables
 unsigned long time_ball_stopped;
 double ball_last_dist;
-bool was_goalie_now_striker;
 bool ball_approaching;
 
 void striker()
@@ -56,44 +55,8 @@ void striker()
 }
 
 void goalie()
-{
-  if (ball_last_dist - ball.distance_from_robot > 1)
-  {
-    ball_approaching = true;
-    time_ball_stopped = millis();
-  } else {
-    ball_approaching = false;
-  }
-
-  ball_last_dist = ball.distance_from_robot;
-  // Serial.print("time ball stopped: ");
-  // Serial.println(time_ball_stopped);
-
-  // simplify this to run without clock -> TEMPORARY
-  // if (millis() - time_ball_stopped > 500 && ball.distance_from_robot < 100 && !was_goalie_now_striker)
-  if ((ball_approaching == true && ball.distance_from_robot < 100) || (millis() - 100 < time_ball_stopped))
-  {
-    // Serial.println("intercept the ball/enemy striker");
-    // robot.task = 0;
-    was_goalie_now_striker = true;
-  }
-  // else if (ball.detected && ball.current_pose.y < 0)
-  // {
-  //   robot.task = 0;
-  //   was_goalie_now_striker = true;
-  // }
-
-  //uncommented because idk what it does and i havent asked isaac/haojun
-  // else if (was_goalie_now_striker && robot.current_pose.y < 700)
-  // {
-  //   robot.task = 0;
-  // }
-  else
-  {
-    // Serial.println("defend goal");
-    was_goalie_now_striker = false;
-  }
-  robot.task = 2;
+{ 
+  robot.task = 2; // running defendGoal
 }
 
 void setup()
@@ -166,33 +129,33 @@ void loop()
   // Serial.print("task: ");
   // Serial.println(robot.task);
 
-  switch (robot.task)
-  {
-  case 0:
-    // Serial.println("running task 0");
-    digitalWrite(13, HIGH);
-    robot.orbitToBall(0);
-    // robot.rotateToBall();
-    break;
+  // switch (robot.task)
+  // {
+  // case 0:
+  //   // Serial.println("running task 0");
+  //   // digitalWrite(13, HIGH);
+  //   robot.orbitToBall(0);
+  //   // robot.rotateToBall();
+  //   break;
 
-  case 1:
-    digitalWrite(13, LOW);
-    robot.orbitScore();
-    break;
+  // case 1:
+  //   // digitalWrite(13, LOW);
+  //   robot.orbitScore();
+  //   break;
 
-  case 2:
-    // digitalWrite(13, HIGH);
-    robot.defendGoal();
-    break;
+  // case 2:
+  //   // digitalWrite(13, HIGH);
+  //   robot.defendGoal();
+  //   break;
 
-  case 3:
-    kp = 0.0013;
-    robot.moveToTargetPose();
-    break;
-  }
-
-  // goalie();
-  striker();
+  // case 3:
+  //   kp = 0.0013;
+  //   robot.moveToTargetPose();
+  //   break;
+  // }
+  robot.defendGoal();
+  goalie();
+  // striker();
   // robot.orbitToBall(0);
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);

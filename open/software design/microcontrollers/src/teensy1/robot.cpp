@@ -2,12 +2,12 @@
 
 double prev_distance = 0;
 
-void Robot::moveToTargetPose()
+void Robot::goalieTrack()
 {   
     // TUNE THIS
-    double min_speed = 0.1;
+    double min_speed = 0.15;
     double max_speed = 0.35;
-    double decel_f = 70;
+    double decel_f = 50;
     double decel_k = 0.08;
     // END TUNE
 
@@ -15,6 +15,18 @@ void Robot::moveToTargetPose()
 
     // double speed = fmin(0.0005 * distance + 0.0008 * (distance - prev_distance), 0.4);
     double speed = bound(decel_k * exp(distance / decel_f), min_speed, max_speed);
+
+    move_data.speed = (distance == 0) ? 0 : speed;
+    move_data.target_angle = xyToBearing(target_pose.x, target_pose.y);
+    move_data.target_bearing = correctBearing(target_pose.bearing);
+    move_data.ema_constant = 0.0002;
+    prev_distance = distance;
+}
+
+void Robot::goalieRush()
+{
+    double distance = sqrt(pow(target_pose.x, 2) + pow(target_pose.y, 2));
+    double speed = 0.3;
 
     move_data.speed = (distance == 0) ? 0 : speed;
     move_data.target_angle = xyToBearing(target_pose.x, target_pose.y);

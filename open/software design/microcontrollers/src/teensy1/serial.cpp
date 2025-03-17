@@ -92,7 +92,7 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     // Serial.print(data_received.data.yellow_goal_x);
     // Serial.print(" ");
     // Serial.print(data_received.data.yellow_goal_y);
-    // Serial.print(" ");
+    // Serial.println(" ");
 
     // Serial.print(" Blue goal: ");
     // Serial.print(data_received.data.blue_goal_detected);
@@ -100,14 +100,14 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     // Serial.print(data_received.data.blue_goal_x);
     // Serial.print(" ");
     // Serial.print(data_received.data.blue_goal_y);
-    // Serial.print(" ");
+    // Serial.println(" ");
     
-    // Serial.print(" Ball: ");
-    // Serial.print(data_received.data.ball_detected);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.ball_x);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.ball_y);
+    Serial.print(" Ball: ");
+    Serial.print(data_received.data.ball_detected);
+    Serial.print(" ");
+    Serial.print(data_received.data.ball_x);
+    Serial.print(" ");
+    Serial.println(data_received.data.ball_y);
     
     if (yellow_goal.detected && blue_goal.detected)
     {
