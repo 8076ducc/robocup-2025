@@ -71,15 +71,17 @@ void onImuReceived(const byte *buf, size_t size)
 void onTeensyReceived(const byte *buf, size_t size) // receives shit from the camera 
 {
     CamTxDataUnion data_received;
-
-    // Serial.println("Received data");
     // Serial.println(size);
 
     // // Don't continue if the payload is invalid
-    // if (size != sizeof(data_received)) {
-    //     Serial.print("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
-    //     return;
-    // }
+    if (size != sizeof(data_received)) {
+        // Serial.print("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
+        // digitalWrite(13, HIGH);
+        return;
+    }
+
+    // digitalWrite(13, LOW);
+
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
