@@ -71,15 +71,17 @@ void onImuReceived(const byte *buf, size_t size)
 void onTeensyReceived(const byte *buf, size_t size) // receives shit from the camera 
 {
     CamTxDataUnion data_received;
-
-    // Serial.println("Received data");
     // Serial.println(size);
 
     // // Don't continue if the payload is invalid
-    // if (size != sizeof(data_received)) {
-    //     Serial.print("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
-    //     return;
-    // }
+    if (size != sizeof(data_received)) {
+        // Serial.print("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
+        // digitalWrite(13, HIGH);
+        return;
+    }
+
+    // digitalWrite(13, LOW);
+
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
@@ -92,7 +94,7 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     // Serial.print(data_received.data.yellow_goal_x);
     // Serial.print(" ");
     // Serial.print(data_received.data.yellow_goal_y);
-    // Serial.print(" ");
+    // Serial.println(" ");
 
     // Serial.print(" Blue goal: ");
     // Serial.print(data_received.data.blue_goal_detected);
@@ -100,14 +102,14 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     // Serial.print(data_received.data.blue_goal_x);
     // Serial.print(" ");
     // Serial.print(data_received.data.blue_goal_y);
-    // Serial.print(" ");
+    // Serial.println(" ");
     
-    // Serial.print(" Ball: ");
-    // Serial.print(data_received.data.ball_detected);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.ball_x);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.ball_y);
+    Serial.print(" Ball: ");
+    Serial.print(data_received.data.ball_detected);
+    Serial.print(" ");
+    Serial.print(data_received.data.ball_x);
+    Serial.print(" ");
+    Serial.println(data_received.data.ball_y);
     
     if (yellow_goal.detected && blue_goal.detected)
     {

@@ -2,23 +2,27 @@
 Pose target_pose_wrt_goal;
 Pose target_pose_wrt_ball;
 
+int scoring_counter;
+
 void Robot::defendGoal()
 {
     double goal_y = blue_goal.current_pose.y;
-    double target_y_from_goal = -75;
+    double target_y_from_goal = -110;
+    target_pose.x = (abs(ball.current_pose.x) > 12) ? (ball.current_pose.x) : 0;
+
     
-    target_pose.x = (abs(ball.current_pose.x) > 10) ? ball.current_pose.x : 0;
-    target_pose.y = 0; // goal_y - target_y_from_goal;
-    target_pose.bearing = 0;
-
-    moveToTargetPose();
-}
-
-void Robot::rotateToBall()
-{
-    target_pose = ball.current_pose;
-    target_pose.bearing -= robot.current_pose.bearing;
-    moveToTargetPose();
+    if (line_data.on_line){
+        rejectLine(0);
+    }
+    else if (ball.current_pose.y < 105){
+        target_pose.y = 0.5 * ball.current_pose.y;
+        target_pose.x = 0.85 * ball.current_pose.x;
+        goalieRush();
+    } else {
+        target_pose.y = (abs(goal_y - target_y_from_goal) > 10) ? goal_y - target_y_from_goal : 0;
+        target_pose.bearing = 0;
+        goalieTrack();
+    }
 }
 
 void Robot::orbitToBall(double bearing)
@@ -26,6 +30,7 @@ void Robot::orbitToBall(double bearing)
     // Serial.println("running orbitToBall");
     if (ball.detected)
     {
+        scoring_counter = 0;
         // Serial.println("ball: " + String(ball.current_pose.bearing) + " robot(imu): " + String(robot.current_pose.bearing ));
         double bearing_from_robot = correctBearing(ball.current_pose.bearing - robot.current_pose.bearing);
         double offset, multiplier;
@@ -81,6 +86,12 @@ void Robot::orbitToBall(double bearing)
         // END TUNE
 
         // move slower when close to the ball
+        
+        // SET ATTACKING GOAL
+        double goal_y = blue_goal.current_pose.y;
+        double goal_x = blue_goal.current_pose.x;
+        // END SET ATTACKING GOAL
+
         double average_goal_x;
 
         if (yellow_goal.detected && blue_goal.detected)
@@ -121,9 +132,6 @@ void Robot::orbitToBall(double bearing)
             correction = 0;
         }
 
-        // anti-hump the line
-        double goal_y = blue_goal.current_pose.y;
-        
         if (line_data.on_line)
         {
             if (abs(correction - line_data.initial_line_angle) < 90 && (line_data.initial_line_angle > 20 && line_data.initial_line_angle < 330))
@@ -145,14 +153,18 @@ void Robot::orbitToBall(double bearing)
             // TUNE THIS
             double goal_y_diff_thresh = 25;
             double goal_x_diff_thresh = 40;
+            // Serial.print("goal_y_diff " + String(goal_y - ball.current_pose.y));
+            // Serial.println(" goal_x_diff " + String(ball.current_pose.x - average_goal_x));
             // END TUNE
 
-            if (abs(goal_y - ball.current_pose.y) < goal_y_diff_thresh && abs(ball.current_pose.x - average_goal_x) < goal_x_diff_thresh)
+            if (abs(goal_y - ball.current_pose.y) < goal_y_diff_thresh && abs(goal_x - ball.current_pose.x) < goal_x_diff_thresh)
             {
                 move_data.speed = 0;
+                // digitalWrite(13, HIGH);
             }
             else
             {
+                // digitalWrite(13, LOW);
                 move_data.speed = speed;
             }
             move_data.target_angle = correction;
@@ -173,11 +185,12 @@ void Robot::orbitToBall(double bearing)
 }
 
 void Robot::orbitScore()
-{
+{   
     // Serial.println("running orbitScore");
     // double target_bearing = robot.dip_4_on ? yellow_goal.current_pose.bearing : blue_goal.current_pose.bearing;
     double goal_y = blue_goal.current_pose.y;
     double target_bearing = blue_goal.current_pose.bearing;
+    double accuracy_counter;
 
     // TUNE THIS
     double score_min_speed = 0.1;
@@ -192,39 +205,36 @@ void Robot::orbitScore()
         // layer_1_rx_data.data.kick = true;
     }
     else
-    {
-        move_data.speed = fmin(fmax(score_decel_k * exp(goal_y / score_decel_f), score_min_speed), score_max_speed);
+    {   
+        scoring_counter++;
+        // move_data.speed = min(bound(scoringcounter/1000, 0.05, 0.2) / cos(radians(bound(scoringcounter/1000, 0, 1) * target_bearing)), 0.4);// bound(score_decel_k * exp(goal_y / score_decel_f), score_min_speed, score_max_speed);
+        
+        move_data.speed = bound(scoring_counter/1000, 0.05, 0.3);
+        if (move_data.speed == 0.3) {
+            move_data.speed = bound(score_decel_k * exp(goal_y / score_decel_f), score_min_speed, score_max_speed);
+        }
         move_data.target_bearing = 0;
+        // move_data.target_angle = bound(scoringcounter/2500, 0, 1) * target_bearing;
         move_data.target_angle = target_bearing;
         move_data.ema_constant = 0.00017;
     }
+    // else if (accuracy_counter < 50)// initially slow down before scoring, will hopefully reduce nip slipping
+    // {
+    //     Serial.println("slowing down");
+    //     move_data.speed = 0.05;
+    //     move_data.target_bearing = 0;
+    //     move_data.target_angle = target_bearing;
+    //     move_data.ema_constant = 0.00017;
+    //     accuracy_counter++;     
+    // }
+    // else
+    // {
+    //     Serial.println("scoring");
+    //     move_data.speed = 0.3;
+    //     move_data.target_bearing = 0;
+    //     move_data.target_angle = target_bearing;
+    //     move_data.ema_constant = 0.00017;
+    // }
 }
 
-void Robot::rotateScore()
-{
-    Serial.println("running rotateScore");
-    if (abs(target_pose.x - current_pose.x) < 10 && abs(target_pose.y - current_pose.y) < 10 && abs(target_pose.bearing - current_pose.bearing) < 1)
-    {
-        base.move(0, 0, 0);
-        layer_1_rx_data.data.kick = true;
-        robot.sendSerial();
-    }
-    else
-    {
-        target_pose.x = 910;
-        target_pose.y = 1900;
-        target_pose.bearing = 0;
-        moveToTargetPose();
-        layer_1_rx_data.data.kick = false;
-    }
-}
-
-void Robot::moveToNeutralPoint(int neutral_point, bool behind_point)
-{
-    int neutral_points[5][2] = {{0, 0}, {0, 0}, {915, 1215}, {0, 0}, {0, 0}};
-    target_pose.x = neutral_points[neutral_point][0];
-    target_pose.y = behind_point ? neutral_points[neutral_point][1] - 200 : neutral_points[neutral_point][1];
-    target_pose.bearing = 0;
-
-    moveToTargetPose();
-}
+// Pm
