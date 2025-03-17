@@ -19,9 +19,9 @@ int real = 0;
 int points = 0;
 
 // striker variables
-unsigned long no_catchment_start_time = 0; // stores the time when ball leaves catchment
-bool was_in_catchment = false; // tracks if the ball was previously in catchment
-const unsigned long catchment_timeout = 500; // in milliseconds
+unsigned long no_catchment_start_time = 0;
+bool was_in_catchment = false;
+const unsigned long catchment_timeout = 50; // ms
 
 // goalie variables
 unsigned long time_ball_stopped;
@@ -31,17 +31,27 @@ bool ball_approaching;
 
 void striker()
 {
-  if (ball.in_catchment == 0)
+  if (ball.in_catchment == 1)
   {
-    robot.task = 0; //running orbitToBall
+    no_catchment_start_time = millis(); // reset the timer
+    was_in_catchment = true;
+    robot.task = 1; // running orbitScore
   }
-  else if (ball.in_catchment == 1)
+  else if (was_in_catchment) // if ball was previously in catchment, start timing
   {
-    robot.task = 1; //running orbitScore
+    if (millis() - no_catchment_start_time > catchment_timeout) // check elapsed time
+    {
+      robot.task = 0; // running orbitToBall
+      was_in_catchment = false;
+    }
+    else
+    {
+      robot.task = 1; // continue running orbitScore
+    }
   }
   else
   {
-    robot.task = 0; //running orbitToBall
+    robot.task = 0; // running orbitToBall
   }
 }
 
