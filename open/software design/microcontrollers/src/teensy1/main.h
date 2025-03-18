@@ -647,6 +647,10 @@ public:
     void storeYellowPose(double yellow_goal_x, double yellow_goal_y);
     void storeBluePose(double blue_goal_x, double blue_goal_y);
 
+    void storeCameraOpenPose(double yellow_open_x, double yellow_open_y, double blue_open_x, double blue_open_y);
+    void storeYellowOpenPose(double yellow_open_x, double yellow_open_y);
+    void storeBlueOpenPose(double blue_open_x, double blue_open_y);
+
     void getRobotPose();
 
     Pose camera_pose;
@@ -684,6 +688,7 @@ extern Robot robot;
 extern Ball ball;
 extern Goal yellow_goal;
 extern Goal blue_goal;
-
+extern Goal yellow_open;
+extern Goal blue_open;
 
 #endif

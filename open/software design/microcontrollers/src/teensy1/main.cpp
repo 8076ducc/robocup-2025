@@ -11,8 +11,12 @@ Teensy1TxDataUnion teensy_1_tx_data;
 
 Robot robot;
 Ball ball;
+
 Goal yellow_goal;
 Goal blue_goal;
+
+Goal yellow_open;
+Goal blue_open;
 
 unsigned long last_time = 0;
 int real = 0;

@@ -115,16 +115,19 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     {
         // Serial.println("Both goals detected");
         robot.storeCameraPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y, data_received.data.blue_goal_x, data_received.data.blue_goal_y);
+        robot.storeCameraOpenPose(data_received.data.yellow_open_x, data_received.data.yellow_open_y, data_received.data.blue_open_x, data_received.data.blue_open_y);
     }
     else if (yellow_goal.detected)
     {
         // Serial.println("Yellow goal detected");
         robot.storeYellowPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y);
+        robot.storeYellowOpenPose(data_received.data.yellow_open_x, data_received.data.yellow_open_y);
     }
     else if (blue_goal.detected)
     {
         // Serial.println("Blue goal detected");
         robot.storeBluePose(data_received.data.blue_goal_x, data_received.data.blue_goal_y);
+        robot.storeBlueOpenPose(data_received.data.blue_open_x, data_received.data.blue_open_y);
     }
 
     if (data_received.data.ball_detected)

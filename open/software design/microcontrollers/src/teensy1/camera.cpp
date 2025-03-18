@@ -1,5 +1,6 @@
 #include "main.h"
 
+// store entire goal pose
 void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
 {
   yellow_goal.current_pose.x = yellow_goal_x;
@@ -9,11 +10,6 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
   blue_goal.current_pose.x = blue_goal_x;
   blue_goal.current_pose.y = blue_goal_y;
   blue_goal.current_pose.bearing = degrees(atan2(blue_goal_x, blue_goal_y));
-
-  // Serial.println(blue_goal.current_pose.y);
-  // Serial.println(blue_goal.current_pose.y);
-  // Serial.println(blue_goal.current_pose.y - ball.current_pose.y);
-  // Serial.println(blue_goal.current_pose.x - ball.current_pose.x);
 }
 
 void Robot::storeYellowPose(double yellow_goal_x, double yellow_goal_y)
@@ -28,6 +24,32 @@ void Robot::storeBluePose(double blue_goal_x, double blue_goal_y)
   blue_goal.current_pose.x = blue_goal_x;
   blue_goal.current_pose.y = blue_goal_y;
   blue_goal.current_pose.bearing = degrees(atan2(blue_goal_x, blue_goal_y));
+}
+
+// store open goal pose
+void Robot::storeCameraOpenPose(double yellow_open_x, double yellow_open_y, double blue_open_x, double blue_open_y)
+{
+  yellow_open.current_pose.x = yellow_open_x;
+  yellow_open.current_pose.y = yellow_open_y;
+  yellow_open.current_pose.bearing = degrees(atan2(yellow_open_x, yellow_open_y));
+
+  blue_open.current_pose.x = blue_open_x;
+  blue_open.current_pose.y = blue_open_y;
+  blue_open.current_pose.bearing = degrees(atan2(blue_open_x, blue_open_y));
+}
+
+void Robot::storeYellowOpenPose(double yellow_open_x, double yellow_open_y)
+{
+  yellow_open.current_pose.x = yellow_open_x;
+  yellow_open.current_pose.y = yellow_open_y;
+  yellow_open.current_pose.bearing = degrees(atan2(yellow_open_x, yellow_open_y));
+}
+
+void Robot::storeBlueOpenPose(double blue_open_x, double blue_open_y)
+{
+  blue_open.current_pose.x = blue_open_x;
+  blue_open.current_pose.y = blue_open_y;
+  blue_open.current_pose.bearing = degrees(atan2(blue_open_x, blue_open_y));
 }
 
 void Robot::getRobotPose()
