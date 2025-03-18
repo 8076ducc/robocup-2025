@@ -643,11 +643,11 @@ public:
     void trackLineGoalie(double speed, double angle, int offset);
     void rejectLine(double bearing);
 
-    void storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y);
+    void storeGoalPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y);
     void storeYellowPose(double yellow_goal_x, double yellow_goal_y);
     void storeBluePose(double blue_goal_x, double blue_goal_y);
 
-    void storeCameraOpenPose(double yellow_open_x, double yellow_open_y, double blue_open_x, double blue_open_y);
+    void storeGoalOpenPose(double yellow_open_x, double yellow_open_y, double blue_open_x, double blue_open_y);
     void storeYellowOpenPose(double yellow_open_x, double yellow_open_y);
     void storeBlueOpenPose(double blue_open_x, double blue_open_y);
 

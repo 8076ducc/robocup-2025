@@ -28,7 +28,7 @@ public:
     void updateSerial();
     void sendSerial();
 
-    void storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y);
+    void storeGoalPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y);
     void storeSingleCameraPose(int x, int y);
 
     void getRobotPose();

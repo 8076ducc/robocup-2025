@@ -73,7 +73,7 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     CamTxDataUnion data_received;
     // Serial.println(size);
 
-    // // Don't continue if the payload is invalid
+    // Don't continue if the payload is invalid
     if (size != sizeof(data_received)) {
         // Serial.print("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
         // digitalWrite(13, HIGH);
@@ -114,8 +114,8 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     if (yellow_goal.detected && blue_goal.detected)
     {
         // Serial.println("Both goals detected");
-        robot.storeCameraPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y, data_received.data.blue_goal_x, data_received.data.blue_goal_y);
-        robot.storeCameraOpenPose(data_received.data.yellow_open_x, data_received.data.yellow_open_y, data_received.data.blue_open_x, data_received.data.blue_open_y);
+        robot.storeGoalPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y, data_received.data.blue_goal_x, data_received.data.blue_goal_y);
+        robot.storeGoalOpenPose(data_received.data.yellow_open_x, data_received.data.yellow_open_y, data_received.data.blue_open_x, data_received.data.blue_open_y);
     }
     else if (yellow_goal.detected)
     {

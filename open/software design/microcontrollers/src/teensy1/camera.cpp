@@ -1,7 +1,7 @@
 #include "main.h"
 
 // store entire goal pose
-void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
+void Robot::storeGoalPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
 {
   yellow_goal.current_pose.x = yellow_goal_x;
   yellow_goal.current_pose.y = yellow_goal_y;
@@ -27,7 +27,7 @@ void Robot::storeBluePose(double blue_goal_x, double blue_goal_y)
 }
 
 // store open goal pose
-void Robot::storeCameraOpenPose(double yellow_open_x, double yellow_open_y, double blue_open_x, double blue_open_y)
+void Robot::storeGoalOpenPose(double yellow_open_x, double yellow_open_y, double blue_open_x, double blue_open_y)
 {
   yellow_open.current_pose.x = yellow_open_x;
   yellow_open.current_pose.y = yellow_open_y;

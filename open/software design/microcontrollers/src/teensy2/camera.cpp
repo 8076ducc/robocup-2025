@@ -31,7 +31,7 @@ double regressGoal(double distance, double goal_y)
 #ifdef REGRESS_LOC
 
 // regression localisation
-void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
+void Robot::storeGoalPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
 {
   double yellow_pixel_distance = sqrt(pow(yellow_goal_x, 2) + pow(yellow_goal_y, 2));
   double yellow_actual_distance = regressGoal(yellow_pixel_distance, yellow_goal_y);
@@ -91,7 +91,7 @@ void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double b
 #else
 
 // pixel localisation
-void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
+void Robot::storeGoalPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
 {
     // Compute the center of the field in pixel coordinates
     double center_x = (yellow_goal_x + blue_goal_x) / 2.0;
