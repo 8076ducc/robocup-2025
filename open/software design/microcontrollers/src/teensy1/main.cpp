@@ -133,33 +133,32 @@ void loop()
   // Serial.print("task: ");
   // Serial.println(robot.task);
 
-  // switch (robot.task)
-  // {
-  // case 0:
-  //   // Serial.println("running task 0");
-  //   // digitalWrite(13, HIGH);
-  //   robot.orbitToBall(0);
-  //   // robot.rotateToBall();
-  //   break;
+  switch (robot.task)
+  {
+  case 0:
+    // Serial.println("running task 0");
+    // digitalWrite(13, HIGH);
+    robot.orbitToBall(0);
+    // robot.rotateToBall();
+    break;
 
-  // case 1:
-  //   // digitalWrite(13, LOW);
-  //   robot.orbitScore();
-  //   break;
+  case 1:
+    // digitalWrite(13, LOW);
+    robot.orbitScore();
+    break;
 
-  // case 2:
-  //   // digitalWrite(13, HIGH);
-  //   robot.defendGoal();
-  //   break;
+  case 2:
+    // digitalWrite(13, HIGH);
+    robot.defendGoal();
+    break;
 
-  // case 3:
-  //   kp = 0.0013;
-  //   robot.moveToTargetPose();
-  //   break;
-  // }
-  robot.defendGoal();
-  goalie();
-  // striker();
+  case 3:
+    kp = 0.0013;
+    // robot.moveToTargetPose();
+    break;
+  }
+  // goalie();
+  striker();
   // robot.orbitToBall(0);
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);

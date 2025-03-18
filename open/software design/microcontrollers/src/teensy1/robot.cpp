@@ -82,7 +82,7 @@ void Robot::trackLine(double speed, double angle, int offset)
 
 void Robot::rejectLine(double bearing)
 {
-    move_data.speed = 0.03 * line_data.chord_length;
+    move_data.speed = 0.06 * line_data.chord_length;
     move_data.target_angle = correctBearing(line_data.line_angle + 180);
     move_data.target_bearing = bearing;
     move_data.ema_constant = 0.005;

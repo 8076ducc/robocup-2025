@@ -189,7 +189,7 @@ void Robot::orbitScore()
     // Serial.println("running orbitScore");
     // double target_bearing = robot.dip_4_on ? yellow_goal.current_pose.bearing : blue_goal.current_pose.bearing;
     double goal_y = blue_goal.current_pose.y;
-    double target_bearing = blue_goal.current_pose.bearing;
+    double target_bearing = blue_open.current_pose.bearing;
     double accuracy_counter;
 
     // TUNE THIS
@@ -209,13 +209,21 @@ void Robot::orbitScore()
         scoring_counter++;
         // move_data.speed = min(bound(scoringcounter/1000, 0.05, 0.2) / cos(radians(bound(scoringcounter/1000, 0, 1) * target_bearing)), 0.4);// bound(score_decel_k * exp(goal_y / score_decel_f), score_min_speed, score_max_speed);
         
-        move_data.speed = bound(scoring_counter/1000, 0.05, 0.3);
-        if (move_data.speed == 0.3) {
+        move_data.speed = bound(scoring_counter/1000, 0.05, score_max_speed);
+        if (move_data.speed == score_max_speed) {
             move_data.speed = bound(score_decel_k * exp(goal_y / score_decel_f), score_min_speed, score_max_speed);
+            if (target_bearing < 0) {
+                move_data.target_bearing = bound(-(scoring_counter - score_max_speed*1000)/8, target_bearing, 0);
+                move_data.target_angle = target_bearing - bound(-(scoring_counter - score_max_speed*1000)/8, target_bearing, 0);
+            } else {
+                move_data.target_bearing = bound((scoring_counter - score_max_speed*1000)/8, 0, target_bearing);
+                move_data.target_angle = target_bearing - bound((scoring_counter - score_max_speed*1000)/8, 0, target_bearing);
         }
-        move_data.target_bearing = 0;
+        } else {
+            move_data.target_bearing = 0;
+            move_data.target_angle = target_bearing;
+        }
         // move_data.target_angle = bound(scoringcounter/2500, 0, 1) * target_bearing;
-        move_data.target_angle = target_bearing;
         move_data.ema_constant = 0.00017;
     }
     // else if (accuracy_counter < 50)// initially slow down before scoring, will hopefully reduce nip slipping
