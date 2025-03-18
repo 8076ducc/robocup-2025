@@ -104,12 +104,12 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     // Serial.print(data_received.data.blue_goal_y);
     // Serial.println(" ");
     
-    Serial.print(" Ball: ");
-    Serial.print(data_received.data.ball_detected);
-    Serial.print(" ");
-    Serial.print(data_received.data.ball_x);
-    Serial.print(" ");
-    Serial.println(data_received.data.ball_y);
+    // Serial.print(" Ball: ");
+    // Serial.print(data_received.data.ball_detected);
+    // Serial.print(" ");
+    // Serial.print(data_received.data.ball_x);
+    // Serial.print(" ");
+    // Serial.println(data_received.data.ball_y);
     
     if (yellow_goal.detected && blue_goal.detected)
     {
@@ -119,12 +119,12 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     else if (yellow_goal.detected)
     {
         // Serial.println("Yellow goal detected");
-        robot.storeSingleCameraPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y);
+        robot.storeYellowPose(data_received.data.yellow_goal_x, data_received.data.yellow_goal_y);
     }
     else if (blue_goal.detected)
     {
         // Serial.println("Blue goal detected");
-        robot.storeSingleCameraPose(data_received.data.blue_goal_x, data_received.data.blue_goal_y);
+        robot.storeBluePose(data_received.data.blue_goal_x, data_received.data.blue_goal_y);
     }
 
     if (data_received.data.ball_detected)
