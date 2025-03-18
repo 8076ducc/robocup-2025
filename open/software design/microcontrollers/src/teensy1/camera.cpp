@@ -1,27 +1,5 @@
 #include "main.h"
 
-// double regressBall(double distance)
-// { 
-//   double regressed_distance = ((0.0000002708 * pow(distance, 5)) - (00.0000696185 * pow(distance, 4)) + (0.0072414285 * pow(distance, 3)) - (0.3554100023 * pow(distance, 2)) + (14.2236266012 * distance) - 104.1068847374);
-//   return regressed_distance; 
-// }
-
-// double regressGoal(double distance, double goal_y)
-// {
-//   if (goal_y > 0)
-//   {
-//     // forwards (positive)
-//     double regressed_distance = ((0.0000044237 * pow(distance, 5)) - (0.0020908007 * pow(distance, 4)) + (0.3911084326 * pow(distance, 3)) - (36.0033960558 * pow(distance, 2)) + (1633.3529021812 * distance) - 29028.62896043);
-//     return regressed_distance; 
-//   }
-//   else
-//   {
-//     // backwards (negative)
-//     double regressed_distance = ( - (0.0000014120 * pow(distance, 5)) + (0.0007693469 * pow(distance, 4)) - (0.1555893111 * pow(distance, 3)) + (15.0162772797 * pow(distance, 2)) - (691.0531306509 * distance) + 12345.129926796);
-//     return regressed_distance;
-//   }
-// }
-
 void Robot::storeCameraPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
 {
   yellow_goal.current_pose.x = yellow_goal_x;
