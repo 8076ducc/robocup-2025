@@ -68,13 +68,18 @@ void onImuReceived(const byte *buf, size_t size)
     robot.sendSerial();
 }
 
+// unsigned long last_serial_time = 0;
+
 void onTeensyReceived(const byte *buf, size_t size) // receives shit from the camera 
 {
     CamTxDataUnion data_received;
     // Serial.println(size);
+    // Serial.println(micros() - last_serial_time);
+    // last_serial_time = micros()
 
     // Don't continue if the payload is invalid
-    if (size != sizeof(data_received)) {
+    if (size != sizeof(data_received))
+    {
         // Serial.print("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
         // digitalWrite(13, HIGH);
         return;
@@ -147,66 +152,6 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     {
         ball.detected = false;
     }
-    // // Serial.println("Received data from Teensy2");
-    // Teensy1RxDataUnion data_received;
-
-    // // Don't continue if the payload is invalid
-    // if (size != sizeof(data_received))
-    // {
-    //     // Serial.print("Invalid payload size from Teensy2. Expected: ");
-    //     // Serial.print(sizeof(data_received));
-    //     // Serial.print(" Received: ");
-    //     // Serial.println(size);
-    //     // return;
-    // }
-
-    // std::copy(buf, buf + size, std::begin(data_received.bytes));
-
-    // robot.current_pose = data_received.data.current_pose;
-    // // robot.target_pose = data_received.data.target_pose;
-
-    // // ball.current_pose = robot.target_pose;
-    // ball.current_pose = data_received.data.target_pose;
-    // // ball.current_pose.bearing -= robot.current_pose.bearing;
-
-    // // Serial.println(robot.current_pose.bearing);
-    // // ball.current_pose.bearing = correctBearing(ball.current_pose.bearing);
-    // ball.detected = data_received.data.ball_detected;
-
-    // robot.alliance_robot_detected = data_received.data.robot_detected;
-
-    // // Serial.print("robot detected: ");
-    // // Serial.println(robot.alliance_robot_detected);
-
-    // // Serial.print("Robot: ");
-    // // Serial.print(robot.current_pose.x);
-    // // Serial.print(" ");
-    // // Serial.print(robot.current_pose.y);
-    // // Serial.print(" ");
-    // // Serial.println(robot.current_pose.bearing);
-    
-    // // Serial.print(" Ball: ");
-    // // Serial.print(ball.current_pose.x);
-    // // Serial.print(" ");
-    // // Serial.print(ball.current_pose.y);
-    // // Serial.print(" ");
-    // // Serial.println(ball.current_pose.bearing);
-
-    // // ball.distance_from_robot = sqrt(pow(data_received.data.target_pose.x - data_received.data.current_pose.x, 2) + pow(data_received.data.target_pose.y - data_received.data.current_pose.y, 2));
-    // ball.distance_from_robot = sqrt(pow(data_received.data.target_pose.x, 2) + pow(data_received.data.target_pose.y, 2));
-
-    // // Serial.print(" ");
-    // // Serial.print(ball.current_pose.bearing);
-    // // Serial.print(" ");
-    // //Serial.println(ball.distance_from_robot);
-
-    // yellow_goal.current_pose.bearing = data_received.data.yellow_goal.current_pose.bearing;
-    // blue_goal.current_pose.bearing = data_received.data.blue_goal.current_pose.bearing;
-
-    // robot.dip_1_on = data_received.data.dip_1_on;
-    // robot.dip_2_on = data_received.data.dip_2_on;
-    // robot.dip_3_on = data_received.data.dip_3_on;
-    // robot.dip_4_on = data_received.data.dip_4_on;
 }
 
 void Robot::setUpSerial()
