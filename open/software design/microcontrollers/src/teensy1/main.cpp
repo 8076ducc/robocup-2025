@@ -25,7 +25,7 @@ int points = 0;
 // striker variables
 unsigned long no_catchment_start_time = 0;
 bool was_in_catchment = false;
-const unsigned long catchment_timeout = 250; // ms
+const unsigned long catchment_timeout = 400; // ms
 
 // goalie variables
 unsigned long time_ball_stopped;
@@ -130,8 +130,8 @@ void loop()
   // }
 #endif
 
-  // Serial.print("task: ");
-  // Serial.println(robot.task);
+  Serial.print("task: ");
+  Serial.println(robot.task);
 
   switch (robot.task)
   {
@@ -160,6 +160,19 @@ void loop()
   // goalie();
   striker();
   // robot.orbitToBall(0);
+
+  // if (abs(ball.current_pose.x) > 6){
+  //   digitalWrite(13, HIGH);
+  // } else {
+  //   digitalWrite(13, LOW);
+  // }
+  // moveToCenter();÷
+
+  // robot.target_pose.x = blue_goal.current_pose.x;
+  // robot.target_pose.y = blue_goal.current_pose.y + yellow_goal.current_pose.y;
+  // Serial.println("x: " + String(robot.target_pose.x) + " y: " + String(robot.target_pose.y));
+  // robot.goalieTrack();
+  // Serial.println("angle: " + String(robot.move_data.target_angle) + "bearing: " + String(robot.move_data.target_bearing));
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
 }
