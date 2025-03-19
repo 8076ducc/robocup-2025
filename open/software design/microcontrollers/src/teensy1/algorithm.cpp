@@ -11,14 +11,16 @@ void Robot::defendGoal()
     target_pose.x = (abs(ball.current_pose.x) > 6) ? (ball.current_pose.x) : 0;
 
     
-    if (line_data.on_line){
+    if (line_data.on_line)
+    {
         rejectLine(0);
-        // }
-        // else if (ball.current_pose.y < 105){
-        //     target_pose.y = 0.5 * ball.current_pose.y;
-        //     target_pose.x = 0.85 * ball.current_pose.x;
-        //     goalieRush();
-    } else {
+    }
+    else if (ball.current_pose.y < 0) // ball is behind the robot
+    {
+        orbitToBall(0);
+    }
+    else
+    {
         target_pose.y = (abs(goal_y - target_y_from_goal) > 10) ? goal_y - target_y_from_goal : 0;
         target_pose.bearing = 0;
         goalieTrack();
