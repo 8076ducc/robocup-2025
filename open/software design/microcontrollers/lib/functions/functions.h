@@ -8,5 +8,6 @@
 double correctBearing(double bearing);
 int sgn(double val);
 double bound(double value, double low, double high);
+double xyToBearing(int x, int y);
 
 #endif
