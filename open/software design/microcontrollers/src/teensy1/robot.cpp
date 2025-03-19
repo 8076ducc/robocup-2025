@@ -5,9 +5,9 @@ double prev_distance = 0;
 void Robot::goalieTrack()
 {   
     // TUNE THIS
-    double min_speed = 0.15;
-    double max_speed = 0.35;
-    double decel_f = 50;
+    double min_speed = 0.05;
+    double max_speed = 0.4;
+    double decel_f = 40;
     double decel_k = 0.08;
     // END TUNE
 
