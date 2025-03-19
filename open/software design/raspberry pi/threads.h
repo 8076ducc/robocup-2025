@@ -36,9 +36,9 @@ public:
 void trackColour(int icase)
 {
     Colour colour({0}, 0);
-    Colour orange({3, 18, 94, 255, 191, 255}, 10);
-    Colour yellow({18, 40, 121, 255, 79, 242}, 40);
-    Colour blue({72, 104, 181, 214, 90, 204}, 30);
+    Colour orange({0, 17, 191, 255, 140, 255}, 10);
+    Colour yellow({21, 49, 213, 255, 60, 244}, 40);
+    Colour blue({86, 119, 152, 255, 60, 218}, 30);
     // set up kalman stuff
     int state_size = 6;
     int meas_size = 4;
@@ -230,7 +230,7 @@ void trackColour(int icase)
                         tx_data.data.yellow_goal_detected = true;
                         tx_data.data.yellow_goal_x = center.x;
                         tx_data.data.yellow_goal_y = center.y;
-                        std::cout << "yellow " << distance << " " << tx_data.data.yellow_goal_x  << " " << tx_data.data.yellow_goal_y << std::endl;
+                        // std::cout << "yellow " << distance << " " << tx_data.data.yellow_goal_x  << " " << tx_data.data.yellow_goal_y << std::endl;
                         // std::cout << "yellow " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
                         
                         break;
@@ -339,6 +339,8 @@ void trackColour(int icase)
                             yellow_open_end = p2;
                             tx_data.data.yellow_open_x = (yellow_open_start.x + yellow_open_end.x) / 2;
                             tx_data.data.yellow_open_y = (yellow_open_start.y + yellow_open_end.y) / 2;
+                            tx_data.data.yellow_open_x -= video_scaled / 2;
+                            tx_data.data.yellow_open_y = video_scaled / 2 - tx_data.data.yellow_open_y;
                         }
                         break;
 
@@ -350,6 +352,9 @@ void trackColour(int icase)
                             blue_open_end = p2;
                             tx_data.data.blue_open_x = (blue_open_start.x + blue_open_end.x) / 2;
                             tx_data.data.blue_open_y = (blue_open_start.y + blue_open_end.y) / 2;
+                            tx_data.data.blue_open_x -= video_scaled / 2;
+                            tx_data.data.blue_open_y = video_scaled / 2 - tx_data.data.blue_open_y;
+                            
                         }
                         break;
                     }
@@ -432,8 +437,9 @@ void trackColour(int icase)
                         }
                         if (blue_max_area)
                         {
-                            cv::rectangle(image_copy, blue_open_start, blue_open_end, cv::Scalar(255, 0, 0), 1);
+                            cv::rectangle(image_copy, blue_open_start, blue_open_end, cv::Scalar(255, 255, 255), 1);
                         }
+                        
                     }
                 }
                 // <<<<< Kalman Update

@@ -105,6 +105,8 @@ int main()
         if (show_debug_windows) {
 			cv::waitKey(1);
 		}
+		
+		
     }
 
     cam.stopVideo();
