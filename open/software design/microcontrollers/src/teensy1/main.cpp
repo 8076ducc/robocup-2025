@@ -1,6 +1,7 @@
 #include "main.h"
 #include "HardwareSerial.h"
 
+
 PacketSerial Layer1Serial;
 PacketSerial ImuSerial;
 PacketSerial TeensySerial;
@@ -78,8 +79,12 @@ void setup()
   robot.dribbler.update();
   robot.dribbler.dribbling = true;
 
+  robot.kicker.setup();
+
   
   pinMode(13, OUTPUT);
+  pinMode(23, OUTPUT);
+
 }
 
 void loop()
@@ -130,8 +135,8 @@ void loop()
   // }
 #endif
 
-  Serial.print("task: ");
-  Serial.println(robot.task);
+  // Serial.print("task: ");x
+  // Serial.println(robot.task);
 
   switch (robot.task)
   {
@@ -158,7 +163,9 @@ void loop()
     break;
   }
   // goalie();
+  
   striker();
+  // robot.kicker.reset();
   // robot.orbitToBall(0);
 
   // if (abs(ball.current_pose.x) > 6){

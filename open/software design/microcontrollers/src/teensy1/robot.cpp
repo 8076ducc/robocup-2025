@@ -1,26 +1,47 @@
 #include "main.h"
 
 double prev_distance = 0;
+double previous_error = 0;
 
 void Robot::goalieTrack()
 {   
     // TUNE THIS
-    double min_speed = 0.05;
-    double max_speed = 0.4;
-    double decel_f = 40;
-    double decel_k = 0.08;
+    double min_speed = 0.1;
+    double max_speed = 0.35;
+    // double decel_f = 40;
+    // double decel_k = 0.08;
+
+    double Kp = 0.00005;
+    double Ki = 0; 
+    double Kd = 0.00001;  // PID coefficients
     // END TUNE
 
     double distance = sqrt(pow(target_pose.x, 2) + pow(target_pose.y, 2));
 
-    // double speed = fmin(0.0005 * distance + 0.0008 * (distance - prev_distance), 0.4);
-    double speed = bound(decel_k * exp(distance / decel_f), min_speed, max_speed);
+    double error = abs(target_pose.x * ball.current_pose.bearing);
+
+    // Proportional term
+    double proportional = Kp * error;
+
+    // Integral term
+    double integral;
+    integral += error;
+    double integralTerm = Ki * integral;
+
+    // Derivative term
+    double derivative = Kd * (error - previous_error);
+
+    // Store the current error for the next iteration
+    previous_error = error;
+
+    // PID output is the sum of the proportional, integral, and derivative terms
+    double speed = bound(proportional + integralTerm + derivative, min_speed, max_speed);
 
     move_data.speed = (distance == 0) ? 0 : speed;
     move_data.target_angle = xyToBearing(target_pose.x, target_pose.y);
     move_data.target_bearing = correctBearing(target_pose.bearing);
     move_data.ema_constant = 0.0002;
-    prev_distance = distance;
+    previous_error = error;
 }
 
 void Robot::goalieRush()

@@ -8,6 +8,7 @@
 #define BOT_A
 
 #include <common.h>
+#include <Servo.h>
 
 #define DRIBBLER_LOWER_LIMIT 32
 #define DRIBBLER_UPPER_LIMIT 48
@@ -625,6 +626,20 @@ public:
     bool dribbling;
 };
 
+class Kicker
+{
+public:
+    void setup();
+
+    void kick();
+
+    void reset();
+
+    int servoPin = 23;
+
+    unsigned long time_kicked;
+};
+
 class Robot
 {
 public:
@@ -657,6 +672,7 @@ public:
 
     Base base;
     Dribbler dribbler;
+    Kicker kicker;
 
     Pose previous_pose;
     Pose current_pose;
