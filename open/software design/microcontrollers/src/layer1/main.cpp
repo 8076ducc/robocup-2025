@@ -57,7 +57,7 @@ void setup()
 }
 
 unsigned long last_time = 0;
-// int lowest = 3000;
+int lowest = 3000;
 
 void loop()
 {

@@ -7,8 +7,9 @@ unsigned long scoring_start_time;
 void Robot::defendGoal()
 {
     double goal_y = blue_goal.current_pose.y;
-    double target_y_from_goal = -90;
-    target_pose.x = (abs(ball.current_pose.x) > 6) ? (ball.current_pose.x) : 0;
+    double target_y_from_goal = -85;
+    target_pose.x = (abs(ball.current_pose.x) > 4) ? (ball.current_pose.x) : 0;
+    target_pose.x = bound(target_pose.x - blue_goal.current_pose.x, -55, 55) + blue_goal.current_pose.x;
 
     
     if (line_data.on_line)
@@ -192,6 +193,7 @@ void Robot::orbitToBall(double bearing)
 
 void Robot::orbitScore()
 {   
+    // digitalWrite(13, HIGH);
     // Serial.println("running orbitScore");
     // double target_bearing = robot.dip_4_on ? yellow_goal.current_pose.bearing : blue_goal.current_pose.bearing;
     double goal_y = blue_goal.current_pose.y;
@@ -245,7 +247,7 @@ void Robot::orbitScore()
         else
         {
             if (elapsed_duration - score_steep_accel_time > 200) {
-                kicker.kick();
+                robot.kicker.kick();
             }
             move_data.speed = score_max_speed;
             move_data.target_angle = 0;

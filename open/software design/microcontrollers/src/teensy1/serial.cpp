@@ -2,15 +2,15 @@
 
 void onLayer1Received(const byte *buf, size_t size)
 {
-    // Serial.println("Received data from L1");
+    // // Serial.println("Received data from L1");
     Layer1TxDataUnion data_received;
 
-    // // Don't continue if the payload is invalid
-    // if (size != sizeof(data_received))
-    // {
-    //     Serial.println("Invalid payload size from L1. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
-    //     return;
-    // }
+    // Don't continue if the payload is invalid
+    if (size != sizeof(data_received))
+    {
+        // Serial.println("Invalid payload size from L1. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
+        return;
+    }
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
@@ -70,7 +70,7 @@ void onImuReceived(const byte *buf, size_t size)
 
 // unsigned long last_serial_time = 0;
 
-void onTeensyReceived(const byte *buf, size_t size) // receives shit from the camera 
+void onTeensyReceived(const byte *buf, size_t size) // receives shit from the camera
 {
     CamTxDataUnion data_received;
     // Serial.println(size);
@@ -86,7 +86,6 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     }
 
     // digitalWrite(13, LOW);
-
 
     std::copy(buf, buf + size, std::begin(data_received.bytes));
 
@@ -108,14 +107,14 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     // Serial.print(" ");
     // Serial.print(data_received.data.blue_goal_y);
     // Serial.println(" ");
-    
+
     // Serial.print(" Ball: ");
     // Serial.print(data_received.data.ball_detected);
     // Serial.print(" ");
     // Serial.print(data_received.data.ball_x);
     // Serial.print(" ");
     // Serial.println(data_received.data.ball_y);
-    
+
     if (yellow_goal.detected && blue_goal.detected)
     {
         // Serial.println("Both goals detected");

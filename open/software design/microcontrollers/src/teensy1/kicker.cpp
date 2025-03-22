@@ -1,6 +1,6 @@
 #include "main.h"
 
-const int minPulseWidth = 1000;  // 1ms pulse for 0 degrees
+const int minPulseWidth = 1000; // 1ms pulse for 0 degrees
 const int maxPulseWidth = 2000; // 2ms pulse for 180 degrees
 
 bool kicked = false;
@@ -12,17 +12,18 @@ void Kicker::setup()
 
 void Kicker::kick()
 {
-    if (!kicked) {
+    if (!kicked)
+    {
         kicked = true;
         time_kicked = millis();
-        // digitalWrite(13, HIGH);
     }
-} 
+}
 
 void Kicker::reset()
 {
     if (kicked) {
-        if (millis() - time_kicked < 1800){
+        // digitalWrite(13, LOW);
+        if (millis() - time_kicked < 2000){
             digitalWrite(servoPin, HIGH);         // Start the pulse
             delayMicroseconds(minPulseWidth);     // Wait for 1ms (pulse width for 0 degrees)
             digitalWrite(servoPin, LOW);
@@ -30,7 +31,7 @@ void Kicker::reset()
             kicked=false;
         }
     } else{
-        // digitalWrite(13, LOW);
+        // digitalWrite(13, HIGH);
         digitalWrite(servoPin, HIGH);         // Start the pulse
         delayMicroseconds((maxPulseWidth+minPulseWidth)/2);     // Wait for 1ms (pulse width for 0 degrees)
         digitalWrite(servoPin, LOW);

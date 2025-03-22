@@ -6,19 +6,32 @@ double previous_error = 0;
 void Robot::goalieTrack()
 {   
     // TUNE THIS
-    double min_speed = 0.1;
+    double min_speed = 0.07;
     double max_speed = 0.35;
     // double decel_f = 40;
     // double decel_k = 0.08;
 
-    double Kp = 0.00005;
+    double Kp = 0.00045;
     double Ki = 0; 
     double Kd = 0.00001;  // PID coefficients
     // END TUNE
 
     double distance = sqrt(pow(target_pose.x, 2) + pow(target_pose.y, 2));
 
-    double error = abs(target_pose.x * ball.current_pose.bearing);
+    double angle = ball.current_pose.bearing;
+
+    if (angle > 180)
+    {
+        angle -= 360;
+        angle = abs(angle);
+    }
+    
+    if (angle > 90)
+    {
+        angle = 180 - angle;
+    }
+
+    double error = bound((pow(angle, 1.6)), 0, 700);
 
     // Proportional term
     double proportional = Kp * error;

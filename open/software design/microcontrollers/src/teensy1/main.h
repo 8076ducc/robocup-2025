@@ -8,7 +8,7 @@
 #define BOT_A
 
 #include <common.h>
-#include <Servo.h>
+#include <TeensyThreads.h>
 
 #define DRIBBLER_LOWER_LIMIT 32
 #define DRIBBLER_UPPER_LIMIT 48
