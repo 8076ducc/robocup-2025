@@ -1,6 +1,6 @@
 #include "main.h"
 
-double prev_distance = 0;
+double prev_distance = 0;mech
 double previous_error = 0;
 
 void Robot::goalieTrack()
