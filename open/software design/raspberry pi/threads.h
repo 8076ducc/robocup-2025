@@ -37,7 +37,7 @@ void trackColour(int icase)
 {
     Colour colour({0}, 0);
     Colour orange({0, 17, 191, 255, 140, 255}, 10);
-    Colour yellow({21, 49, 213, 255, 60, 244}, 40);
+    Colour yellow({25, 49, 213, 255, 60, 244}, 40);
     Colour blue({86, 119, 152, 255, 60, 218}, 30);
     // set up kalman stuff
     int state_size = 6;
@@ -225,6 +225,13 @@ void trackColour(int icase)
                         // std::cout << "ball " << sqrt(pow(tx_data.data.ball_x, 2) + pow(tx_data.data.ball_y, 2)) << " " << regress(sqrt(pow(tx_data.data.ball_x, 2) + pow(tx_data.data.ball_y, 2))) << std::endl;
                         // std::cout << "ball " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
                         // std::cout << center.x << " " << center.y << std::endl; 
+                        
+                        if (abs(tx_data.data.ball_x) > 6){
+                            digitalWrite(23, HIGH); 
+                        } else {
+                            digitalWrite(23, LOW);
+                        }
+                        
                         break;
                     case 1:
                         tx_data.data.yellow_goal_detected = true;
@@ -232,6 +239,8 @@ void trackColour(int icase)
                         tx_data.data.yellow_goal_y = center.y;
                         // std::cout << "yellow " << distance << " " << tx_data.data.yellow_goal_x  << " " << tx_data.data.yellow_goal_y << std::endl;
                         // std::cout << "yellow " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
+                        // std::cout << "yellow " << center.x << " " << center.y << std::endl; 
+
                         
                         break;
                     case 2:
@@ -240,6 +249,7 @@ void trackColour(int icase)
                         tx_data.data.blue_goal_y = center.y;
                         // std::cout << "blue " << distance << " " << tx_data.data.blue_goal_x  << " " << tx_data.data.blue_goal_y << std::endl;
                         // std::cout << "blue " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
+                        // std::cout << "blue " << center.x << " " << center.y << std::endl; 
                         break;
                     }
 
