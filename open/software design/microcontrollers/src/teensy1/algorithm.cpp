@@ -182,7 +182,7 @@ void Robot::orbitToBall(double bearing)
         // target_pose.y = 1215;
         target_pose.x = blue_goal.current_pose.x;
         target_pose.y = blue_goal.current_pose.y + yellow_goal.current_pose.y;
-        Serial.println("x: " + String(target_pose.x) + " y: " + String(target_pose.y));
+        // Serial.println("x: " + String(target_pose.x) + " y: " + String(target_pose.y));
         goalieTrack();
         // move_data.speed = 0;
         // move_data.target_angle = 0;
