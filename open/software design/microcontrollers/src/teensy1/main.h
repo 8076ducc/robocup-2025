@@ -666,16 +666,13 @@ public:
     void storeYellowOpenPose(double yellow_open_x, double yellow_open_y);
     void storeBlueOpenPose(double blue_open_x, double blue_open_y);
 
-    void getRobotPose();
-
-    Pose camera_pose;
+    void storeRobotPose();
 
     Base base;
     Dribbler dribbler;
     Kicker kicker;
 
     Pose previous_pose;
-    Pose current_pose;
     Pose target_pose;
 
     MoveData move_data;

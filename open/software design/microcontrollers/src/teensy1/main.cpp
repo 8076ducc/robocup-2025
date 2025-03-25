@@ -226,54 +226,13 @@ void setup()
 
 void loop()
 {
-  
   robot.sendSerial();
   robot.updateSerial();
-  // double flick_angle = 0;
+  robot.storeRobotPose();
+  
   double kp = 0.0014; // orginally 0.0014
   double ki = 0.0;    // orginally 0.0
   double kd = 0.005;  // orginally 0.005
-
-#ifndef BOT_A
-  // pure goalie code
-  if (!robot.alliance_robot_detected)
-  {
-    if (robot.dip_1_on)
-    {
-      striker();
-    }
-    else
-    {
-      goalie();
-    }
-  }
-  else
-  {
-    if (robot.dip_2_on)
-    {
-      striker();
-    }
-    else
-    {
-      robot.task = 2;
-    }
-  }
-
-#else
-  // pure striker code
-  // striker();
-  // if (!robot.alliance_robot_detected && ball.current_pose.y < 700)
-  // {
-  //   goalie();
-  // }
-  // else
-  // {
-  //   striker();
-  // }
-#endif
-
-  // Serial.print("task: ");x
-  // Serial.println(robot.task);
 
   switch (robot.task)
   {
@@ -300,28 +259,7 @@ void loop()
     break;
   }
   // goalie();
-  // Serial.print("blue x: " + String(blue_goal.current_pose.x));
-
   striker();
-
-  // Serial.println("ball: " + String(ball.in_catchment));
-  // digitalWrite(13, HIGH);
-  // robot.kicker.kick();
-  // robot.kicker.reset();
-  // robot.orbitToBall(0);
-
-  // if (abs(ball.current_pose.x) > 6){
-  //   digitalWrite(13, HIGH);
-  // } else {
-  //   digitalWrite(13, LOW);
-  // }
-  // moveToCenter();÷
-
-  // robot.target_pose.x = blue_goal.current_pose.x;
-  // robot.target_pose.y = blue_goal.current_pose.y + yellow_goal.current_pose.y;
-  // Serial.println("x: " + String(robot.target_pose.x) + " y: " + String(robot.target_pose.y));
-  // robot.goalieTrack();
-  // Serial.println("angle: " + String(robot.move_data.target_angle) + "bearing: " + String(robot.move_data.target_bearing));
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
   delayMicroseconds(1);
