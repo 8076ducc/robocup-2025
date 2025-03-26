@@ -1,7 +1,7 @@
 #include "main.h"
 
-const int minPulseWidth = 1000; // 1ms pulse for 0 degrees
-const int maxPulseWidth = 2000; // 2ms pulse for 180 degrees
+const int minPulseWidth = 500; // 1ms pulse for 0 degrees
+const int maxPulseWidth = 2500; // 2ms pulse for 180 degrees
 
 bool kicked = false;
 

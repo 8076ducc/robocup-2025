@@ -70,6 +70,7 @@ struct Layer1TxData
     double line_centre;
     int line_track_error;
     bool ball_in_catchment;
+    bool kicker_out;
     int line_start_ldr;
     int line_end_ldr;
 };
