@@ -37,7 +37,7 @@ void Robot::orbitToBall(double bearing)
         scoring_start_time = millis();
         // Serial.println("ball: " + String(ball.current_pose.bearing) + " robot(imu): " + String(robot.current_pose.bearing ));
         double bearing_from_robot = correctBearing(ball.current_pose.bearing - robot.current_pose.bearing);
-        double offset, multiplier;
+        double offset;
 
         if (bearing_from_robot < 180)
         {
@@ -47,49 +47,33 @@ void Robot::orbitToBall(double bearing)
         {
             offset = fmax((bearing_from_robot - 360) * 1.05, -90);
         }
-
-#ifdef BOT_A
         // double a = 0.085; // affects orbit radius (shift in and out)
         // double b = 1.7; // pivots the curve
         // double c = 150; // typically represents maximum distance from the ball
         // double d = 1; // maximum multiplier
 
         // TUNE THIS
-        double orbit_a = 0.15;
-        double orbit_b = 2.1;
-        double orbit_c = 150;
+        double orbit_a = 0.14;
+        double orbit_b = 0.8;
+        double orbit_c = 2190;
         double orbit_d = 1;
         // END TUNE
 
         double factor = orbit_d - (ball.distance_from_robot) / orbit_c;
-
-        // f = 1 - D/c
-        // M = min(1, ae^bf)
-       
-        multiplier = fmin(orbit_d, orbit_a * exp(orbit_b * factor));
-        // Serial.println(String(multiplier));
-        // Serial.print("multiplier: ");
-        // Serial.println(multiplier);
-
-#else
-        double factor = 1.1 - (ball.distance_from_robot) / 2190;
-
-        multiplier = fmin(1.1, 0.01 * exp(factor * 3.5));
-        Serial.print("multiplier: ");
-        Serial.println(multiplier);
-
-#endif
-        // speed calculation
-        // double speed = fmin(fmax(0.25, 0.00001 * pow(ball.distance_from_robot, 2)), 0.3);
+        double multiplier = fmin(orbit_d, orbit_a * exp(orbit_b * factor));
 
         // TUNE THIS
-        double orbit_min_speed = 0.1;
-        double orbit_max_speed = 0.4;
-        double orbit_decel_f = 65; // typically represents the maximum distance from the ball in pixels
-        double orbit_decel_k = 0.065; // increase for faster deceleration
-        // END TUNE
+        double orbit_min_speed = 0.2;
 
-        // move slower when close to the ball
+        if (ball.current_pose.bearing > 360 - 55 || ball.current_pose.bearing < 55)
+        {
+            orbit_min_speed = 0.05;
+        }
+
+        double orbit_max_speed = 0.4;
+        double orbit_decel_f = 300; // typically represents the maximum distance from the ball in pixels
+        double orbit_decel_k = 0.06; // increase for faster deceleration
+        // END TUNE
         
         // SET ATTACKING GOAL
         double goal_y = blue_goal.current_pose.y;
@@ -122,11 +106,11 @@ void Robot::orbitToBall(double bearing)
         // END TUNE
 
         // scale the maximum speed based on the distance from the edge
-        double orbit_max_speed_scaled = fmin(edge_a * exp((-edge_b * average_goal_x) + edge_c), orbit_max_speed);
+        // double orbit_max_speed_scaled = fmin(edge_a * exp((-edge_b * average_goal_x) + edge_c), orbit_max_speed);
         
         // deceleration curve
         // double speed = min(max(0.01 * ball.distance_from_robot, 0.15),  0.5);
-        double speed = fmin(fmax(orbit_decel_k * exp(ball.distance_from_robot / orbit_decel_f), orbit_min_speed), orbit_max_speed_scaled);
+        double speed = fmin(fmax(orbit_decel_k * exp(ball.distance_from_robot / orbit_decel_f), orbit_min_speed), orbit_max_speed);
 
         double correction = correctBearing(bearing_from_robot + multiplier * offset);
         // Serial.print("correction: ");
@@ -140,15 +124,10 @@ void Robot::orbitToBall(double bearing)
         {
             if (abs(correction - line_data.initial_line_angle) < 90 && (line_data.initial_line_angle > 20 && line_data.initial_line_angle < 330))
             {
-                // trackLine(speed, correction, 7);
                 rejectLine(bearing);
             }
             else
             {
-                // Serial.print("correction: ");
-                // Serial.println(correction);
-                // Serial.print("line angle: ");
-                // Serial.println(line_data.initial_line_angle);
                 rejectLine(bearing);
             }
         }
@@ -164,31 +143,18 @@ void Robot::orbitToBall(double bearing)
             if (abs(goal_y - ball.current_pose.y) < goal_y_diff_thresh && abs(goal_x - ball.current_pose.x) < goal_x_diff_thresh)
             {
                 move_data.speed = 0;
-                // digitalWrite(13, HIGH);
             }
             else
             {
-                // digitalWrite(13, LOW);
                 move_data.speed = speed;
             }
             move_data.target_angle = correction;
             move_data.target_bearing = bearing;
-            move_data.ema_constant = 0.0002;
         }
     }
     else
     {
-        // target_pose.x = 910;
-        // target_pose.y = 1215;
-        target_pose.x = blue_goal.current_pose.x;
-        target_pose.y = blue_goal.current_pose.y + yellow_goal.current_pose.y;
-        // Serial.println("x: " + String(target_pose.x) + " y: " + String(target_pose.y));
-        goalieTrack();
-        // move_data.speed = 0;
-        // move_data.target_angle = 0;
-        // move_data.target_bearing = 0;
-        // move_data.ema_constant = 0.0002;
-
+        robot.moveToPoint(0, 0, 0);
     }
 }
 
