@@ -652,7 +652,7 @@ public:
     void defendGoal();
     void orbitToBall(double bearing);
     void orbitScore();
-    void moveToNeutralPoint(int neutral_point, bool behind_line);
+    void moveToPoint(double x, double y, double bearing);
 
     void trackLine(double speed, double angle, int offset);
     void trackLineGoalie(double speed, double angle, int offset);
@@ -674,6 +674,7 @@ public:
 
     Pose previous_pose;
     Pose target_pose;
+    Pose current_pose;
 
     MoveData move_data;
     LineData line_data;

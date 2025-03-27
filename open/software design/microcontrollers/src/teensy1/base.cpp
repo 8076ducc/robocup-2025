@@ -143,6 +143,8 @@ void Base::move(double vel, double angle, double bearing, double kp = 0.0013, do
     double new_bl_out = bl * max_pwm;
     double new_br_out = br * max_pwm;
 
+
+
     // calculate exponential moving average
     double fl_out = fl_scale * (new_fl_out * ema_constant) + (prev_fl_out * (1 - ema_constant));
     double fr_out = fr_scale * (new_fr_out * ema_constant) + (prev_fr_out * (1 - ema_constant));

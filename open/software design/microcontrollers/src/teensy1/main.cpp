@@ -71,7 +71,7 @@ void resetThread()
   while (true)
   {
     robot.kicker.reset();
-    threads.delay(10);
+    threads.delay(1);
   }
 }
 
@@ -260,6 +260,10 @@ void loop()
   }
   // goalie();
   striker();
+
+  // Serial.println("x: " + String(robot.current_pose.x) + ", y: " + String(robot.current_pose.y) + " bearing: " + String(robot.current_pose.bearing));
+  // Serial.println("blue x: " + String(blue_goal.current_pose.x) + ", goal y: " + String(blue_goal.current_pose.y));
+  // Serial.println("yellow x: " + String(yellow_goal.current_pose.x) + ", yellow y: " + String(yellow_goal.current_pose.y));
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
   delayMicroseconds(1);

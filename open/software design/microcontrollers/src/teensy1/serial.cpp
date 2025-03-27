@@ -1,5 +1,11 @@
 #include "main.h"
 
+double regressBall(double distance)
+{
+    double regressed_distance = ((0 * pow(distance, 5)) - (0 * pow(distance, 4)) + (0.0002562291 * pow(distance, 3)) - (0.2172749012 * pow(distance, 2)) + (62.9773907121 * distance) - 5797.8985126998);
+    return regressed_distance;
+}
+
 void onLayer1Received(const byte *buf, size_t size)
 {
     // // Serial.println("Received data from L1");
@@ -80,7 +86,7 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
     {
-        // Serial.print("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
+        Serial.print("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
         // digitalWrite(13, HIGH);
         return;
     }
@@ -108,12 +114,12 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     // Serial.print(data_received.data.blue_goal_y);
     // Serial.println(" ");
 
-    // Serial.print(" Ball: ");
-    // Serial.print(data_received.data.ball_detected);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.ball_x);
-    // Serial.print(" ");
-    // Serial.println(data_received.data.ball_y);
+    Serial.print(" Ball: ");
+    Serial.print(data_received.data.ball_detected);
+    Serial.print(" ");
+    Serial.print(data_received.data.ball_x);
+    Serial.print(" ");
+    Serial.println(data_received.data.ball_y);
 
     if (yellow_goal.detected && blue_goal.detected)
     {
@@ -141,11 +147,16 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
         ball.current_pose.bearing = correctBearing(ball_relative_bearing + robot.current_pose.bearing);
         // ball.current_pose.x = bound(robot.current_pose.x + data_received.data.ball_x, 0, 1580);
         // ball.current_pose.y = bound(robot.current_pose.y + data_received.data.ball_y, 0, 2190);
-        ball.current_pose.x = data_received.data.ball_x;
-        ball.current_pose.y = data_received.data.ball_y;
+
         ball.detected = true;
 
-        ball.distance_from_robot = sqrt(pow(data_received.data.ball_x, 2) + pow(data_received.data.ball_y, 2));
+        ball.distance_from_robot = sqrt(pow(data_received.data.ball_x*2, 2) + pow(data_received.data.ball_y*2, 2));
+        ball.distance_from_robot = regressBall(ball.distance_from_robot);
+
+        // ball.current_pose.x = sin(radians(ball_relative_bearing)) * ball.distance_from_robot;
+        // ball.current_pose.y = cos(radians(ball_relative_bearing)) * ball.distance_from_robot;
+        ball.current_pose.x = data_received.data.ball_x;
+        ball.current_pose.y = data_received.data.ball_y;
     }
     else
     {

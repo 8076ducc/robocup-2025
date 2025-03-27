@@ -10,7 +10,7 @@ const int bt_serial_baud = 115200;
 const int cam_serial_baud = 500000; // 2000000 originally
 const int imu_serial_baud = 512000;
 const int layer_1_serial_baud = 256000; // 512000 originally
-const int teensy1_serial_baud = 2000000;
+const int teensy1_serial_baud = 3000000;
 const int serial_monitor_baud = 512000;
 
 struct BtTxData
@@ -70,6 +70,7 @@ struct Layer1TxData
     double line_centre;
     int line_track_error;
     bool ball_in_catchment;
+    bool kicker_out;
     int line_start_ldr;
     int line_end_ldr;
 };
