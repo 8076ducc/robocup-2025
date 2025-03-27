@@ -1,5 +1,8 @@
 #include "main.h"
 
+double field_width = 1580;
+double field_height = 2190;
+
 double regressGoal(double distance)
 {
   double regressed_distance = ((0 * pow(distance, 5)) - (0 * pow(distance, 4)) + (0.0002562291 * pow(distance, 3)) - (0.2172749012 * pow(distance, 2)) + (62.9773907121 * distance) - 5797.8985126998);
@@ -60,15 +63,36 @@ void Robot::storeBlueOpenPose(double blue_open_x, double blue_open_y)
 
 void Robot::storeRobotPose()
 {
+  double ema_const = 0.2;
+
   double yellow_goal_real_dist = regressGoal(sqrt(pow(yellow_goal.current_pose.x, 2) + pow(yellow_goal.current_pose.y, 2)));
+  double yellow_goal_real_x = yellow_goal_real_dist * sin(radians(yellow_goal.current_pose.bearing));
+  double yellow_goal_real_y = yellow_goal_real_dist * cos(radians(yellow_goal.current_pose.bearing));
+
   double blue_goal_real_dist = regressGoal(sqrt(pow(blue_goal.current_pose.x, 2) + pow(blue_goal.current_pose.y, 2)));
+  double blue_goal_real_x = blue_goal_real_dist * sin(radians(blue_goal.current_pose.bearing));
+  double blue_goal_real_y = blue_goal_real_dist * cos(radians(blue_goal.current_pose.bearing));
 
-  robot.current_pose.x = -(blue_goal_real_dist * sin(radians(blue_goal.current_pose.bearing)) + yellow_goal_real_dist * sin(radians(yellow_goal.current_pose.bearing))) / 2;
-  robot.current_pose.y = -(blue_goal_real_dist * cos(radians(blue_goal.current_pose.bearing)) + yellow_goal_real_dist * cos(radians(yellow_goal.current_pose.bearing))) / 2;
+  if (yellow_goal.detected && blue_goal.detected)
+  {
+    robot.current_pose.x = -(yellow_goal_real_x + blue_goal_real_x) / 2;
+    robot.current_pose.y = -(yellow_goal_real_y + blue_goal_real_y) / 2;
+  }
+  else if (yellow_goal.detected)
+  {
+    robot.current_pose.x = -yellow_goal_real_x;
 
-  // double ema_const = 0.2;
-  // robot.current_pose.x = (robot.current_pose.x * ema_const) + (previous_pose.x * (1 - ema_const));
-  // robot.current_pose.y = (robot.current_pose.y * ema_const) + (previous_pose.y * (1 - ema_const));
+    robot.current_pose.y = (yellow_goal.current_pose.y >= 0) ? (field_height / 2) - yellow_goal_real_y : -(field_height / 2) - yellow_goal_real_y;
+  }
+  else if (blue_goal.detected)
+  {
+    robot.current_pose.x = -blue_goal_real_x;
+
+    robot.current_pose.y = (blue_goal_real_y >= 0) ? (field_height / 2) - blue_goal_real_y : -(field_height / 2) - blue_goal_real_y;
+  }
+
+  robot.current_pose.x = (robot.current_pose.x * ema_const) + (previous_pose.x * (1 - ema_const));
+  robot.current_pose.y = (robot.current_pose.y * ema_const) + (previous_pose.y * (1 - ema_const));
 
   previous_pose.x = robot.current_pose.x;
   previous_pose.y = robot.current_pose.y;
