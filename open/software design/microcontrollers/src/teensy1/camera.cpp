@@ -5,33 +5,32 @@ double field_height = 2190;
 
 double regressGoal(double distance)
 {
-  double regressed_distance = ((0 * pow(distance, 5)) - (0 * pow(distance, 4)) + (0.0002562291 * pow(distance, 3)) - (0.2172749012 * pow(distance, 2)) + (62.9773907121 * distance) - 5797.8985126998);
-  return regressed_distance;
+  return ((0 * pow(distance, 5)) + (0.0000017467 * pow(distance, 4)) - (0.0015415267 * pow(distance, 3)) + (0.5124004040 * pow(distance, 2)) - (71.7065715242 * distance) + 3760.8747537149);
 }
 
 // store entire goal pose
 void Robot::storeGoalPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
 {
-  yellow_goal.current_pose.x = yellow_goal_x*2;
-  yellow_goal.current_pose.y = yellow_goal_y*2;
+  yellow_goal.current_pose.x = yellow_goal_x;
+  yellow_goal.current_pose.y = yellow_goal_y;
   yellow_goal.current_pose.bearing = correctBearing(degrees(atan2(yellow_goal_x, yellow_goal_y)) + robot.current_pose.bearing);
 
-  blue_goal.current_pose.x = blue_goal_x*2;
-  blue_goal.current_pose.y = blue_goal_y*2;
+  blue_goal.current_pose.x = blue_goal_x;
+  blue_goal.current_pose.y = blue_goal_y;
   blue_goal.current_pose.bearing = correctBearing(degrees(atan2(blue_goal_x, blue_goal_y)) + robot.current_pose.bearing);
 }
 
 void Robot::storeYellowPose(double yellow_goal_x, double yellow_goal_y)
 {
-  yellow_goal.current_pose.x = yellow_goal_x*2;
-  yellow_goal.current_pose.y = yellow_goal_y*2;
+  yellow_goal.current_pose.x = yellow_goal_x;
+  yellow_goal.current_pose.y = yellow_goal_y;
   yellow_goal.current_pose.bearing = correctBearing(degrees(atan2(yellow_goal_x, yellow_goal_y)) + robot.current_pose.bearing);
 }
 
 void Robot::storeBluePose(double blue_goal_x, double blue_goal_y)
 {
-  blue_goal.current_pose.x = blue_goal_x*2;
-  blue_goal.current_pose.y = blue_goal_y*2;
+  blue_goal.current_pose.x = blue_goal_x;
+  blue_goal.current_pose.y = blue_goal_y;
   blue_goal.current_pose.bearing = correctBearing(degrees(atan2(blue_goal_x, blue_goal_y)) + robot.current_pose.bearing);
 }
 
