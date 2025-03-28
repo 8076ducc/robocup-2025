@@ -7,21 +7,13 @@ cv::Mat unsizedImage;
 bool imageStatus;
 bool new_orange_frame, new_yellow_frame, new_blue_frame;
 
-int video_scaled = 300;
+int video_scaled = 864;
 bool show_debug_windows = false;
 
 double regress(double distance)
 {
-    // ball
-    // return ((0.0000002708 * pow(distance, 5)) - (0.0000696185 * pow(distance, 4)) + (0.0072414285 * pow(distance, 3)) - (0.3554100023 * pow(distance, 2)) + (14.2236266012 * distance) - 104.1068847374);
-    
     // goal
-    
-    // robot back 
-    // return ((0.0000044237 * pow(distance, 5)) - (0.0020908007 * pow(distance, 4)) + (0.3911084326 * pow(distance, 3)) - (36.0033960558 * pow(distance, 2)) + (1633.3529021812 * distance) - 29028.62896043);
-    
-    //robot front
-    return ((-0.0000014120 * pow(distance, 5)) + (0.0007693469 * pow(distance, 4)) - (0.1555893111 * pow(distance, 3)) + (15.0162772797 * pow(distance, 2)) - (691.0531306509 * distance) + 12345.129926796);
+    return ((0 * pow(distance, 5)) + (0.0000017467 * pow(distance, 4)) - (0.0015415267 * pow(distance, 3)) + (0.5124004040 * pow(distance, 2)) - (71.7065715242 * distance) + 3760.8747537149);
 };
 
 class Colour
@@ -36,9 +28,9 @@ public:
 void trackColour(int icase)
 {
     Colour colour({0}, 0);
-    Colour orange({0, 17, 191, 255, 140, 255}, 10);
+    Colour orange({0, 17, 130, 255, 140, 255}, 10);
     Colour yellow({25, 49, 213, 255, 60, 244}, 40);
-    Colour blue({86, 119, 152, 255, 60, 218}, 30);
+    Colour blue({94, 113, 210, 255, 83, 236}, 30);
     // set up kalman stuff
     int state_size = 6;
     int meas_size = 4;

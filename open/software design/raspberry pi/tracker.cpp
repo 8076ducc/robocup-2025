@@ -10,8 +10,8 @@
 #include "serial.h"
 #include "threads.h"
 
-int video_x = 1000;
-int video_y = 1000;
+int video_x = 864;
+int video_y = 864;
 lccv::PiCamera cam;	
 
 bool tune_orange = true;
@@ -84,8 +84,8 @@ int main()
     cam.options->video_height = video_y;
     cam.options->framerate = 120;
     cam.options->verbose = true;
-    // cam.options->af_index = AutoFocus_Modes::AF_MANUAL;
-    cam.options->lens_position = 20.0f;
+    //cam.options->af_index = AutoFocus_Modes::AF_CONTINUOUS;
+    cam.options->lens_position = 25.0f;
 
     cam.startVideo();
     imageStatus = cam.getVideoFrame(unsizedImage, 1000);

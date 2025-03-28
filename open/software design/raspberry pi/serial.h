@@ -60,7 +60,7 @@ void setUpSerial()
     wiringPiSetup();
     wiringPiSetupGpio();
 
-    serialDeviceId = serialOpen("/dev/ttyAMA0", 2000000);
+    serialDeviceId = serialOpen("/dev/ttyAMA0", 3000000);
 
     if (serialDeviceId < 0)
     {
