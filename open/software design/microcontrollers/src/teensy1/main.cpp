@@ -224,47 +224,67 @@ void setup()
   // serial.detach();
 }
 
+long unsigned timer = 0;
+
 void loop()
 {
+  // Serial.print("0. : " + String(micros() - timer));
+  timer = micros();
   robot.sendSerial();
+  // Serial.println("1.: " + String(micros() - timer));
+  timer = micros();
   robot.updateSerial();
+  // Serial.println("2.: " + String(micros() - timer));
+  timer = micros();
   robot.storeRobotPose();
-  
+  // Serial.println("3.: " + String(micros() - timer));
+  timer = micros();
+
   double kp = 0.0014; // orginally 0.0014
   double ki = 0.0;    // orginally 0.0
   double kd = 0.005;  // orginally 0.005
 
-  switch (robot.task)
-  {
-  case 0:
-    // Serial.println("running task 0");
-    // digitalWrite(13, HIGH);
-    robot.orbitToBall(0);
-    // robot.rotateToBall();
-    break;
+  robot.task = 0;
+  // switch (robot.task)
+  // {
+  // case 0:
+  //   // Serial.println("running task 0");
+  //   // digitalWrite(13, HIGH);
+  //   robot.orbitToBall(0);
+  //   // robot.rotateToBall();
+  //   break;
 
-  case 1:
-    // digitalWrite(13, LOW);
-    robot.orbitScore();
-    break;
+  // case 1:
+  //   // digitalWrite(13, LOW);
+  //   robot.orbitScore();
+  //   break;
 
-  case 2:
-    // digitalWrite(13, HIGH);
-    robot.defendGoal();
-    break;
+  // case 2:
+  //   // digitalWrite(13, HIGH);
+  //   robot.defendGoal();
+  //   break;
 
-  case 3:
-    kp = 0.0013;
-    // robot.moveToTargetPose();
-    break;
-  }
+  // case 3:
+  //   kp = 0.0013;
+  //   // robot.moveToTargetPose();
+  //   break;
+  // }
+  // Serial.println("4.: " + String(micros() - timer));
+  timer = micros();
   // goalie();
-  striker();
+  // striker();
+  // Serial.println("5.: " + String(micros() - timer));
+  timer = micros();
 
   // Serial.println("x: " + String(robot.current_pose.x) + ", y: " + String(robot.current_pose.y) + " bearing: " + String(robot.current_pose.bearing));
   // Serial.println("blue x: " + String(blue_goal.current_pose.x) + ", goal y: " + String(blue_goal.current_pose.y));
   // Serial.println("yellow x: " + String(yellow_goal.current_pose.x) + ", yellow y: " + String(yellow_goal.current_pose.y));
 
+  robot.orbitToBall(0);
+
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
+
+  // Serial.println("6.: " + String(micros() - timer));
+  timer = micros();
   delayMicroseconds(1);
 }

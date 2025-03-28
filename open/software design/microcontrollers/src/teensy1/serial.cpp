@@ -2,9 +2,8 @@
 
 double regressBall(double distance)
 {
-  return ((0 * pow(distance, 5)) + (0.0000017467 * pow(distance, 4)) - (0.0015415267 * pow(distance, 3)) + (0.5124004040 * pow(distance, 2)) - (71.7065715242 * distance) + 3760.8747537149);
+    return ((-0.0000000007 * pow(distance, 5)) + (0.0000007625 * pow(distance, 4)) + (-0.0002403939 * pow(distance, 3)) + (0.0290506929 * pow(distance, 2)) + (1.5529195385 * distance) + (-0.488503378));
 }
-
 
 void onLayer1Received(const byte *buf, size_t size)
 {
@@ -92,7 +91,7 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     }
     else
     {
-        Serial.println("received cleanly");
+        // Serial.println("received cleanly");
     }
 
     // digitalWrite(13, LOW);
@@ -155,12 +154,15 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
         ball.detected = true;
 
         ball.distance_from_robot = sqrt(pow(data_received.data.ball_x, 2) + pow(data_received.data.ball_y, 2));
+        // Serial.println("distance from robot: " + String(ball.distance_from_robot));
         ball.distance_from_robot = regressBall(ball.distance_from_robot);
 
-        // ball.current_pose.x = sin(radians(ball_relative_bearing)) * ball.distance_from_robot;
-        // ball.current_pose.y = cos(radians(ball_relative_bearing)) * ball.distance_from_robot;
-        ball.current_pose.x = data_received.data.ball_x;
-        ball.current_pose.y = data_received.data.ball_y;
+        Serial.println("x: " + String(data_received.data.ball_x) + " y: " + String(data_received.data.ball_y) + " dist: " + String(ball.distance_from_robot));
+
+        ball.current_pose.x = sin(radians(ball_relative_bearing)) * ball.distance_from_robot;
+        ball.current_pose.y = cos(radians(ball_relative_bearing)) * ball.distance_from_robot;
+        // ball.current_pose.x = data_received.data.ball_x;
+        // ball.current_pose.y = data_received.data.ball_y;
     }
     else
     {
@@ -218,13 +220,13 @@ void Robot::updateSerial()
 
 void Robot::sendSerial()
 {
-    if (Serial1.availableForWrite())
-    {
-        Layer1Serial.send(layer_1_rx_data.bytes, sizeof(layer_1_rx_data.bytes));
-    }
+    // if (Serial1.availableForWrite())
+    // {
+    //     Layer1Serial.send(layer_1_rx_data.bytes, sizeof(layer_1_rx_data.bytes));
+    // }
 
-    if (Serial5.availableForWrite())
-    {
-        TeensySerial.send(teensy_1_tx_data.bytes, sizeof(teensy_1_tx_data.bytes));
-    }
+    // if (Serial5.availableForWrite())
+    // {
+    //     TeensySerial.send(teensy_1_tx_data.bytes, sizeof(teensy_1_tx_data.bytes));
+    // }
 }
