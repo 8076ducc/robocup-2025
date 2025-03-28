@@ -8,7 +8,11 @@ bool imageStatus;
 bool new_orange_frame, new_yellow_frame, new_blue_frame;
 
 int video_scaled = 864;
-bool show_debug_windows = false;
+bool show_debug_windows;
+
+std::vector<int> orange_threshold = {0, 179, 0, 255, 0, 255};
+std::vector<int> yellow_threshold = {0, 179, 0, 255, 0, 255};
+std::vector<int> blue_threshold = {0, 179, 0, 255, 0, 255};
 
 double regress(double distance)
 {
@@ -28,9 +32,10 @@ public:
 void trackColour(int icase)
 {
     Colour colour({0}, 0);
-    Colour orange({0, 17, 130, 255, 140, 255}, 10);
-    Colour yellow({25, 49, 213, 255, 60, 244}, 40);
-    Colour blue({94, 113, 210, 255, 83, 236}, 30);
+    Colour orange(orange_threshold, 10);
+    Colour yellow(yellow_threshold, 40);
+    Colour blue(blue_threshold, 30);
+
     // set up kalman stuff
     int state_size = 6;
     int meas_size = 4;
@@ -146,7 +151,7 @@ void trackColour(int icase)
             break;
         }
 
-        //if (run_thread)
+        // if (run_thread)
         if (true)
         {
             auto tStartSteady = std::chrono::steady_clock::now();
@@ -165,7 +170,7 @@ void trackColour(int icase)
                 new_image = new_blue_frame;
                 break;
             }
-            
+
             if (imageStatus && new_image)
             {
                 double precTick = ticks;
@@ -216,14 +221,17 @@ void trackColour(int icase)
                         tx_data.data.ball_y = center.y;
                         // std::cout << "ball " << sqrt(pow(tx_data.data.ball_x, 2) + pow(tx_data.data.ball_y, 2)) << " " << regress(sqrt(pow(tx_data.data.ball_x, 2) + pow(tx_data.data.ball_y, 2))) << std::endl;
                         // std::cout << "ball " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
-                        // std::cout << center.x << " " << center.y << std::endl; 
-                        
-                        if (abs(tx_data.data.ball_x) > 6){
-                            digitalWrite(23, HIGH); 
-                        } else {
+                        // std::cout << center.x << " " << center.y << std::endl;
+
+                        if (abs(tx_data.data.ball_x) > 6)
+                        {
+                            digitalWrite(23, HIGH);
+                        }
+                        else
+                        {
                             digitalWrite(23, LOW);
                         }
-                        
+
                         break;
                     case 1:
                         tx_data.data.yellow_goal_detected = true;
@@ -231,9 +239,8 @@ void trackColour(int icase)
                         tx_data.data.yellow_goal_y = center.y;
                         // std::cout << "yellow " << distance << " " << tx_data.data.yellow_goal_x  << " " << tx_data.data.yellow_goal_y << std::endl;
                         // std::cout << "yellow " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
-                        // std::cout << "yellow " << center.x << " " << center.y << std::endl; 
+                        // std::cout << "yellow " << center.x << " " << center.y << std::endl;
 
-                        
                         break;
                     case 2:
                         tx_data.data.blue_goal_detected = true;
@@ -241,7 +248,7 @@ void trackColour(int icase)
                         tx_data.data.blue_goal_y = center.y;
                         // std::cout << "blue " << distance << " " << tx_data.data.blue_goal_x  << " " << tx_data.data.blue_goal_y << std::endl;
                         // std::cout << "blue " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
-                        // std::cout << "blue " << center.x << " " << center.y << std::endl; 
+                        // std::cout << "blue " << center.x << " " << center.y << std::endl;
                         break;
                     }
 
@@ -356,7 +363,6 @@ void trackColour(int icase)
                             tx_data.data.blue_open_y = (blue_open_start.y + blue_open_end.y) / 2;
                             tx_data.data.blue_open_x -= video_scaled / 2;
                             tx_data.data.blue_open_y = video_scaled / 2 - tx_data.data.blue_open_y;
-                            
                         }
                         break;
                     }
@@ -441,7 +447,6 @@ void trackColour(int icase)
                         {
                             cv::rectangle(image_copy, blue_open_start, blue_open_end, cv::Scalar(255, 255, 255), 1);
                         }
-                        
                     }
                 }
                 // <<<<< Kalman Update
