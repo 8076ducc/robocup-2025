@@ -454,18 +454,27 @@ void trackColour(int icase)
 
                 if (show_debug_windows)
                 {
+
+                    std::string file_name;
+
                     switch (icase)
                     {
                     case 0:
                         window_name = "orange final";
-                        break;
+                        file_name = "values/orange.txt" break;
                     case 1:
                         window_name = "yellow final";
-                        break;
+                        file_name = "values/yellow.txt" break;
                     case 2:
                         window_name = "blue final";
-                        break;
+                        file_name = "values/blue.txt" break;
                     }
+
+                    values.open(file_name);
+                    values << colour.threshold[0] << " " << colour.threshold[1] << " "
+                           << colour.threshold[2] << " " << colour.threshold[3] << " "
+                           << colour.threshold[4] << " " << colour.threshold[5] << "\n";
+                    values.close();
 
                     cv::imshow(window_name, image_copy);
                 }

@@ -22,16 +22,6 @@ int main()
         getImage.join();
         transmit.join();
         receive.join();
-
-        if (show_debug_windows)
-        {
-            cv::waitKey(1);
-        }
-
-        if (STOP)
-        {
-            break;
-        }
     }
 
     cam.stopVideo();

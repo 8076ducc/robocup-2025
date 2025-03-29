@@ -20,23 +20,7 @@ int main()
         getImage.join();
         transmit.join();
         receive.join();
-
-        if (show_debug_windows)
-        {
-            cv::waitKey(1);
-        }
-
-        if (STOP) {
-            break;
-        }
     }
-
-    // write colour values to file with line break
-    values.open("values/blue.txt", std::ios::app);
-    values << colour.threshold[0] << " " << colour.threshold[1] << " "
-           << colour.threshold[2] << " " << colour.threshold[3] << " "
-           << colour.threshold[4] << " " << colour.threshold[5] << "\n";
-    values.close();
 
     cam.stopVideo();
     cv::destroyAllWindows();
