@@ -216,7 +216,7 @@ void trackColour(int icase)
                     tx_data.data.ball_x = center.x;
                     tx_data.data.ball_y = center.y;
                     // std::cout << "ball " << sqrt(pow(tx_data.data.ball_x, 2) + pow(tx_data.data.ball_y, 2)) << " " << regress(sqrt(pow(tx_data.data.ball_x, 2) + pow(tx_data.data.ball_y, 2))) << std::endl;
-                    std::cout << "ball " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
+                    // std::cout << "ball " << sqrt(pow(center.x, 2) + pow(center.y, 2)) << " " << distance << std::endl;
                     // std::cout << center.x << " " << center.y << std::endl;
 
                     if (abs(tx_data.data.ball_x) > 6)

@@ -4,6 +4,14 @@ int main()
 {
     show_debug_windows = true;
     startup();
-    handleThreads(false, true, false);
+    
+    std::thread trackYellow(trackColour, 1);
+    std::thread getImage(getNewImage);
+    std::thread transmit(transmitData);
+
+    trackYellow.join();
+    getImage.join();
+    transmit.join();    
+    
     shutdown();
 }

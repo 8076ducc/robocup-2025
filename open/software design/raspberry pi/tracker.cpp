@@ -17,6 +17,5 @@ int main()
     getImage.join();
     transmit.join();
 
-    cam.stopVideo();
-    cv::destroyAllWindows();
+    shutdown();
 }

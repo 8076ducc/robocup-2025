@@ -65,10 +65,10 @@ void startup()
     cam.options->video_height = video_y;
     cam.options->framerate = 120;
     cam.options->verbose = true;
-    // cam.options->af_index = AutoFocus_Modes::AF_CONTINUOUS;
+    // cam.options->setAutoFocus(AutoFocus_Modes::AF_CONTINUOUS);
     cam.options->setWhiteBalance(WhiteBalance_Modes::WB_INDOOR);
     cam.options->brightness = 0.1f;
-    cam.options->lens_position = 25.0f;
+    cam.options->lens_position = 40.0f;
 
     cam.startVideo();
     imageStatus = cam.getVideoFrame(unsizedImage, 1000);
@@ -121,46 +121,7 @@ void startup()
     }
 }
 
-void handleThreads(bool orange, bool yellow, bool blue)
-{
-    if (orange)
-    {
-        std::thread trackOrange(trackColour, 0);
-    }
-
-    if (yellow)
-    {
-        std::thread trackYellow(trackColour, 1);
-    }
-
-    if (blue)
-    {
-        std::thread trackBlue(trackColour, 2);
-    }
-
-    std::thread getImage(getNewImage);
-    std::thread transmit(transmitData);
-
-    if (orange)
-    {
-        trackOrange.join();
-    }
-
-    if (yellow)
-    {
-        trackYellow.join();
-    }
-
-    if (blue)
-    {
-        trackBlue.join();
-    }
-
-    getImage.join();
-    transmit.join();
-}
-
-void shutdown()
+int shutdown()
 {
     cam.stopVideo();
     cv::destroyAllWindows();
