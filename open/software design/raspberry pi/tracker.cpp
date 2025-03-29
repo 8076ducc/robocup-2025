@@ -27,6 +27,11 @@ int main()
         {
             cv::waitKey(1);
         }
+
+        if (STOP)
+        {
+            break;
+        }
     }
 
     cam.stopVideo();

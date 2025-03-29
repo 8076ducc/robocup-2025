@@ -11,12 +11,12 @@ int main()
     {
         // digitalWrite(23, HIGH);
 
-        std::thread trackYellow(trackColour, 1);
+        std::thread trackBlue(trackColour, 2);
         std::thread getImage(getNewImage);
         std::thread transmit(transmitData);
         std::thread receive(receiveData);
 
-        trackYellow.join();
+        trackBlue.join();
         getImage.join();
         transmit.join();
         receive.join();
@@ -24,6 +24,10 @@ int main()
         if (show_debug_windows)
         {
             cv::waitKey(1);
+        }
+
+        if (STOP) {
+            break;
         }
     }
 

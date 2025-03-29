@@ -29,9 +29,10 @@ public:
                                                         minArea(iminArea) {}
 };
 
+Colour colour({0}, 0);
+
 void trackColour(int icase)
 {
-    Colour colour({0}, 0);
     Colour orange(orange_threshold, 10);
     Colour yellow(yellow_threshold, 40);
     Colour blue(blue_threshold, 30);

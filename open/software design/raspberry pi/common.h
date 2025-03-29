@@ -7,6 +7,8 @@
 #include <iostream>
 #include <fstream>
 #define byte uint8_t
+#include <signal.h>
+#include <stdbool.h>
 
 #include "serial.h"
 #include "threads.h"
@@ -14,6 +16,9 @@
 int video_x = 864;
 int video_y = 864;
 lccv::PiCamera cam;
+
+volatile bool STOP = false;
+void sigint_handler(int sig);
 
 void getNewImage()
 {
@@ -74,8 +79,15 @@ void receiveData()
     }
 }
 
+void sigint_handler(int sig) {
+    printf("\nCTRL-C detected\n");
+    STOP = true;
+}
+
 void startup()
 {
+    signal(SIGINT, sigint_handler);
+
     setUpSerial();
     cam.options->video_width = video_x;
     cam.options->video_height = video_y;

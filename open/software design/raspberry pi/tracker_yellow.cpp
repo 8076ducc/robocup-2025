@@ -25,6 +25,10 @@ int main()
         {
             cv::waitKey(1);
         }
+
+        if (STOP) {
+            break;
+        }
     }
 
     // write colour values to file with line break
