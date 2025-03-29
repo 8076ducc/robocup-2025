@@ -2,7 +2,7 @@
 
 double regressBall(double distance)
 {
-    return ((-0.0000000007 * pow(distance, 5)) + (0.0000007625 * pow(distance, 4)) + (-0.0002403939 * pow(distance, 3)) + (0.0290506929 * pow(distance, 2)) + (1.5529195385 * distance) + (-0.488503378));
+   return ((0 * pow(distance, 5)) + (0.0000004455 * pow(distance, 4)) - (0.0002198037 * pow(distance, 3)) + (0.0361183593 * pow(distance, 2)) + (0.8920610619 * distance) + 4.8369591755);
 }
 
 void onLayer1Received(const byte *buf, size_t size)
@@ -85,7 +85,7 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
     {
-        Serial.println("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
+        // Serial.println("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
         // digitalWrite(13, HIGH);
         return;
     }
@@ -157,7 +157,7 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
         // Serial.println("distance from robot: " + String(ball.distance_from_robot));
         ball.distance_from_robot = regressBall(ball.distance_from_robot);
 
-        Serial.println("x: " + String(data_received.data.ball_x) + " y: " + String(data_received.data.ball_y) + " dist: " + String(ball.distance_from_robot));
+        // Serial.println("x: " + String(data_received.data.ball_x) + " y: " + String(data_received.data.ball_y) + " dist: " + String(ball.distance_from_robot));
 
         ball.current_pose.x = sin(radians(ball_relative_bearing)) * ball.distance_from_robot;
         ball.current_pose.y = cos(radians(ball_relative_bearing)) * ball.distance_from_robot;

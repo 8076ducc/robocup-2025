@@ -4,14 +4,13 @@ double prev_distance = 0;
 double previous_error = 0;
 // double previous_
 
-void Robot::moveToPoint(double x, double y, double bearing)
+void Robot::moveToPoint(double x, double y, double bearing, double min_speed=0.15, double max_speed = 0.35)
 {
-    double min_speed = 0.15;
-    double max_speed = 0.35;
     double kp = 0.00045;
 
     double target_x = x - robot.current_pose.x;
     double target_y = y - robot.current_pose.y;
+    Serial.println("target x: " + String(robot.current_pose.x) + " target y: " + String(robot.current_pose.y));
     double distance = sqrt(pow(target_x, 2) + pow(target_y, 2));
 
     double speed = bound(kp * distance, min_speed, max_speed);
@@ -19,6 +18,7 @@ void Robot::moveToPoint(double x, double y, double bearing)
 
     move_data.speed = (distance == 0) ? 0 : speed;
     move_data.target_angle = xyToBearing(target_x, target_y);
+    Serial.println("target angle: " + String(move_data.target_angle));
     move_data.target_bearing = bearing;
     // move_data.ema_constant = 0.0002;
     prev_distance = distance;

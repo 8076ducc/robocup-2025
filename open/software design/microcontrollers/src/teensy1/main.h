@@ -3,8 +3,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define DEBUG
-#define SERIAL_DEBUG
+// #define DEBUG
+// #define SERIAL_DEBUG
 #define BOT_A
 
 #include <common.h>
@@ -652,7 +652,7 @@ public:
     void defendGoal();
     void orbitToBall(double bearing);
     void orbitScore();
-    void moveToPoint(double x, double y, double bearing);
+    void moveToPoint(double x, double y, double bearing, double min_speed, double max_speed);
 
     void trackLine(double speed, double angle, int offset);
     void trackLineGoalie(double speed, double angle, int offset);
