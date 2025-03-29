@@ -454,6 +454,7 @@ void trackColour(int icase)
 
                 if (show_debug_windows)
                 {
+                    std::ofstream values;
 
                     std::string file_name;
 
@@ -461,13 +462,16 @@ void trackColour(int icase)
                     {
                     case 0:
                         window_name = "orange final";
-                        file_name = "values/orange.txt" break;
+                        file_name = "values/orange.txt";
+                        break;
                     case 1:
                         window_name = "yellow final";
-                        file_name = "values/yellow.txt" break;
+                        file_name = "values/yellow.txt";
+                        break;
                     case 2:
                         window_name = "blue final";
-                        file_name = "values/blue.txt" break;
+                        file_name = "values/blue.txt";
+                        break;
                     }
 
                     values.open(file_name);

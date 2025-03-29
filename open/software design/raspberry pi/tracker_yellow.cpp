@@ -3,8 +3,6 @@
 int main()
 {
     show_debug_windows = true;
-    std::ofstream values;
-
     startup();
 
     while (true)
@@ -26,7 +24,8 @@ int main()
             cv::waitKey(1);
         }
 
-        if (STOP) {
+        if (STOP)
+        {
             break;
         }
     }

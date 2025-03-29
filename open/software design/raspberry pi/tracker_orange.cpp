@@ -3,8 +3,6 @@
 int main()
 {
     show_debug_windows = true;
-    std::ofstream values;
-
     startup();
 
     while (true)
