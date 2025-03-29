@@ -29,10 +29,10 @@ public:
                                                         minArea(iminArea) {}
 };
 
-Colour colour({0}, 0);
 
 void trackColour(int icase)
 {
+    Colour colour({0}, 0);
     Colour orange(orange_threshold, 10);
     Colour yellow(yellow_threshold, 40);
     Colour blue(blue_threshold, 30);
@@ -99,7 +99,7 @@ void trackColour(int icase)
         colour = blue;
         break;
     }
-
+    
     std::string window_name;
 
     if (show_debug_windows)
@@ -120,6 +120,7 @@ void trackColour(int icase)
         cv::namedWindow(window_name, cv::WINDOW_AUTOSIZE);
 
         // Create trackbars in "Control" window
+
         cv::createTrackbar("LowH", window_name, &colour.threshold[0], 179); // Hue (0 - 179)
         cv::createTrackbar("HighH", window_name, &colour.threshold[1], 179);
 
@@ -138,21 +139,6 @@ void trackColour(int icase)
 
     while (true)
     {
-        bool run_thread;
-        switch (icase)
-        {
-        case 0:
-            run_thread = rx_data.track_orange;
-            break;
-        case 1:
-            run_thread = rx_data.track_yellow;
-            break;
-        case 2:
-            run_thread = rx_data.track_blue;
-            break;
-        }
-
-        // if (run_thread)
         if (true)
         {
             auto tStartSteady = std::chrono::steady_clock::now();
