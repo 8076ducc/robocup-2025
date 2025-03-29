@@ -10,8 +10,8 @@
 #include "serial.h"
 #include "threads.h"
 
-int video_x = 1000;
-int video_y = 1000;
+int video_x = 864;
+int video_y = 864;
 lccv::PiCamera cam;	
 
 bool tune_orange = true;
