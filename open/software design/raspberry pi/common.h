@@ -82,6 +82,8 @@ void startup()
     cam.options->framerate = 120;
     cam.options->verbose = true;
     // cam.options->af_index = AutoFocus_Modes::AF_CONTINUOUS;
+    cam.options->setWhiteBalance(WhiteBalance_Modes::WB_INDOOR);
+    cam.options->brightness=0.1f;
     cam.options->lens_position = 25.0f;
 
     cam.startVideo();

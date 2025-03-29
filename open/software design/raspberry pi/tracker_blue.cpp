@@ -12,12 +12,12 @@ int main()
         std::thread trackBlue(trackColour, 2);
         std::thread getImage(getNewImage);
         std::thread transmit(transmitData);
-        std::thread receive(receiveData);
+        // std::thread receive(receiveData);
 
         trackBlue.join();
         getImage.join();
         transmit.join();
-        receive.join();
+        // receive.join();
     }
 
     cam.stopVideo();
