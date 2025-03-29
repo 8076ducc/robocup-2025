@@ -37,6 +37,11 @@ void getNewImage()
         std::chrono::nanoseconds diff = tEndSteady - tStartSteady;
         fps = 0.9 * fps + 0.1 * (1000000000 / diff.count());
         // std::cout << fps << std::endl;
+
+        if (STOP)
+        {
+            break;
+        }
     }
 }
 
@@ -45,32 +50,11 @@ void transmitData()
     while (true)
     {
         serialWrite(tx_data.bytes, sizeof(tx_data.bytes));
-    }
-}
 
-void receiveData()
-{
-    while (true)
-    {
-        serialRead();
-
-        // if (tune_orange) {
-        //	rx_data.track_orange = true;
-        // } else {
-        //	rx_data.track_orange = false;
-        // }
-
-        // if (tune_yellow) {
-        //	rx_data.track_yellow = true;
-        // } else {
-        //	rx_data.track_yellow = false;
-        // }
-
-        // if (tune_blue) {
-        //	rx_data.track_blue = true;
-        // } else {
-        //	rx_data.track_blue = false;
-        // }
+        if (STOP)
+        {
+            break;
+        }
     }
 }
 
@@ -83,7 +67,7 @@ void startup()
     cam.options->verbose = true;
     // cam.options->af_index = AutoFocus_Modes::AF_CONTINUOUS;
     cam.options->setWhiteBalance(WhiteBalance_Modes::WB_INDOOR);
-    cam.options->brightness=0.1f;
+    cam.options->brightness = 0.1f;
     cam.options->lens_position = 25.0f;
 
     cam.startVideo();
@@ -91,8 +75,6 @@ void startup()
     new_orange_frame = false;
     new_yellow_frame = false;
     new_blue_frame = false;
-
-    pinMode(23, OUTPUT);
 
     std::ifstream orange_values;
     std::ifstream yellow_values;
@@ -137,4 +119,51 @@ void startup()
     {
         std::cout << "Unable to open file";
     }
+}
+
+void handleThreads(bool orange, bool yellow, bool blue)
+{
+    if (orange)
+    {
+        std::thread trackOrange(trackColour, 0);
+    }
+
+    if (yellow)
+    {
+        std::thread trackYellow(trackColour, 1);
+    }
+
+    if (blue)
+    {
+        std::thread trackBlue(trackColour, 2);
+    }
+
+    std::thread getImage(getNewImage);
+    std::thread transmit(transmitData);
+
+    if (orange)
+    {
+        trackOrange.join();
+    }
+
+    if (yellow)
+    {
+        trackYellow.join();
+    }
+
+    if (blue)
+    {
+        trackBlue.join();
+    }
+
+    getImage.join();
+    transmit.join();
+}
+
+void shutdown()
+{
+    cam.stopVideo();
+    cv::destroyAllWindows();
+
+    return 0;
 }
