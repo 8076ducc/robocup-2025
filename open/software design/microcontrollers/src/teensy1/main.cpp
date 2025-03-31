@@ -272,9 +272,8 @@ void loop()
   }
   // Serial.println("4.: " + String(micros() - timer));
   // timer = micros();
-  // goalie();
-  // Serial.println("ball in catchment: " + String(ball.in_catchment));
-  striker();
+  goalie();
+  // striker();
   // Serial.println("5.: " + String(micros() - timer));
   // timer = micros();
 
@@ -285,13 +284,14 @@ void loop()
     // robot.moveToPoint(0, 0, 0);
   // }
 
-  // Serial.println("x: " + String(robot.current_pose.x) + ", y: " + String(robot.current_pose.y) + " bearing: " + String(robot.current_pose.bearing));
+  Serial.println("x: " + String(robot.current_pose.x) + ", y: " + String(robot.current_pose.y) + " bearing: " + String(robot.current_pose.bearing));
   // Serial.println("blue x: " + String(blue_goal.current_pose.x) + ", goal y: " + String(blue_goal.current_pose.y));
   // Serial.println("yellow x: " + String(yellow_goal.current_pose.x) + ", yellow y: " + String(yellow_goal.current_pose.y));
 
   // robot.orbitToBall(0);
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
+  
 
   // Serial.println("6.: " + String(micros() - timer));
   // timer = micros();

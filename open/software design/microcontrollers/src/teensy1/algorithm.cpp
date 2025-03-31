@@ -30,11 +30,9 @@ void Robot::defendGoal()
 
 void Robot::orbitToBall(double bearing)
 {
-    // Serial.println("running orbitToBall");
     if (ball.detected)
     {
         scoring_start_time = millis();
-        // Serial.println("ball: " + String(ball.current_pose.bearing) + " robot(imu): " + String(robot.current_pose.bearing ));
         double bearing_from_robot = correctBearing(ball.current_pose.bearing - robot.current_pose.bearing);
         double offset;
 
@@ -110,14 +108,9 @@ void Robot::orbitToBall(double bearing)
         double orbit_max_speed_scaled = fmin(edge_a * exp((-edge_b * average_goal_x) + edge_c) + edge_d, orbit_max_speed);
 
         // deceleration curve
-        // double speed = min(max(0.01 * ball.distance_from_robot, 0.15),  0.5);
         double speed = fmin(fmax(orbit_decel_k * exp(ball.distance_from_robot / orbit_decel_f), orbit_min_speed), orbit_max_speed_scaled);
-        // Serial.println(ball.distance_from_robot);
-        // Serial.println("speed: " + String(speed));
 
         double correction = correctBearing(bearing_from_robot + multiplier * offset);
-        // Serial.print("correction: ");
-        // Serial.println(correction);
 
         if (correction < 10 || correction > 350)
         {
@@ -140,8 +133,6 @@ void Robot::orbitToBall(double bearing)
             // TUNE THIS
             double goal_y_diff_thresh = 25;
             double goal_x_diff_thresh = 40;
-            // Serial.print("goal_y_diff " + String(goal_y - ball.current_pose.y));
-            // Serial.println(" goal_x_diff " + String(ball.current_pose.x - average_goal_x));
             // END TUNE
 
             if (abs(goal_y - ball.current_pose.y) < goal_y_diff_thresh && abs(goal_x - ball.current_pose.x) < goal_x_diff_thresh)
@@ -268,28 +259,6 @@ void Robot::orbitScore()
             }
             
         }
-        // } else {
-        //     float elapsed_duration = millis() - kicking_start_time;
-        //     if (elapsed_duration < score_steep_accel_time)
-        //     {
-        //         move_data.speed = (elapsed_duration) / score_steep_accel_time * (score_max_speed - score_min_speed) + score_min_speed;
-        //         move_data.target_angle = target_bearing - (elapsed_duration) / score_steep_accel_time * target_bearing;
-        //         move_data.target_bearing = (elapsed_duration) / score_steep_accel_time * target_bearing;
-        //     }
-        //     else
-        //     {   
-        //         if (elapsed_duration - score_steep_accel_time > 200)
-        //         {
-        //             if (robot.current_pose.bearing - blue_open.current_pose.bearing < 5)
-        //             {
-        //                 robot.kicker.kick();
-        //             }
-        //         }
-        //         move_data.speed = score_max_speed;
-        //         move_data.target_angle = 0;
-        //         move_data.target_bearing = target_bearing;
-        //     }
-        // }
         
 
         // if (elapsed_duration < score_accel_time)
