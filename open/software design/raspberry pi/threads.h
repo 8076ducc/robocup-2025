@@ -15,11 +15,12 @@ void sigint_handler(int sig)
     STOP = true;
 }
 
+
 cv::Mat unsizedImage;
 bool imageStatus;
 bool new_orange_frame, new_yellow_frame, new_blue_frame;
 
-int video_scaled = 864;
+int video_scaled = 500;
 bool show_debug_windows;
 
 std::vector<int> orange_threshold = {0, 179, 0, 255, 0, 255};
@@ -150,8 +151,6 @@ void trackColour(int icase)
 
     while (true)
     {
-        auto tStartSteady = std::chrono::steady_clock::now();
-
         bool new_image;
 
         switch (icase)
@@ -166,7 +165,7 @@ void trackColour(int icase)
             new_image = new_blue_frame;
             break;
         }
-
+        
         if (imageStatus && new_image)
         {
             double precTick = ticks;
@@ -392,7 +391,7 @@ void trackColour(int icase)
             {
                 notFoundCount++;
                 // std::cout << "notFoundCount:" << notFoundCount << std::endl;
-                if (notFoundCount >= 100)
+                if (notFoundCount >= 50)
                 {
                     found = false;
                 }
@@ -479,23 +478,19 @@ void trackColour(int icase)
             }
 
             cv::waitKey(1);
-        }
-        else
-        {
-            // std::cout << "Timeout error" << std::endl;
-        }
-
-        switch (icase)
-        {
-        case 0:
-            new_orange_frame = false;
-            break;
-        case 1:
-            new_yellow_frame = false;
-            break;
-        case 2:
-            new_blue_frame = false;
-            break;
+            
+            switch (icase)
+            {
+            case 0:
+                new_orange_frame = false;
+                break;
+            case 1:
+                new_yellow_frame = false;
+                break;
+            case 2:
+                new_blue_frame = false;
+                break;
+            }
         }
 
         if (STOP)
