@@ -19,7 +19,7 @@ cv::Mat unsizedImage;
 bool imageStatus;
 bool new_orange_frame, new_yellow_frame, new_blue_frame;
 
-int video_scaled = 500;
+int video_scaled = 450;
 bool show_debug_windows;
 
 std::vector<int> orange_threshold = {0, 179, 0, 255, 0, 255};
@@ -457,9 +457,8 @@ void trackColour(int icase)
             values.close();
 
             cv::imshow(window_name, image_copy);
+            cv::waitKey(1);
         }
-
-        cv::waitKey(1);
     }
 }
 
