@@ -11,8 +11,8 @@
 #include "serial.h"
 #include "threads.h"
 
-int video_x = 864;
-int video_y = 864;
+int video_x = 450;
+int video_y = 450;
 lccv::PiCamera cam;
 
 void getNewImage()
