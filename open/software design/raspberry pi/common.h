@@ -18,31 +18,18 @@ lccv::PiCamera cam;
 void getNewImage()
 {
     double fps = 0;
+    auto tStartSteady = std::chrono::steady_clock::now();
 
-    while (true)
-    {
-        auto tStartSteady = std::chrono::steady_clock::now();
+    imageStatus = cam.getVideoFrame(unsizedImage, 1000);
+    // cv::circle(unsizedImage, cv::Point(500, 500), 2, CV_RGB(255, 0, 0), -1);
+    // cv::circle(unsizedImage, cv::Point(514, 513), 1, CV_RGB(0, 255, 0), -1);
+    // cv::circle(unsizedImage, cv::Point(514, 513), 35, CV_RGB(0, 255, 0), -1);
+    // cv::imshow("image", unsizedImage);
 
-        imageStatus = cam.getVideoFrame(unsizedImage, 1000);
-        // cv::circle(unsizedImage, cv::Point(500, 500), 2, CV_RGB(255, 0, 0), -1);
-        // cv::circle(unsizedImage, cv::Point(514, 513), 1, CV_RGB(0, 255, 0), -1);
-        // cv::circle(unsizedImage, cv::Point(514, 513), 35, CV_RGB(0, 255, 0), -1);
-        // cv::imshow("image", unsizedImage);
-
-        new_orange_frame = true;
-        new_yellow_frame = true;
-        new_blue_frame = true;
-
-        auto tEndSteady = std::chrono::steady_clock::now();
-        std::chrono::nanoseconds diff = tEndSteady - tStartSteady;
-        fps = 0.9 * fps + 0.1 * (1000000000 / diff.count());
-        // std::cout << fps << std::endl;
-
-        if (STOP)
-        {
-            break;
-        }
-    }
+    auto tEndSteady = std::chrono::steady_clock::now();
+    std::chrono::nanoseconds diff = tEndSteady - tStartSteady;
+    fps = 0.9 * fps + 0.1 * (1000000000 / diff.count());
+    // std::cout << fps << std::endl;
 }
 
 void transmitData()
@@ -65,16 +52,12 @@ void startup()
     cam.options->video_height = video_y;
     cam.options->framerate = 120;
     cam.options->verbose = true;
-    // cam.options->setAutoFocus(AutoFocus_Modes::AF_CONTINUOUS);
     cam.options->setWhiteBalance(WhiteBalance_Modes::WB_INDOOR);
     cam.options->brightness = 0.1f;
     cam.options->lens_position = 40.0f;
 
     cam.startVideo();
     imageStatus = cam.getVideoFrame(unsizedImage, 1000);
-    new_orange_frame = false;
-    new_yellow_frame = false;
-    new_blue_frame = false;
 
     std::ifstream orange_values;
     std::ifstream yellow_values;
