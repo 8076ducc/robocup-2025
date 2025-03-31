@@ -1,4 +1,73 @@
 #include "main.h"
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+
+const double STEP_SIZE = 100.0; // Set step size to 10
+
+// Function f(x) = -5 * 10^-15 * x^6 - 700
+double f(double x) {
+    return -5e-15 * pow(x, 6) - 700;
+}
+
+// First derivative of f(x)
+double df(double x) {
+    return -30e-15 * pow(x, 5);
+}
+
+// Second derivative of f(x)
+double d2f(double x) {
+    return -150e-15 * pow(x, 4);
+}
+
+struct Point {
+    double x, y;
+};
+
+// Compute Euclidean distance between two points
+double distance(Point a, Point b) {
+    return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+}
+
+// Find the next point toward the target with a limited step size
+Point findNextPoint(Point current, Point target, double step_size) {
+    // Ensure current is on the graph
+    current.y = f(current.x);
+    
+    // Compute gradient direction
+    double slope = df(current.x);
+    double dx = step_size / sqrt(1 + slope * slope);
+    dx = (target.x > current.x) ? dx : -dx; // Move toward target
+    
+    double max_dx = fabs(target.x - current.x); // Limit dx to not exceed error
+    if (fabs(dx) > max_dx) {
+        dx = (dx > 0) ? max_dx : -max_dx;
+    }
+    
+    double new_x = current.x + dx;
+    double new_y = f(new_x);
+    
+    return {new_x, new_y};
+}
+
+// Newton's Method to find the closest x on the curve
+double findClosestX(double x0, double y0, double x_init, int max_iter = 50, double tol = 1e-6) {
+    double x = x_init;
+    for (int i = 0; i < max_iter; i++) {
+        double y = f(x);
+        double dy_dx = df(x);
+        double d2y_dx2 = d2f(x);
+        
+        double grad = 2 * (x - x0) + 2 * (y - y0) * dy_dx;
+        double hessian = 2 + 2 * pow(dy_dx, 2) + 2 * (y - y0) * d2y_dx2;
+        
+        if (fabs(grad) < tol) break; // Stop if gradient is small
+        
+        x -= grad / hessian; // Newton update step
+    }
+    return x;
+}
 
 double prev_distance = 0;
 double previous_error = 0;
@@ -10,7 +79,7 @@ void Robot::moveToPoint(double x, double y, double bearing, double min_speed=0.1
 
     double target_x = x - robot.current_pose.x;
     double target_y = y - robot.current_pose.y;
-    Serial.println("target x: " + String(robot.current_pose.x) + " target y: " + String(robot.current_pose.y));
+    Serial.println("target x: " + String(target_x) + " target y: " + String(target_y));
     double distance = sqrt(pow(target_x, 2) + pow(target_y, 2));
 
     double speed = bound(kp * distance, min_speed, max_speed);
@@ -24,20 +93,38 @@ void Robot::moveToPoint(double x, double y, double bearing, double min_speed=0.1
     prev_distance = distance;
 }
 
+
 void Robot::goalieTrack()
 {   
     // TUNE THIS
     double min_speed = 0.07;
-    double max_speed = 0.35;
+    double max_speed = 0.4;
     // double decel_f = 40;
     // double decel_k = 0.08;
 
-    double Kp = 0.00045;
+    double Kp = 0.001;
     double Ki = 0; 
     double Kd = 0.00001;  // PID coefficients
     // END TUNE
 
-    double distance = sqrt(pow(target_pose.x, 2) + pow(target_pose.y, 2));
+    double distance = sqrt(pow(ball.current_pose.x, 2) + pow(ball.current_pose.y, 2));
+    double target_x, target_y;
+    double target_angle, target_bearing;
+    
+    Point current_pos, target_pos;
+
+    current_pos.x = findClosestX(robot.current_pose.x, robot.current_pose.y, robot.current_pose.x);
+    current_pos.y = f(current_pos.x);
+
+    if (ball.detected) {
+
+        target_pos.x = findClosestX(ball.current_pose.x+robot.current_pose.x, ball.current_pose.y+robot.current_pose.y, ball.current_pose.x+robot.current_pose.x);
+        target_pos.y = f(target_pose.x);
+    } else {
+        target_pos.x = 0;
+        target_pos.y = -700;
+    }
+    
 
     double angle = ball.current_pose.bearing;
 
@@ -46,13 +133,25 @@ void Robot::goalieTrack()
         angle -= 360;
         angle = abs(angle);
     }
-    
-    if (angle > 90)
-    {
-        angle = 180 - angle;
+
+    if (angle > 90) {
+        angle -= 180;
+        angle = abs(angle);
     }
 
-    double error = bound((pow(angle, 1.6)), 0, 700);
+    
+    double step_mutli = 1;
+    
+    if (angle > 35) {
+        step_mutli = 3;
+    }
+
+    // Serial.print("angle: " + String(angle) + " error: " + String(error) + " speed: " + String(speed));
+    
+    Point result;
+    result=findNextPoint(current_pos, target_pos, step_mutli*STEP_SIZE);
+
+    double error = bound((15*exp(0.2*angle-5))+4*angle + 1/abs(ball.current_pose.y), 0, 300);
 
     // Proportional term
     double proportional = Kp * error;
@@ -69,13 +168,78 @@ void Robot::goalieTrack()
     previous_error = error;
 
     // PID output is the sum of the proportional, integral, and derivative terms
+    if (result.y < -900) {
+        max_speed = 0.2;
+    }
     double speed = bound(proportional + integralTerm + derivative, min_speed, max_speed);
 
-    move_data.speed = (distance == 0) ? 0 : speed;
-    move_data.target_angle = xyToBearing(target_pose.x, target_pose.y);
-    move_data.target_bearing = correctBearing(target_pose.bearing);
-    move_data.ema_constant = 0.0002;
-    previous_error = error;
+
+    // if (abs(error) == 0) {
+    //     speed = 0;
+    // }
+
+
+    
+
+    robot.moveToPoint(result.x, bound(result.y, -1200, 0), 0, speed, speed);
+
+
+
+    // double distance_from_line = sqrt(pow(robot.current_pose.x - closestX, 2) + pow(robot.current_pose.y - closestY, 2));
+    
+    // move_data.target_bearing = bearing;
+    // // Serial.println("target bearing: " + String(move_data.target_bearing));
+    // move_data.target_angle = correctBearing(atan2(distance_from_line, distance) * 180.0 / M_PI);
+    // // Serial.println("target angle: " + String(move_data.target_angle));
+
+    // double angle = ball.current_pose.bearing;
+
+    // if (angle > 180)
+    // {
+    //     angle -= 360;
+    //     angle = abs(angle);
+    // }
+    
+    // if (angle > 90)
+    // {
+    //     angle = 180 - angle;
+    // }
+
+    // double error = bound((pow(angle, 1.6)), 0, 700);
+
+    // // Proportional term
+    // double proportional = Kp * error;
+
+    // // Integral term
+    // double integral;
+    // integral += error;
+    // double integralTerm = Ki * integral;
+
+    // // Derivative term
+    // double derivative = Kd * (error - previous_error);
+
+    // // Store the current error for the next iteration
+    // previous_error = error;
+
+    // // PID output is the sum of the proportional, integral, and derivative terms
+    // double speed = bound(proportional + integralTerm + derivative, min_speed, max_speed);
+
+    // move_data.speed = (distance == 0) ? 0 : 0.2;
+    // if (ball.current_pose.bearing > 180) {
+    //     tangentBearing += 180;
+    //     tangentBearing = fmod(tangentBearing, 360);
+    // }
+    // Serial.println("bearing to point: " + String(bearingToPoint) + " bearing to ball: " + String(tangentBearing));
+    // if (bearingToPoint == 0){
+    //     move_data.target_angle = tangentBearing;
+    // } else {
+    //     move_data.target_angle = (bearingToPoint + tangentBearing)/2;
+    // }
+    
+    // move_data.target_bearing = 0;
+
+    // robot.moveToPoint(closestX, closestY, bearing);
+    // previous_error = error;
 }
 
 void Robot::goalieRush()
