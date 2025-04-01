@@ -2,6 +2,7 @@
 
 double field_width = 1580;
 double field_height = 2190;
+double window_scale_factor = 1.92;
 
 double regressGoal(double distance)
 {
@@ -11,52 +12,52 @@ double regressGoal(double distance)
 // store entire goal pose
 void Robot::storeGoalPose(double yellow_goal_x, double yellow_goal_y, double blue_goal_x, double blue_goal_y)
 {
-  yellow_goal.current_pose.x = yellow_goal_x;
-  yellow_goal.current_pose.y = yellow_goal_y;
+  yellow_goal.current_pose.x = yellow_goal_x * window_scale_factor;
+  yellow_goal.current_pose.y = yellow_goal_y * window_scale_factor;
   yellow_goal.current_pose.bearing = correctBearing(degrees(atan2(yellow_goal_x, yellow_goal_y)) + robot.current_pose.bearing);
 
-  blue_goal.current_pose.x = blue_goal_x;
-  blue_goal.current_pose.y = blue_goal_y;
+  blue_goal.current_pose.x = blue_goal_x * window_scale_factor;
+  blue_goal.current_pose.y = blue_goal_y * window_scale_factor;
   blue_goal.current_pose.bearing = correctBearing(degrees(atan2(blue_goal_x, blue_goal_y)) + robot.current_pose.bearing);
 }
 
 void Robot::storeYellowPose(double yellow_goal_x, double yellow_goal_y)
 {
-  yellow_goal.current_pose.x = yellow_goal_x;
-  yellow_goal.current_pose.y = yellow_goal_y;
+  yellow_goal.current_pose.x = yellow_goal_x * window_scale_factor;
+  yellow_goal.current_pose.y = yellow_goal_y * window_scale_factor;
   yellow_goal.current_pose.bearing = correctBearing(degrees(atan2(yellow_goal_x, yellow_goal_y)) + robot.current_pose.bearing);
 }
 
 void Robot::storeBluePose(double blue_goal_x, double blue_goal_y)
 {
-  blue_goal.current_pose.x = blue_goal_x;
-  blue_goal.current_pose.y = blue_goal_y;
+  blue_goal.current_pose.x = blue_goal_x * window_scale_factor;
+  blue_goal.current_pose.y = blue_goal_y * window_scale_factor;
   blue_goal.current_pose.bearing = correctBearing(degrees(atan2(blue_goal_x, blue_goal_y)) + robot.current_pose.bearing);
 }
 
 // store open goal pose
 void Robot::storeGoalOpenPose(double yellow_open_x, double yellow_open_y, double blue_open_x, double blue_open_y)
 {
-  yellow_open.current_pose.x = yellow_open_x;
-  yellow_open.current_pose.y = yellow_open_y;
+  yellow_open.current_pose.x = yellow_open_x * window_scale_factor;
+  yellow_open.current_pose.y = yellow_open_y * window_scale_factor;
   yellow_open.current_pose.bearing = correctBearing(degrees(atan2(yellow_open_x, yellow_open_y)) + robot.current_pose.bearing);
 
-  blue_open.current_pose.x = blue_open_x;
-  blue_open.current_pose.y = blue_open_y;
+  blue_open.current_pose.x = blue_open_x * window_scale_factor;
+  blue_open.current_pose.y = blue_open_y * window_scale_factor;
   blue_open.current_pose.bearing = correctBearing(degrees(atan2(blue_open_x, blue_open_y)) + robot.current_pose.bearing);
 }
 
 void Robot::storeYellowOpenPose(double yellow_open_x, double yellow_open_y)
 {
-  yellow_open.current_pose.x = yellow_open_x;
-  yellow_open.current_pose.y = yellow_open_y;
+  yellow_open.current_pose.x = yellow_open_x * window_scale_factor;
+  yellow_open.current_pose.y = yellow_open_y * window_scale_factor;
   yellow_open.current_pose.bearing = correctBearing(degrees(atan2(yellow_open_x, yellow_open_y)) + robot.current_pose.bearing);
 }
 
 void Robot::storeBlueOpenPose(double blue_open_x, double blue_open_y)
 {
-  blue_open.current_pose.x = blue_open_x;
-  blue_open.current_pose.y = blue_open_y;
+  blue_open.current_pose.x = blue_open_x * window_scale_factor;
+  blue_open.current_pose.y = blue_open_y * window_scale_factor;
   blue_open.current_pose.bearing = correctBearing(degrees(atan2(blue_open_x, blue_open_y)) + robot.current_pose.bearing);
 }
 
@@ -88,6 +89,11 @@ void Robot::storeRobotPose()
     robot.current_pose.x = -blue_goal_real_x;
 
     robot.current_pose.y = (blue_goal_real_y >= 0) ? (field_height / 2) - blue_goal_real_y : -(field_height / 2) - blue_goal_real_y;
+  }
+  else
+  {
+    robot.current_pose.x = 0;
+    robot.current_pose.y = 0;
   }
 
   robot.current_pose.x = (robot.current_pose.x * ema_const) + (previous_pose.x * (1 - ema_const));
