@@ -5,7 +5,7 @@ double field_height = 2190;
 
 double regressGoal(double distance)
 {
-  return ((0 * pow(distance, 5)) + (0.0000004455 * pow(distance, 4)) - (0.0002198037 * pow(distance, 3)) + (0.0361183593 * pow(distance, 2)) + (0.8920610619 * distance) + 4.8369591755);
+  return ((0 * pow(distance, 5)) + (0 * pow(distance, 4)) + (0.0017281976 * pow(distance, 3)) - (0.5748511944 * pow(distance, 2)) + (69.1097170904 * distance) - 2527.1180742143);
 }
 
 // store entire goal pose

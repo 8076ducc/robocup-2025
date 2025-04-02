@@ -2,7 +2,8 @@
 
 double regressBall(double distance)
 {
-   return ((0 * pow(distance, 5)) + (0.0000004455 * pow(distance, 4)) - (0.0002198037 * pow(distance, 3)) + (0.0361183593 * pow(distance, 2)) + (0.8920610619 * distance) + 4.8369591755);
+   
+    return ((0 * pow(distance, 5)) + (0 * pow(distance, 4)) + (0.0007240135 * pow(distance, 3)) - (0.1635232461 * pow(distance, 2)) + (16.6156418267 * distance) - 216.5843229617);
 }
 
 void onLayer1Received(const byte *buf, size_t size)
