@@ -211,7 +211,7 @@ void Robot::orbitToBall(double bearing)
 
 int strategy = 0;
 
-double Robot::orbitScore()
+void Robot::orbitScore()
 {
     // digitalWrite(13, HIGH);
     // Serial.println("running orbitScore");
@@ -235,19 +235,18 @@ double Robot::orbitScore()
     }
     else
     {
-        if (strategy == 0) {
-            int randomNum = rand() % 100;
-            double strat_one_chance = map(robot.current_pose.y, 400, -1000, 100, 10);
-            if (randomNum < strat_one_chance) {
-                strategy = 1;
-            } else {
-                strategy = 2;
-            }
-        }
+        // if (strategy == 0) {
+        //     int randomNum = rand() % 100;
+        //     double strat_one_chance = map(robot.current_pose.y, 400, -1000, 100, 10);
+        //     if (randomNum < strat_one_chance) {
+        //         strategy = 1;
+        //     } else {
+        //         strategy = 2;
+        //     }
+        // }
         // if (strategy == 1)
         // {
         scoringStrategyOne();
-        return 0.0014;
         // }
         // else if (strategy == 2)
         // {
@@ -262,8 +261,7 @@ void Robot::scoringStrategyOne() {
     double score_min_speed = 0.05;
     double score_max_speed = 0.35;
 
-    double score_accel_time = 400;
-    double score_steep_accel_time = 400;
+    double score_steep_accel_time = 200;
     double score_turn_time = 300;
 
     double target_bearing;
@@ -274,7 +272,29 @@ void Robot::scoringStrategyOne() {
     }
 
     float elapsed_duration = millis() - scoring_start_time;
-    if (elapsed_duration < score_steep_accel_time)
+    if (robot.current_pose.y > -200) {
+        digitalWriteFast(23, HIGH);         // Start the pulse
+        delayMicroseconds(2500);     // Wait for 1ms (pulse width for 0 degrees)
+        digitalWriteFast(23, LOW);
+        delay(1500);
+
+        robot.base.motorOut(1, 0);
+        robot.base.motorOut(2, 0);
+        robot.base.motorOut(3, 0);
+        robot.base.motorOut(4, 0);
+      
+        digitalWriteFast(23, HIGH);
+        delayMicroseconds(500);     // Wait for 1ms (pulse width for 0 degrees)
+        digitalWriteFast(23, LOW);
+        delay(1500);
+      
+        digitalWriteFast(23, HIGH);
+        delayMicroseconds(1600);     // Wait for 1ms (pulse width for 0 degrees)
+        digitalWriteFast(23, LOW);
+        delay(2000);
+
+        ball.in_catchment = 0;
+    } else if (elapsed_duration < score_steep_accel_time)
     {
         move_data.speed = (elapsed_duration) / score_steep_accel_time * (score_max_speed - score_min_speed) + score_min_speed;
         move_data.target_angle = target_bearing - (elapsed_duration - score_steep_accel_time) / score_turn_time * target_bearing;
@@ -282,11 +302,7 @@ void Robot::scoringStrategyOne() {
     }
     else
     {
-        if (elapsed_duration - score_steep_accel_time > 200)
-        {
-            robot.kicker.kick();
-            strategy = 0;
-        }
+        
         move_data.speed = score_max_speed;
         move_data.target_angle = 0;
         move_data.target_bearing = target_bearing;

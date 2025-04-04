@@ -35,6 +35,12 @@ bool ball_approaching;
 
 void striker()
 {
+  if (robot.kicker.kicked) {
+    was_in_catchment = false; // reset the catchment state
+    robot.task = 0; // running orbitToBall
+    return;
+  }
+
   if (ball.in_catchment == 1)
   {
     no_catchment_start_time = millis(); // reset the timer
@@ -216,7 +222,24 @@ void setup()
   pinMode(13, OUTPUT);
   pinMode(23, OUTPUT);
 
-  threads.addThread(resetThread, 0, 10000);
+  
+  digitalWriteFast(23, HIGH);         // Start the pulse
+  delayMicroseconds(2500);     // Wait for 1ms (pulse width for 0 degrees)
+  digitalWriteFast(23, LOW);
+  delay(1500);
+
+  digitalWriteFast(23, HIGH);
+  delayMicroseconds(500);     // Wait for 1ms (pulse width for 0 degrees)
+  digitalWriteFast(23, LOW);
+  delay(1500);
+
+  digitalWriteFast(23, HIGH);
+  delayMicroseconds(1600);     // Wait for 1ms (pulse width for 0 degrees)
+  digitalWriteFast(23, LOW);
+  delay(2000);
+
+
+  // threads.addThread(resetThread, 0, 10000);
 
   // threads.addThread(loopThread);
   // reset.detach();
@@ -227,11 +250,11 @@ void setup()
 long unsigned timer = 0;
 int count = 0;
 
-void loop()
-{
+void loop(){
   // while (true)
   // {
-  //   Serial.println(Serial5.read());
+  //   Serial.println(EEPROM.read(0));
+  //   // EEPROM.write(0, 1);
   // }
   // Serial.print("0. : " + String(micros() - timer));
   timer = micros();
@@ -254,7 +277,7 @@ void loop()
   case 0:
     // Serial.println("running task 0");
     // digitalWrite(13, HIGH);
-    robot.orbitToBall(0);
+    robot.orbitToBall(blue_open.current_pose.bearing); // was 0
     // kp = map(robot.move_data.speed, 0, 0.4, 0, 0.0013);
     // kd = map(pow(robot.move_data.speed, 2), 0, 0.16, 0, 0.005);
     // robot.rotateToBall();
@@ -262,7 +285,7 @@ void loop()
 
   case 1:
     // digitalWrite(13, LOW);
-    kp = robot.orbitScore();
+    robot.orbitScore();
     if (robot.move_data.speed < 0.12)
     {
       kp = 0.0025;

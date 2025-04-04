@@ -8,6 +8,7 @@
 #define BOT_A
 
 #include <common.h>
+#include <EEPROM.h>
 #include <TeensyThreads.h>
 
 #define DRIBBLER_LOWER_LIMIT 32
@@ -636,6 +637,8 @@ public:
     void reset();
 
     int servoPin = 23;
+    
+    bool kicked = false;
 
     unsigned long time_kicked;
 };
@@ -651,7 +654,7 @@ public:
 
     void defendGoal();
     void orbitToBall(double bearing);
-    double orbitScore();
+    void orbitScore();
     void scoringStrategyOne();
     void scoringStrategyTwo();
     void moveToPoint(double x, double y, double bearing, double min_speed, double max_speed);
