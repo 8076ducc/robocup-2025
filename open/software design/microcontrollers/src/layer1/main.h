@@ -3,8 +3,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-// #define DEBUG
-// #define SERIAL_DEBUG
+#define DEBUG
+#define SERIAL_DEBUG
 // #define BOT_A
 
 #include <common.h>
@@ -23,7 +23,7 @@
 // global variables
 
 // TUNE THIS
-const int ball_threshold = 1000;
+const int ball_threshold = 1100;
 // END TUNE
 
 extern int line_track_ldr;

@@ -86,13 +86,13 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
     {
-        // Serial.println("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
+        Serial.println("Invalid payload size from RPI. Expected: " + String(sizeof(data_received)) + " Received: " + String(size));
         // digitalWrite(13, HIGH);
         return;
     }
     else
     {
-        // Serial.println("received cleanly");
+        Serial.println("received cleanly");
     }
 
     // digitalWrite(13, LOW);
@@ -118,12 +118,12 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
     // Serial.print(data_received.data.blue_goal_y);
     // Serial.println(" ");
 
-    // Serial.print(" Ball: ");
-    // Serial.print(data_received.data.ball_detected);
-    // Serial.print(" ");
-    // Serial.print(data_received.data.ball_x);
-    // Serial.print(" ");
-    // Serial.println(data_received.data.ball_y);
+    Serial.print(" Ball: ");
+    Serial.print(data_received.data.ball_detected);
+    Serial.print(" ");
+    Serial.print(data_received.data.ball_x);
+    Serial.print(" ");
+    Serial.println(data_received.data.ball_y);
 
     if (yellow_goal.detected && blue_goal.detected)
     {

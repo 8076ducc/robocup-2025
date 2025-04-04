@@ -1,6 +1,6 @@
 #include "main.h"
 
-double motor_offset = 1.0; // 1.09
+double motor_offset = 1.09; // 1.09
 
 void Base::setUp()
 {
@@ -85,7 +85,7 @@ double turn_angle = 0;
 void Base::move(double vel, double angle, double bearing, double kp = 0.0013, double ki = 0.0, double kd = 0.005, double ema_constant)
 {
     vel = fmin(vel, 0.5);
-    
+
     ema_constant = 0.005;
     double x_vel = sin(radians(angle)) * sin(wheel_angle);
     double y_vel = cos(radians(angle)) * cos(wheel_angle);
@@ -145,8 +145,6 @@ void Base::move(double vel, double angle, double bearing, double kp = 0.0013, do
     double new_bl_out = bl * max_pwm;
     double new_br_out = br * max_pwm;
 
-
-
     // calculate exponential moving average
     double fl_out = fl_scale * (new_fl_out * ema_constant) + (prev_fl_out * (1 - ema_constant));
     double fr_out = fr_scale * (new_fr_out * ema_constant) + (prev_fr_out * (1 - ema_constant));
@@ -173,5 +171,5 @@ void Base::move(double vel, double angle, double bearing, double kp = 0.0013, do
     motorOut(1, round(fl_out));
     motorOut(2, round(fr_out));
     motorOut(3, round(bl_out));
-    motorOut(4, round(br_out* motor_offset));
+    motorOut(4, round(br_out * motor_offset));
 }

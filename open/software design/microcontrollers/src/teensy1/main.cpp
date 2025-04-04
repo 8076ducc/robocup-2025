@@ -26,7 +26,7 @@ int points = 0;
 // striker variables
 unsigned long no_catchment_start_time = 0;
 bool was_in_catchment = false;
-const unsigned long catchment_timeout = 400; // ms
+const unsigned long catchment_timeout = 500; // ms
 
 // goalie variables
 unsigned long time_ball_stopped;
@@ -229,7 +229,11 @@ int count = 0;
 
 void loop()
 {
-  Serial.print("0. : " + String(micros() - timer));
+  // while (true)
+  // {
+  //   Serial.println(Serial5.read());
+  // }
+  // Serial.print("0. : " + String(micros() - timer));
   timer = micros();
   robot.sendSerial();
   // Serial.println("1.: " + String(micros() - timer));
@@ -251,13 +255,18 @@ void loop()
     // Serial.println("running task 0");
     // digitalWrite(13, HIGH);
     robot.orbitToBall(0);
+    // kp = map(robot.move_data.speed, 0, 0.4, 0, 0.0013);
+    // kd = map(pow(robot.move_data.speed, 2), 0, 0.16, 0, 0.005);
     // robot.rotateToBall();
     break;
 
   case 1:
     // digitalWrite(13, LOW);
-    robot.orbitScore();
-    kp = 0.005;
+    kp = robot.orbitScore();
+    if (robot.move_data.speed < 0.12)
+    {
+      kp = 0.0025;
+    }
     break;
 
   case 2:
@@ -284,10 +293,10 @@ void loop()
   //     count = 0;
   //   }
   // }
-    // robot.moveToPoint(0, 0, 0);
+  // robot.moveToPoint(0, 0, 0);
   // }
 
-  Serial.println("x: " + String(robot.current_pose.x) + ", y: " + String(robot.current_pose.y) + " bearing: " + String(robot.current_pose.bearing));
+  // Serial.println("x: " + String(robot.current_pose.x) + ", y: " + String(robot.current_pose.y) + " bearing: " + String(robot.current_pose.bearing));
   // Serial.println("blue x: " + String(blue_goal.current_pose.x) + ", goal y: " + String(blue_goal.current_pose.y));
   // Serial.println("yellow x: " + String(yellow_goal.current_pose.x) + ", yellow y: " + String(yellow_goal.current_pose.y));
 
@@ -297,11 +306,10 @@ void loop()
   // robot.move_data.target_bearing = 0;
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
-  
 
   // Serial.println("target: " + String(robot.move_data.target_bearing) + "actual: " + String(robot.current_pose.bearing));
   delayMicroseconds(1);
-  Serial.println("6.: " + String(micros() - timer));
+  // Serial.println("6.: " + String(micros() - timer));
   timer = micros();
 
   // robot.kicker.reset();
