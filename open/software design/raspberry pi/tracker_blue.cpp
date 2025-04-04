@@ -2,22 +2,16 @@
 
 int main()
 {
-    show_debug_windows = false;
+    show_debug_windows = true;
     startup();
+    
+    std::thread trackBlue(trackColour, 2);
+    std::thread getImage(getNewImage);
+    std::thread transmit(transmitData);
 
-    double fps = 0;
-    while (true)
-    {
-	auto tStartSteady = std::chrono::steady_clock::now();
-        getNewImage();
-        std::thread trackBlue(trackColour, 2);
-        trackBlue.join();
-	transmitData();
-	auto tEndSteady = std::chrono::steady_clock::now();
-	std::chrono::nanoseconds diff = tEndSteady - tStartSteady;
-	fps = 0.9 * fps + 0.1 * (1000000000 / diff.count());
-	std::cout << fps << std::endl;
-    }
-
+    trackBlue.join();
+    getImage.join();
+    transmit.join();
+    
     shutdown();
 }
