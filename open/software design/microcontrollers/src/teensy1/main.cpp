@@ -64,7 +64,7 @@ void goalie()
   robot.task = 2; // running defendGoal
 }
 
-volatile int count = 0;
+// volatile int count = 0;
 
 void resetThread()
 {
@@ -225,12 +225,12 @@ void setup()
 }
 
 long unsigned timer = 0;
-// int count = 0;
+int count = 0;
 
 void loop()
 {
-  // Serial.print("0. : " + String(micros() - timer));
-  // timer = micros();
+  Serial.print("0. : " + String(micros() - timer));
+  timer = micros();
   robot.sendSerial();
   // Serial.println("1.: " + String(micros() - timer));
   // timer = micros();
@@ -272,15 +272,18 @@ void loop()
   }
   // Serial.println("4.: " + String(micros() - timer));
   // timer = micros();
-  goalie();
-  // striker();
+  // goalie();
+  striker();
   // Serial.println("5.: " + String(micros() - timer));
   // timer = micros();
 
   // if (millis() - timer > 1000) {
   //   timer = millis();
-  //   count ++ ;
-  // } else {
+  //   count ++;
+  //   if (count > 3) {
+  //     count = 0;
+  //   }
+  // }
     // robot.moveToPoint(0, 0, 0);
   // }
 
@@ -289,12 +292,17 @@ void loop()
   // Serial.println("yellow x: " + String(yellow_goal.current_pose.x) + ", yellow y: " + String(yellow_goal.current_pose.y));
 
   // robot.orbitToBall(0);
+  // robot.move_data.speed = 0.2;
+  // robot.move_data.target_angle = 90*count;
+  // robot.move_data.target_bearing = 0;
 
   robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
   
 
-  // Serial.println("6.: " + String(micros() - timer));
-  // timer = micros();
   // Serial.println("target: " + String(robot.move_data.target_bearing) + "actual: " + String(robot.current_pose.bearing));
   delayMicroseconds(1);
+  Serial.println("6.: " + String(micros() - timer));
+  timer = micros();
+
+  // robot.kicker.reset();
 }

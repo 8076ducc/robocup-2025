@@ -4,26 +4,72 @@ Pose target_pose_wrt_goal;
 Pose target_pose_wrt_ball;
 
 unsigned long scoring_start_time;
+unsigned long kicking_start_time;
+
+unsigned long goalie_within_range_time;
+double prev_ball_dist;
+
+unsigned long not_approaching_start_time = 0;
+bool was_approaching = false;
+const unsigned long approaching_timeout = 200; // ms
+const unsigned long goalie_timeout = 100; // ms
+
+
+double mapValue(double inputValue, double inputMin, double inputMax, double outputMin, double outputMax) {
+    // Formula for linear mapping
+    return outputMin + (inputValue - inputMin) * (outputMax - outputMin) / (inputMax - inputMin);
+}
 
 void Robot::defendGoal()
 {
-    double goal_y = blue_goal.current_pose.y;
-    double target_y_from_goal = -85;
-    target_pose.x = (abs(ball.current_pose.x) > 4) ? (ball.current_pose.x) : 0;
-    target_pose.x = bound(target_pose.x - blue_goal.current_pose.x, -55, 55) + blue_goal.current_pose.x;
+    // double goal_y = blue_goal.current_pose.y;
+    // double target_y_from_goal = -85;
+    // target_pose.x = (abs(ball.current_pose.x) > 4) ? (ball.current_pose.x) : 0;
+    // target_pose.x = bound(target_pose.x - blue_goal.current_pose.x, -55, 55) + blue_goal.current_pose.x;
+    double ball_distance = sqrt(pow(ball.current_pose.x + robot.current_pose.x, 2) + pow(ball.current_pose.y + robot.current_pose.y, 2));
+    double angle = ball.current_pose.bearing;
+
+    if (angle > 180)
+    {
+        angle -= 360;
+        angle = abs(angle);
+    }
 
     if (line_data.on_line)
     {
         rejectLine(0);
     }
-    // else if (ball.current_pose.y < 0) // ball is behind the robot
-    // {
-    //     orbitToBall(0);
-    // }
+    else if (ball.current_pose.y > 0 && angle < 15) {
+        if (robot.current_pose.y + ball.current_pose.y < 0) { // ball is behind the center line
+            if (goalie_within_range_time == 0) {
+                goalie_within_range_time = millis();
+            }
+            if (millis() - goalie_within_range_time > goalie_timeout)
+            {
+                if (!was_approaching) {
+                    if (ball.distance_from_robot < 100){
+                        goalieTrack();
+                    } else {
+                        not_approaching_start_time = millis(); // reset the timer
+                        was_approaching = true;
+                        goalieRush();
+                    }
+                } else {
+                    not_approaching_start_time = millis(); // reset the timer
+                    was_approaching = true;
+                    goalieRush();
+                }
+            } else {
+                goalieTrack();
+            }
+        } else {
+            goalie_within_range_time = 0;
+            goalieTrack();
+        }
+    }
     else
     {
-        target_pose.y = goal_y - target_y_from_goal;
-        target_pose.bearing = 0;
+        goalie_within_range_time = 0;
         goalieTrack();
     }
 }
@@ -45,13 +91,13 @@ void Robot::orbitToBall(double bearing)
             offset = fmax((bearing_from_robot - 360) * 1.05, -90);
         }
         // double a = 0.085; // affects orbit radius (shift in and out)
-        // double b = 1.7; // pivots the curve
+        // double b = 1.7; // pivots the curve - aggressiveness
         // double c = 150; // typically represents maximum distance from the ball
         // double d = 1; // maximum multiplier
 
         // TUNE THIS
-        double orbit_a = 0.17;
-        double orbit_b = 0.8;
+        double orbit_a = 0.24;
+        double orbit_b = 0.85;
         double orbit_c = 2190;
         double orbit_d = 1;
         // END TUNE
@@ -60,17 +106,20 @@ void Robot::orbitToBall(double bearing)
         double multiplier = fmin(orbit_d, orbit_a * exp(orbit_b * factor));
 
         // TUNE THIS
-        double orbit_min_speed = 0.2;
+        double orbit_min_speed = 0.17;
 
-        if (ball.current_pose.bearing > 360 - 55 || ball.current_pose.bearing < 55)
+        double orbit_slow_angle = 55;
+        double orbit_slow_speed = 0.1;
+
+        if (ball.current_pose.bearing > 360 - orbit_slow_angle || ball.current_pose.bearing < orbit_slow_angle)
         {
-            orbit_min_speed = 0.08;
-
+            orbit_min_speed = mapValue(abs(principalise(ball.current_pose.bearing)), 20, orbit_slow_angle, orbit_min_speed, orbit_slow_speed);
+            orbit_min_speed = bound(orbit_min_speed, orbit_slow_speed, orbit_min_speed);
         }
 
         double orbit_max_speed = 0.4;
-        double orbit_decel_f = 355;  // typically represents the maximum distance from the ball in pixels
-        double orbit_decel_k = 0.06; // increase for faster deceleration
+        double orbit_decel_f = 350;  // typically represents the maximum distance from the ball in pixels
+        double orbit_decel_k = 0.05; // increase for faster deceleration
         // END TUNE
 
         // SET ATTACKING GOAL
@@ -135,14 +184,14 @@ void Robot::orbitToBall(double bearing)
             double goal_x_diff_thresh = 40;
             // END TUNE
 
-            if (abs(goal_y - ball.current_pose.y) < goal_y_diff_thresh && abs(goal_x - ball.current_pose.x) < goal_x_diff_thresh)
-            {
+            move_data.speed = speed;
+
+            if (correction > 180 + 20 && correction < 360 - 20 && robot.current_pose.x < -600) {
+                move_data.speed = 0;
+            } else if (correction < 180 - 20 && correction > 20 && robot.current_pose.x > 600) {
                 move_data.speed = 0;
             }
-            else
-            {
-                move_data.speed = speed;
-            }
+
             move_data.target_angle = correction;
             move_data.target_bearing = bearing;
         }
@@ -171,8 +220,6 @@ void Robot::orbitScore()
     // TUNE THIS
     double score_min_speed = 0.05;
     double score_max_speed = 0.35;
-    double score_decel_f = 62;
-    double score_decel_k = 0.05;
 
     double score_accel_time = 400;
     double score_steep_accel_time = 100;

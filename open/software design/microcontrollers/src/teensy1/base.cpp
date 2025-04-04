@@ -1,5 +1,7 @@
 #include "main.h"
 
+double motor_offset = 1.0; // 1.09
+
 void Base::setUp()
 {
     pinModeFast(FL_INA, OUTPUT);
@@ -171,5 +173,5 @@ void Base::move(double vel, double angle, double bearing, double kp = 0.0013, do
     motorOut(1, round(fl_out));
     motorOut(2, round(fr_out));
     motorOut(3, round(bl_out));
-    motorOut(4, round(br_out));
+    motorOut(4, round(br_out* motor_offset));
 }

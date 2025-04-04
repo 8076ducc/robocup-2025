@@ -58,10 +58,10 @@ void onImuReceived(const byte *buf, size_t size)
     // Don't continue if the payload is invalid
     if (size != sizeof(data_received))
     {
-        // Serial.print("Invalid payload size from IMU. Expected: ");
-        // Serial.print(sizeof(data_received));
-        // Serial.print(" Received: ");
-        // Serial.println(size);
+        Serial.print("Invalid payload size from IMU. Expected: ");
+        Serial.print(sizeof(data_received));
+        Serial.print(" Received: ");
+        Serial.println(size);
         return;
     }
 
