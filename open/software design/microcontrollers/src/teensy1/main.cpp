@@ -72,14 +72,14 @@ void goalie()
 
 // volatile int count = 0;
 
-void resetThread()
-{
-  while (true)
-  {
-    robot.kicker.reset();
-    threads.delay(1);
-  }
-}
+// void resetThread()
+// {
+//   while (true)
+//   {
+//     robot.kicker.reset();
+//     threads.delay(1);
+//   }
+// }
 
 // void serialThread()
 // {
@@ -216,29 +216,31 @@ void setup()
   robot.previous_pose.bearing = 0;
 
   last_time = millis();
-  robot.dribbler.update();
-  robot.dribbler.dribbling = true;
+  // robot.dribbler.update();
+  // robot.dribbler.dribbling = true;
 
-  robot.kicker.setup();
+  // robot.kicker.setup();
 
   pinMode(13, OUTPUT);
   pinMode(23, OUTPUT);
+  
+  delay(1000);
 
   
-  digitalWriteFast(23, HIGH);         // Start the pulse
-  delayMicroseconds(2500);     // Wait for 1ms (pulse width for 0 degrees)
-  digitalWriteFast(23, LOW);
-  delay(1500);
+  // digitalWriteFast(23, HIGH);         // Start the pulse
+  // delayMicroseconds(2500);     // Wait for 1ms (pulse width for 0 degrees)
+  // digitalWriteFast(23, LOW);
+  // delay(1500);
 
-  digitalWriteFast(23, HIGH);
-  delayMicroseconds(500);     // Wait for 1ms (pulse width for 0 degrees)
-  digitalWriteFast(23, LOW);
-  delay(1500);
+  // digitalWriteFast(23, HIGH);
+  // delayMicroseconds(500);     // Wait for 1ms (pulse width for 0 degrees)
+  // digitalWriteFast(23, LOW);
+  // delay(1500);
 
-  digitalWriteFast(23, HIGH);
-  delayMicroseconds(1600);     // Wait for 1ms (pulse width for 0 degrees)
-  digitalWriteFast(23, LOW);
-  delay(2000);
+  // digitalWriteFast(23, HIGH);
+  // delayMicroseconds(2300);     // Wait for 1ms (pulse width for 0 degrees)
+  // digitalWriteFast(23, LOW);
+  // delay(2000);
 
 
   // threads.addThread(resetThread, 0, 10000);
@@ -253,6 +255,7 @@ long unsigned timer = 0;
 int count = 0;
 
 void loop(){
+  bool kick = false;
   // while (true)
   // {
   //   Serial.println(EEPROM.read(0));
@@ -283,6 +286,7 @@ void loop(){
     robot.orbitToBall(yellow_open.current_pose.bearing); // was 0
     // robot.orbitToBall(0);
     ema_constant = 0.005;
+    kp = 0.0016;
     // kp = map(robot.move_data.speed, 0, 0.4, 0, 0.0013);
     // kd = map(pow(robot.move_data.speed, 2), 0, 0.16, 0, 0.005);
     // robot.rotateToBall();
@@ -290,14 +294,21 @@ void loop(){
 
   case 1:
     // digitalWrite(13, LOW);
-    robot.orbitScore();
-    if (robot.move_data.speed == 0.05) {
-      kp = 0.004;
-    } else if (robot.move_data.speed < 0.12)
+    kick = robot.orbitScore();
+    if (kick)
     {
-      kp = 0.003;
+      // robot.move_data.target_bearing = 0;
+      ema_constant = 1;
+    } else {
+      if (robot.move_data.speed == 0.05) {
+        kp = 0.004;
+      } else if (robot.move_data.speed < 0.12)
+      {
+        kp = 0.003;
+      }
+      ema_constant = 0.008;
     }
-    ema_constant = 0.008;
+    
     break;
 
   case 2:
@@ -363,6 +374,11 @@ void loop(){
   // delayMicroseconds(1);
   // Serial.println("6.: " + String(micros() - timer));
   // timer = micros();
-
-  // robot.kicker.reset();
+  if (kick) {
+    robot.kicker.reset();
+    kick = false;
+    robot.task = 0;
+    robot.base.move(0, 0, robot.move_data.target_bearing, kp, ki, kd, 1);
+  
+  }
 }

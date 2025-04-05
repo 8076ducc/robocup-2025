@@ -15,7 +15,7 @@ bool was_approaching = false;
 const unsigned long approaching_timeout = 200; // ms
 const unsigned long goalie_timeout = 100; // ms
 
-bool raffles = true;
+bool raffles = false;
 
 
 double mapValue(double inputValue, double inputMin, double inputMax, double outputMin, double outputMax) {
@@ -105,7 +105,7 @@ void Robot::orbitToBall(double bearing)
         // double orbit_d = 1;
 
         double orbit_a = 0.17;
-        double orbit_b = 1.2;
+        double orbit_b = 1.4;
         double orbit_c = 2190;
         double orbit_d = 1;
         // END TUNE
@@ -235,7 +235,7 @@ void Robot::orbitToBall(double bearing)
 
 int strategy = 0;
 
-void Robot::orbitScore()
+bool Robot::orbitScore()
 {
     // digitalWrite(13, HIGH);
     // Serial.println("running orbitScore");
@@ -268,7 +268,7 @@ void Robot::orbitScore()
         // }
         // if (strategy == 1)
         // {
-        scoringStrategyOne();
+        return scoringStrategyOne();
         // }
         // else if (strategy == 2)
         // {
@@ -277,6 +277,7 @@ void Robot::orbitScore()
         // }
         
     }
+    return false;
 }
 
 bool Robot::scoringStrategyOne() {
@@ -306,13 +307,15 @@ bool Robot::scoringStrategyOne() {
         
     // }
 
-    if (robot.current_pose.y > 200)
+    if (robot.current_pose.y > 100)
     {
-        if (millis() - scoring_start_time < 300) {
-            move_data.speed = 0.2;
-        } else {
-            move_data.speed = 0.05;
-        }
+        return true;
+        // if (millis() - scoring_start_time < 300) {
+        //     move_data.speed = 0.2;
+        // } else {
+        //     // move_data.speed = 0.05;
+        //     return true;
+        // }
         move_data.target_angle = 0;
         move_data.target_bearing = correctBearing(target_bearing);
     } else {
@@ -320,6 +323,7 @@ bool Robot::scoringStrategyOne() {
         move_data.target_angle = 0;
         move_data.target_bearing = correctBearing(target_bearing);
     }
+    return false;
 }
 
 void Robot::scoringStrategyTwo() {

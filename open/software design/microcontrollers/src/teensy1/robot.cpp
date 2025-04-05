@@ -4,6 +4,8 @@
 #include <vector>
 #include <algorithm>
 
+bool raffles = false;
+
 const double STEP_SIZE = 100.0; // Set step size to 10
 
 // Function f(x) = -5 * 10^-15 * x^6 - 700
@@ -136,8 +138,22 @@ void Robot::goalieTrack()
     }
     else
     {
-        target_pos.x = 0;
-        target_pos.y = f(target_pos.x);
+        
+        if (raffles)
+        {
+            if (ball.ball_last_seen.x > 0)
+            {
+                target_pos.x = 500;
+            }
+            else
+            {
+                target_pos.x = -500;
+            }
+            target_pos.y = f(target_pos.x);
+        } else {
+            target_pos.x = 0;
+            target_pos.y = f(target_pos.x);
+        }
     }
 
     double angle = ball.current_pose.bearing;

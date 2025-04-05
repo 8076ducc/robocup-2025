@@ -656,8 +656,8 @@ public:
 
     void defendGoal();
     void orbitToBall(double bearing);
-    void orbitScore();
-    void scoringStrategyOne();
+    bool orbitScore();
+    bool scoringStrategyOne();
     void scoringStrategyTwo();
     void moveToPoint(double x, double y, double bearing, double min_speed, double max_speed);
 
