@@ -204,6 +204,8 @@ void resetThread()
 //   return ms;
 // }
 
+
+
 void setup()
 {
   robot.base.setUp();
@@ -257,7 +259,7 @@ void loop(){
   //   // EEPROM.write(0, 1);
   // }
   // Serial.print("0. : " + String(micros() - timer));
-  timer = micros();
+  // timer = micros();
   robot.sendSerial();
   // Serial.println("1.: " + String(micros() - timer));
   // timer = micros();
@@ -271,13 +273,16 @@ void loop(){
   double kp = 0.0014; // orginally 0.0014
   double ki = 0.0;    // orginally 0.0
   double kd = 0.005;  // orginally 0.005
+  double ema_constant = 0.005;
 
   switch (robot.task)
   {
   case 0:
     // Serial.println("running task 0");
     // digitalWrite(13, HIGH);
-    robot.orbitToBall(blue_open.current_pose.bearing); // was 0
+    robot.orbitToBall(yellow_open.current_pose.bearing); // was 0
+    // robot.orbitToBall(0);
+    ema_constant = 0.005;
     // kp = map(robot.move_data.speed, 0, 0.4, 0, 0.0013);
     // kd = map(pow(robot.move_data.speed, 2), 0, 0.16, 0, 0.005);
     // robot.rotateToBall();
@@ -286,10 +291,13 @@ void loop(){
   case 1:
     // digitalWrite(13, LOW);
     robot.orbitScore();
-    if (robot.move_data.speed < 0.12)
+    if (robot.move_data.speed == 0.05) {
+      kp = 0.004;
+    } else if (robot.move_data.speed < 0.12)
     {
-      kp = 0.0025;
+      kp = 0.003;
     }
+    ema_constant = 0.008;
     break;
 
   case 2:
@@ -306,8 +314,29 @@ void loop(){
   // timer = micros();
   // goalie();
   striker();
+
+
   // Serial.println("5.: " + String(micros() - timer));
-  // timer = micros();
+  
+  // if (robot.kicker.just_kicked) {
+  //   if (millis() - robot.kicker.time_kicked > 1000) {
+  //     robot.kicker.just_kicked = false;
+  //   }
+
+  //   robot.move_data.speed = 0;
+  //   robot.base.move(0, 0, 0, kp, ki, kd);
+  //   robot.task = 0; // running orbitToBall
+  // } else {
+  // ema_constant = 0.01;
+  // robot.move_data.speed = 0.05;
+  // robot.move_data.target_angle = 0;
+  // robot.move_data.target_bearing = 0;
+
+  //  kp = 0.004; // orginally 0.0014
+  //  ki = 0.0;    // orginally 0.0
+  //  kd = 0.005;  // orginally 0.005
+  robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd, ema_constant);
+  // }
 
   // if (millis() - timer > 1000) {
   //   timer = millis();
@@ -328,12 +357,12 @@ void loop(){
   // robot.move_data.target_angle = 90*count;
   // robot.move_data.target_bearing = 0;
 
-  robot.base.move(robot.move_data.speed, robot.move_data.target_angle, robot.move_data.target_bearing, kp, ki, kd);
+
 
   // Serial.println("target: " + String(robot.move_data.target_bearing) + "actual: " + String(robot.current_pose.bearing));
-  delayMicroseconds(1);
+  // delayMicroseconds(1);
   // Serial.println("6.: " + String(micros() - timer));
-  timer = micros();
+  // timer = micros();
 
   // robot.kicker.reset();
 }

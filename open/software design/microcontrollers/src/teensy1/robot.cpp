@@ -9,7 +9,7 @@ const double STEP_SIZE = 100.0; // Set step size to 10
 // Function f(x) = -5 * 10^-15 * x^6 - 700
 double f(double x)
 {
-    return -5e-15 * pow(x, 6) - 650;
+    return -5e-15 * pow(x, 6) - 600;
 }
 
 // First derivative of f(x)
@@ -214,10 +214,10 @@ void Robot::goalieTrack()
 
     if (!ball.detected)
     {
-        speed = 0.3;
+        robot.moveToPoint(result.x, bound(result.y, -1100, 0), 0, 0.15, 0.3);
+    } else {
+        robot.moveToPoint(result.x, bound(result.y, -1100, 0), 0, speed, speed);
     }
-
-    robot.moveToPoint(result.x, bound(result.y, -1100, 0), 0, speed, speed);
 }
 
 void Robot::goalieRush()
@@ -237,10 +237,10 @@ void Robot::goalieRush()
     }
     else
     {
-        min_speed = 0.2;
+        min_speed = 0.3;
     }
 
-    robot.moveToPoint(ball.current_pose.x + robot.current_pose.x, ball.current_pose.y + robot.current_pose.y - bound(angle / 5 * 70, 0, 300), 0, min_speed, 0.45);
+    robot.moveToPoint(ball.current_pose.x + robot.current_pose.x, ball.current_pose.y + robot.current_pose.y - bound(angle / 5 * 70, 0, 300), 0, min_speed, 0.5);
 }
 
 void Robot::trackLine(double speed, double angle, int offset)
@@ -290,7 +290,7 @@ void Robot::trackLine(double speed, double angle, int offset)
 
 void Robot::rejectLine(double bearing)
 {
-    move_data.speed = 0.06 * line_data.chord_length;
+    move_data.speed = 0.1 * line_data.chord_length;
     move_data.target_angle = correctBearing(line_data.line_angle + 180);
     move_data.target_bearing = bearing;
     move_data.ema_constant = 0.005;

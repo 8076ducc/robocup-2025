@@ -1,6 +1,6 @@
 #include "main.h"
 
-double motor_offset = 1.09; // 1.09
+double motor_offset = 1.00; // 1.09
 
 void Base::setUp()
 {
@@ -86,7 +86,6 @@ void Base::move(double vel, double angle, double bearing, double kp = 0.0013, do
 {
     vel = fmin(vel, 0.5);
 
-    ema_constant = 0.005;
     double x_vel = sin(radians(angle)) * sin(wheel_angle);
     double y_vel = cos(radians(angle)) * cos(wheel_angle);
     double ang_vel = 0;

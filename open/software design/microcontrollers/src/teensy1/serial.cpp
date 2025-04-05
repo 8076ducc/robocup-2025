@@ -162,6 +162,8 @@ void onTeensyReceived(const byte *buf, size_t size) // receives shit from the ca
 
         ball.current_pose.x = sin(radians(ball_relative_bearing)) * ball.distance_from_robot;
         ball.current_pose.y = cos(radians(ball_relative_bearing)) * ball.distance_from_robot;
+        ball.ball_last_seen.x = ball.current_pose.x + robot.current_pose.x;
+        ball.ball_last_seen.y = ball.current_pose.y + robot.current_pose.y;
         // ball.current_pose.x = data_received.data.ball_x;
         // ball.current_pose.y = data_received.data.ball_y;
     }

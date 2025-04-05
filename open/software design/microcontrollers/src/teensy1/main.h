@@ -640,6 +640,8 @@ public:
     
     bool kicked = false;
 
+    bool just_kicked = false;
+
     unsigned long time_kicked;
 };
 
