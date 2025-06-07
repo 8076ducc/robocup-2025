@@ -64,13 +64,13 @@ void loop()
   #ifdef DEBUG
   //Serial.println("running Debug function::Calibrate");
   delay(150);
-  //light_ring.calibrate();
+  // light_ring.calibrate();
 
   if (analogRead(LIGHTGATE) < lowest)
   {
     lowest = analogRead(LIGHTGATE);
   }
-  // Serial.println(analogRead(LIGHTGATE));
+  Serial.println(analogRead(LIGHTGATE));
   Serial.print(lowest);
   Serial.print(" ");
   Serial.println(analogRead(LIGHTGATE));

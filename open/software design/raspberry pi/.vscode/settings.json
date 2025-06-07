@@ -52,6 +52,9 @@
         "tuple": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "execution": "cpp",
+        "forward_list": "cpp",
+        "print": "cpp"
     }
 }

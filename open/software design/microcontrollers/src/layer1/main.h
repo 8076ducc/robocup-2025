@@ -23,7 +23,7 @@
 // global variables
 
 // TUNE THIS
-const int ball_threshold = 1000;
+const int ball_threshold = 1500;
 // END TUNE
 
 extern int line_track_ldr;

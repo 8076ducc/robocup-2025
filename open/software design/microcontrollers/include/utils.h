@@ -16,6 +16,8 @@ struct Ball
     Pose current_pose;
     Pose projected_pose;
 
+    Pose ball_last_seen;
+
     double distance_from_robot;
 
     bool in_catchment;

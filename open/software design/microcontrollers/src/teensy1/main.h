@@ -8,6 +8,7 @@
 #define BOT_A
 
 #include <common.h>
+#include <EEPROM.h>
 #include <TeensyThreads.h>
 
 #define DRIBBLER_LOWER_LIMIT 32
@@ -636,6 +637,10 @@ public:
     void reset();
 
     int servoPin = 23;
+    
+    bool kicked = false;
+
+    bool just_kicked = false;
 
     unsigned long time_kicked;
 };
@@ -651,8 +656,10 @@ public:
 
     void defendGoal();
     void orbitToBall(double bearing);
-    void orbitScore();
-    void moveToNeutralPoint(int neutral_point, bool behind_line);
+    bool orbitScore();
+    bool scoringStrategyOne();
+    void scoringStrategyTwo();
+    void moveToPoint(double x, double y, double bearing, double min_speed, double max_speed);
 
     void trackLine(double speed, double angle, int offset);
     void trackLineGoalie(double speed, double angle, int offset);
@@ -666,17 +673,15 @@ public:
     void storeYellowOpenPose(double yellow_open_x, double yellow_open_y);
     void storeBlueOpenPose(double blue_open_x, double blue_open_y);
 
-    void getRobotPose();
-
-    Pose camera_pose;
+    void storeRobotPose();
 
     Base base;
     Dribbler dribbler;
     Kicker kicker;
 
     Pose previous_pose;
-    Pose current_pose;
     Pose target_pose;
+    Pose current_pose;
 
     MoveData move_data;
     LineData line_data;
