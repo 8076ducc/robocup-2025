@@ -13,12 +13,12 @@ double prev_ball_dist;
 unsigned long not_approaching_start_time = 0;
 bool was_approaching = false;
 const unsigned long approaching_timeout = 200; // ms
-const unsigned long goalie_timeout = 100; // ms
+const unsigned long goalie_timeout = 100;      // ms
 
 bool raffles = false;
 
-
-double mapValue(double inputValue, double inputMin, double inputMax, double outputMin, double outputMax) {
+double mapValue(double inputValue, double inputMin, double inputMax, double outputMin, double outputMax)
+{
     // Formula for linear mapping
     return outputMin + (inputValue - inputMin) * (outputMax - outputMin) / (inputMax - inputMin);
 }
@@ -42,30 +42,43 @@ void Robot::defendGoal()
     {
         rejectLine(0);
     }
-    else if (ball.current_pose.y > 0 && angle < 15) {
-        if (robot.current_pose.y + ball.current_pose.y < 200) { // ball is behind the center line
-            if (goalie_within_range_time == 0) {
+    else if (ball.current_pose.y > 0 && angle < 20)
+    {
+        if (robot.current_pose.y + ball.current_pose.y < 100)
+        { // ball is behind the center line
+            if (goalie_within_range_time == 0)
+            {
                 goalie_within_range_time = millis();
             }
             if (millis() - goalie_within_range_time > goalie_timeout)
             {
-                if (!was_approaching) {
-                    if (ball.distance_from_robot > 100){
+                if (!was_approaching)
+                {
+                    if (ball.distance_from_robot > 100)
+                    {
                         goalieTrack();
-                    } else {
+                    }
+                    else
+                    {
                         not_approaching_start_time = millis(); // reset the timer
                         was_approaching = true;
                         goalieRush();
                     }
-                } else {
+                }
+                else
+                {
                     not_approaching_start_time = millis(); // reset the timer
                     was_approaching = true;
                     goalieRush();
                 }
-            } else {
+            }
+            else
+            {
                 goalieTrack();
             }
-        } else {
+        }
+        else
+        {
             goalie_within_range_time = 0;
             goalieTrack();
         }
@@ -131,7 +144,6 @@ void Robot::orbitToBall(double bearing)
         double orbit_decel_k = 0.06; // increase for faster deceleration
         // END TUNE
 
-
         double average_goal_x;
 
         if (yellow_goal.detected && blue_goal.detected)
@@ -191,9 +203,12 @@ void Robot::orbitToBall(double bearing)
 
             move_data.speed = speed;
 
-            if (correction > 180 + 20 && correction < 360 - 20 && robot.current_pose.x < -600) {
+            if (correction > 180 + 20 && correction < 360 - 20 && robot.current_pose.x < -600)
+            {
                 move_data.speed = 0;
-            } else if (correction < 180 - 20 && correction > 20 && robot.current_pose.x > 600) {
+            }
+            else if (correction < 180 - 20 && correction > 20 && robot.current_pose.x > 600)
+            {
                 move_data.speed = 0;
             }
 
@@ -203,33 +218,43 @@ void Robot::orbitToBall(double bearing)
     }
     else
     {
-        if (raffles) {
+        if (raffles)
+        {
             double max_speed;
             double min_speed;
             double bearing = 0;
 
-            if (robot.current_pose.y < -280){
-                if (robot.current_pose.y < -320) {
+            if (robot.current_pose.y < -280)
+            {
+                if (robot.current_pose.y < -320)
+                {
                     max_speed = 0.45;
                     min_speed = 0.35;
-                } else {
+                }
+                else
+                {
                     max_speed = 0.2;
                     min_speed = 0.1;
                 }
-            } else {
+            }
+            else
+            {
                 max_speed = 0.3;
                 min_speed = 0.15;
             }
-            if (ball.ball_last_seen.x > 0) {
+            if (ball.ball_last_seen.x > 0)
+            {
                 moveToPoint(500, -300, 0, min_speed, max_speed);
-            } else {
+            }
+            else
+            {
                 moveToPoint(-500, -300, 0, min_speed, max_speed);
             }
-            
-        } else {
+        }
+        else
+        {
             robot.moveToPoint(0, 0, 0, 0.15, 0.3);
         }
-        
     }
 }
 
@@ -242,12 +267,12 @@ bool Robot::orbitScore()
     // double target_bearing = robot.dip_4_on ? yellow_goal.current_pose.bearing : blue_goal.current_pose.bearing;
 
     double target_bearing;
-    target_bearing = yellow_open.current_pose.bearing;
+    target_bearing = blue_open.current_pose.bearing;
     if (target_bearing > 180)
     {
         target_bearing = target_bearing - 360;
     }
-    
+
     // END TUNE
 
     if (line_data.on_line)
@@ -275,21 +300,21 @@ bool Robot::orbitScore()
         //     scoringStrategyTwo();
         //     return 0.005;
         // }
-        
     }
     return false;
 }
 
-bool Robot::scoringStrategyOne() {
+bool Robot::scoringStrategyOne()
+{
     double score_min_speed = 0.05;
-    double score_max_speed = 0.4;
+    double score_max_speed = 0.3;
 
     double score_accel_time = 400;
     double score_steep_accel_time = 400;
     double score_turn_time = 300;
 
     double target_bearing;
-    target_bearing = correctBearing(yellow_open.current_pose.bearing);
+    target_bearing = correctBearing(blue_open.current_pose.bearing);
     if (target_bearing > 180)
     {
         target_bearing = target_bearing - 360;
@@ -304,21 +329,26 @@ bool Robot::scoringStrategyOne() {
     // }
     // else
     // {
-        
+
     // }
 
     if (robot.current_pose.y > 100)
     {
-        return true;
+        move_data.target_angle = 0;
+        move_data.target_bearing = correctBearing(target_bearing);
+        if (target_bearing - blue_open.current_pose.bearing < 5)
+        {
+            return true;
+        }
         // if (millis() - scoring_start_time < 300) {
         //     move_data.speed = 0.2;
         // } else {
         //     // move_data.speed = 0.05;
         //     return true;
         // }
-        move_data.target_angle = 0;
-        move_data.target_bearing = correctBearing(target_bearing);
-    } else {
+    }
+    else
+    {
         move_data.speed = score_max_speed;
         move_data.target_angle = 0;
         move_data.target_bearing = correctBearing(target_bearing);
@@ -326,7 +356,8 @@ bool Robot::scoringStrategyOne() {
     return false;
 }
 
-void Robot::scoringStrategyTwo() {
+void Robot::scoringStrategyTwo()
+{
 
     double score_min_speed = 0.25;
     double score_max_speed = 0.4;
@@ -346,18 +377,24 @@ void Robot::scoringStrategyTwo() {
 
     int direction = 0;
 
-    if (robot.current_pose.y < 200) {
+    if (robot.current_pose.y < 200)
+    {
         float elapsed_duration = millis() - scoring_start_time;
-        if (robot.current_pose.x > 0) {
+        if (robot.current_pose.x > 0)
+        {
             direction = 1;
-        } else {
+        }
+        else
+        {
             direction = -1;
         }
         double speed = bound((elapsed_duration) / move_point_accel_time * (move_point_max_speed - move_point_min_speed) + move_point_min_speed, move_point_min_speed, move_point_max_speed);
         robot.moveToPoint(direction * 300, 300, 0, speed, speed);
         kicking_start_time = millis();
-    } else {
-        direction=0;
+    }
+    else
+    {
+        direction = 0;
         float elapsed_duration = millis() - kicking_start_time;
         if (elapsed_duration < score_steep_accel_time)
         {
@@ -366,7 +403,7 @@ void Robot::scoringStrategyTwo() {
             move_data.target_bearing = (elapsed_duration) / score_steep_accel_time * target_bearing;
         }
         else
-        {   
+        {
             if (elapsed_duration - score_steep_accel_time > 200)
             {
                 if (robot.current_pose.bearing - blue_open.current_pose.bearing < 5)
@@ -379,6 +416,5 @@ void Robot::scoringStrategyTwo() {
             move_data.target_angle = 0;
             move_data.target_bearing = target_bearing;
         }
-        
     }
 }

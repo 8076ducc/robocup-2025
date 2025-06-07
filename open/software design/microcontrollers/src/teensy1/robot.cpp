@@ -4,14 +4,14 @@
 #include <vector>
 #include <algorithm>
 
-bool raffles = false;
+bool raffles_goalie = false;
 
 const double STEP_SIZE = 100.0; // Set step size to 10
 
 // Function f(x) = -5 * 10^-15 * x^6 - 700
 double f(double x)
 {
-    return -5e-15 * pow(x, 6) - 600;
+    return -5e-15 * pow(x, 6) - 500;
 }
 
 // First derivative of f(x)
@@ -139,7 +139,7 @@ void Robot::goalieTrack()
     else
     {
         
-        if (raffles)
+        if (raffles_goalie)
         {
             if (ball.ball_last_seen.x > 0)
             {
@@ -253,7 +253,7 @@ void Robot::goalieRush()
     }
     else
     {
-        min_speed = 0.3;
+        min_speed = 0.35;
     }
 
     robot.moveToPoint(ball.current_pose.x + robot.current_pose.x, ball.current_pose.y + robot.current_pose.y - bound(angle / 5 * 70, 0, 300), 0, min_speed, 0.5);

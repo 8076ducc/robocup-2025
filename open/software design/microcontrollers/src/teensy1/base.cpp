@@ -1,6 +1,6 @@
 #include "main.h"
 
-double motor_offset = 1.00; // 1.09
+double motor_offset = 1.09; // 1.09
 
 void Base::setUp()
 {

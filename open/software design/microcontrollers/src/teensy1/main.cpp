@@ -35,9 +35,10 @@ bool ball_approaching;
 
 void striker()
 {
-  if (robot.kicker.kicked) {
+  if (robot.kicker.kicked)
+  {
     was_in_catchment = false; // reset the catchment state
-    robot.task = 0; // running orbitToBall
+    robot.task = 0;           // running orbitToBall
     return;
   }
 
@@ -204,8 +205,6 @@ void goalie()
 //   return ms;
 // }
 
-
-
 void setup()
 {
   robot.base.setUp();
@@ -223,10 +222,9 @@ void setup()
 
   pinMode(13, OUTPUT);
   pinMode(23, OUTPUT);
-  
+
   delay(1000);
 
-  
   // digitalWriteFast(23, HIGH);         // Start the pulse
   // delayMicroseconds(2500);     // Wait for 1ms (pulse width for 0 degrees)
   // digitalWriteFast(23, LOW);
@@ -242,7 +240,6 @@ void setup()
   // digitalWriteFast(23, LOW);
   // delay(2000);
 
-
   // threads.addThread(resetThread, 0, 10000);
 
   // threads.addThread(loopThread);
@@ -254,7 +251,8 @@ void setup()
 long unsigned timer = 0;
 int count = 0;
 
-void loop(){
+void loop()
+{
   bool kick = false;
   // while (true)
   // {
@@ -283,7 +281,14 @@ void loop(){
   case 0:
     // Serial.println("running task 0");
     // digitalWrite(13, HIGH);
-    robot.orbitToBall(yellow_open.current_pose.bearing); // was 0
+    if (yellow_goal.detected)
+    {
+      robot.orbitToBall(blue_open.current_pose.bearing);
+    }
+    else
+    {
+      robot.orbitToBall(0);
+    }
     // robot.orbitToBall(0);
     ema_constant = 0.005;
     kp = 0.0016;
@@ -299,16 +304,20 @@ void loop(){
     {
       // robot.move_data.target_bearing = 0;
       ema_constant = 1;
-    } else {
-      if (robot.move_data.speed == 0.05) {
+    }
+    else
+    {
+      if (robot.move_data.speed == 0.05)
+      {
         kp = 0.004;
-      } else if (robot.move_data.speed < 0.12)
+      }
+      else if (robot.move_data.speed < 0.12)
       {
         kp = 0.003;
       }
       ema_constant = 0.008;
     }
-    
+
     break;
 
   case 2:
@@ -326,9 +335,8 @@ void loop(){
   // goalie();
   striker();
 
-
   // Serial.println("5.: " + String(micros() - timer));
-  
+
   // if (robot.kicker.just_kicked) {
   //   if (millis() - robot.kicker.time_kicked > 1000) {
   //     robot.kicker.just_kicked = false;
@@ -368,17 +376,15 @@ void loop(){
   // robot.move_data.target_angle = 90*count;
   // robot.move_data.target_bearing = 0;
 
-
-
   // Serial.println("target: " + String(robot.move_data.target_bearing) + "actual: " + String(robot.current_pose.bearing));
   // delayMicroseconds(1);
   // Serial.println("6.: " + String(micros() - timer));
   // timer = micros();
-  if (kick) {
-    robot.kicker.reset();
+  if (kick)
+  {
+    // robot.kicker.reset();
     kick = false;
     robot.task = 0;
     robot.base.move(0, 0, robot.move_data.target_bearing, kp, ki, kd, 1);
-  
   }
 }

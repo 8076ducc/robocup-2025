@@ -38,7 +38,7 @@ void Kicker::reset()
     delayMicroseconds(2500);     // Wait for 1ms (pulse width for 0 degrees)
     digitalWriteFast(23, LOW);
 
-    delay(300);
+    delay(400);
 
     robot.base.motorOut(1, 0);
     robot.base.motorOut(2, 0);
@@ -53,7 +53,7 @@ void Kicker::reset()
     delay(1500);
     
     digitalWriteFast(23, HIGH);
-    delayMicroseconds(2300);     // Wait for 1ms (pulse width for 0 degrees)
+    delayMicroseconds(2200);     // Wait for 1ms (pulse width for 0 degrees)
     digitalWriteFast(23, LOW);
 
     delay(1000);
